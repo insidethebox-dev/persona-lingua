@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PersonaLingua
+
+An AI-powered learning material recommendation system built with Next.js, TypeScript, and Tailwind CSS. The application helps teachers manage student records and discover relevant learning materials through AI-powered suggestions.
+
+## Features
+
+### ✅ Core Features
+
+- **School Management**: Schools can manage their teacher accounts
+- **Teacher Authentication**: Secure login system for teachers
+- **Student Records**: Teachers can create and manage student profiles with progress reports
+- **File Management**: Upload and tag learning materials for AI-powered discovery
+- **AI Recommendations**: Intelligent suggestions based on student needs and available materials
+
+### 🆕 Recent Updates
+
+- **AI-Powered Content Analysis**: Automatic file content analysis and summary generation using OpenAI
+- **Enhanced Student Reports**: Complete CRUD operations for student progress reports with modal editing
+- **Improved UI/UX**: Fixed input placeholder colors and enhanced form interactions
+- **Asynchronous Processing**: AI summary generation runs in background during file upload
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
+- **Backend**: Next.js API routes
+- **Database**: PostgreSQL with Prisma ORM
+- **Authentication**: NextAuth.js
+- **AI Integration**: OpenAI API (configurable)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18+
+- PostgreSQL database
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set up your environment variables in `.env`:
+
+   ```env
+   DATABASE_URL="your-postgresql-connection-string"
+   NEXTAUTH_SECRET="your-secret-key"
+   NEXTAUTH_URL="http://localhost:3000"
+
+   # Cloudinary (for file storage)
+   CLOUDINARY_CLOUD_NAME="your-cloudinary-cloud-name"
+   CLOUDINARY_API_KEY="your-cloudinary-api-key"
+   CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
+   CLOUDINARY_FOLDER="personalingua" # Optional folder name
+
+   # OpenAI (for AI content analysis)
+   OPENAI_API_KEY="your-openai-api-key"
+   ```
+
+4. Generate Prisma client:
+
+   ```bash
+   npm run db:generate
+   ```
+
+5. Push the database schema:
+
+   ```bash
+   npm run db:push
+   ```
+
+6. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+7. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## Database Setup
+
+The application uses PostgreSQL with Prisma. To set up your database:
+
+1. Create a PostgreSQL database
+2. Update the `DATABASE_URL` in your `.env` file
+3. Run the database migration:
+   ```bash
+   npm run db:migrate
+   ```
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js app router pages
+│   ├── api/               # API routes
+│   ├── auth/              # Authentication pages
+│   ├── dashboard/         # Dashboard page
+│   └── students/          # Student management pages
+├── components/            # Reusable React components
+├── lib/                   # Utility functions and configurations
+├── types/                 # TypeScript type definitions
+└── prisma/               # Database schema and migrations
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Endpoints
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `POST /api/schools` - Create a new school with admin teacher
+- `GET /api/teachers` - Get teachers for the current school
+- `POST /api/teachers` - Create a new teacher (admin only)
+- `GET /api/students` - Get students for the current teacher
+- `POST /api/students` - Create a new student
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Development Scripts
 
-## Learn More
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run db:generate` - Generate Prisma client
+- `npm run db:push` - Push schema changes to database
+- `npm run db:migrate` - Create and run migrations
+- `npm run db:studio` - Open Prisma Studio
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License.
