@@ -2,6 +2,10 @@
 
 An AI-powered learning material recommendation system built with Next.js, TypeScript, and Tailwind CSS. The application helps teachers manage student records and discover relevant learning materials through AI-powered suggestions.
 
+## Latest Fixes
+
+- **Fixed maximum file size limit and student age in form
+
 ## Features
 
 ### ✅ Core Features
