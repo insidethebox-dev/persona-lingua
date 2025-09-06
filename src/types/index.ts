@@ -6,6 +6,12 @@ import {
   LearningMaterial,
   Recommendation,
 } from "@prisma/client";
+import { LearningBarrier } from "@/constants/materials";
+
+// Extended Student type with learningBarriers
+export type StudentWithLearningBarriers = Student & {
+  learningBarriers: LearningBarrier[];
+};
 
 // Extended types with relations
 export type SchoolWithTeachers = School & {
@@ -16,11 +22,11 @@ export type TeacherWithSchool = Teacher & {
   school: School;
 };
 
-export type StudentWithTeacher = Student & {
+export type StudentWithTeacher = StudentWithLearningBarriers & {
   teacher: Teacher;
 };
 
-export type StudentWithReports = Student & {
+export type StudentWithReports = StudentWithLearningBarriers & {
   teacher: {
     id: string;
     name: string;

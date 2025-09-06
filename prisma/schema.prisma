@@ -48,14 +48,15 @@ model Teacher {
 }
 
 model Student {
-  id        String   @id @default(cuid())
-  name      String
-  age       Int?
-  grade     String?
-  notes     String?
-  teacherId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @default(cuid())
+  name            String
+  age             Int?
+  grade           String?
+  notes           String?
+  learningBarriers String[] @default([]) // Learning barriers/accessibility needs
+  teacherId       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   teacher         Teacher          @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   reports         StudentReport[]
