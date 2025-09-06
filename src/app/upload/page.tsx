@@ -1,18 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Upload, FileText, Tag, BookOpen, Sparkles } from "lucide-react";
+import { MaterialForm, FileGenerationPanel } from "@/components/upload";
 import { ApiResponse } from "@/types";
 import { AIAnalysisResult } from "@/lib/openai";
-import {
-  MATERIAL_TOPICS,
-  MATERIAL_LEVELS,
-  MATERIAL_TYPES,
-  MATERIAL_SKILLS,
-} from "@/constants/materials";
+import toast from "react-hot-toast";
+
+interface GeneratedFile {
+  content: string;
+  filename: string;
+  analysis: {
+    topic: string;
+    level: string;
+    type: string;
+    skill: string;
+    generatedTitle: string;
+  };
+}
 
 export default function UploadPage() {
   const { status } = useSession();
@@ -21,6 +28,12 @@ export default function UploadPage() {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [aiAnalysis, setAiAnalysis] = useState<AIAnalysisResult | null>(null);
+  const [generatedFile, setGeneratedFile] = useState<GeneratedFile | null>(
+    null
+  );
+  const [generating, setGenerating] = useState(false);
+  const [generationInstructions, setGenerationInstructions] = useState("");
+  const [dyslexiaFriendly, setDyslexiaFriendly] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -31,6 +44,51 @@ export default function UploadPage() {
     tags: "",
     file: null as File | null,
   });
+
+  // Show welcome toast on component mount
+  useEffect(() => {
+    const toastId = toast(
+      (t) => (
+        <div className='flex items-start gap-3'>
+          <div className='flex-shrink-0'>
+            <div className='w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs'>
+              ⭐
+            </div>
+          </div>
+          <div className='flex-1'>
+            <h4 className='font-semibold text-sm text-white'>
+              Try AI Generation!
+            </h4>
+            <p className='text-xs mt-1 text-white'>
+              Test the AI generation feature before submitting your uploaded
+              file. Fill in the form fields and use the generation panel on the
+              right.
+            </p>
+          </div>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className='flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors ml-2'
+          >
+            ✕
+          </button>
+        </div>
+      ),
+      {
+        duration: 150000, // 8 seconds
+        position: "bottom-right",
+        style: {
+          background: "linear-gradient(to right, #3b82f6, #8b5cf6)",
+          color: "white",
+          maxWidth: "400px",
+          padding: "16px",
+        },
+      }
+    );
+
+    return () => {
+      toast.dismiss(toastId);
+    };
+  }, []);
 
   if (status === "loading") {
     return (
@@ -101,18 +159,156 @@ export default function UploadPage() {
     }
   };
 
+  const downloadGeneratedFile = () => {
+    if (!generatedFile) return;
+
+    const blob = new Blob([generatedFile.content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = generatedFile.filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const downloadGeneratedDocx = async () => {
+    // Validate required fields first
+    if (
+      !formData.title ||
+      !formData.topic ||
+      !formData.level ||
+      !formData.type ||
+      !formData.skill
+    ) {
+      toast.error(
+        "Please fill in all required fields before generating a DOCX file"
+      );
+      return;
+    }
+
+    setGenerating(true);
+    setError("");
+
+    // Show loading toast
+    const loadingToast = toast.loading("Generating your DOCX file...", {
+      style: {
+        background: "#3b82f6",
+        color: "white",
+      },
+    });
+
+    try {
+      const generateFormData = new FormData();
+      // Send the current form data instead of re-analyzing the file
+      generateFormData.append("title", formData.title);
+      generateFormData.append("description", formData.description);
+      generateFormData.append("topic", formData.topic);
+      generateFormData.append("level", formData.level);
+      generateFormData.append("type", formData.type);
+      generateFormData.append("skill", formData.skill);
+      generateFormData.append("tags", formData.tags);
+      generateFormData.append("output", "docx"); // Request DOCX format
+
+      // Add dyslexia instructions if toggle is enabled
+      let finalInstructions = generationInstructions;
+      if (dyslexiaFriendly) {
+        const dyslexiaText = `You are an assistant that rewrites text into a dyslexia-friendly format.
+When rewriting, follow these rules:
+•  Use short, clear sentences.
+•  Prefer simple, common words over complex ones.
+•  Break long text into smaller chunks or bullet points.
+•  Keep paragraphs short (2–3 sentences maximum).
+•  Use headings and subheadings when appropriate.
+•  Do not change the meaning of the original text.
+•  Avoid double negatives and confusing phrasing.
+•  Make sure the rewritten version is easier to read and scan.
+
+Rewrite the following text accordingly:
+`;
+        finalInstructions = finalInstructions
+          ? `${dyslexiaText}\n\n${finalInstructions}`
+          : dyslexiaText;
+      }
+
+      generateFormData.append("instructions", finalInstructions);
+
+      const response = await fetch("/api/ai/generate", {
+        method: "POST",
+        body: generateFormData,
+      });
+
+      if (response.ok) {
+        // Handle DOCX download
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+
+        // Extract filename from Content-Disposition header if available
+        const contentDisposition = response.headers.get("Content-Disposition");
+        let filename = "generated-material.docx";
+        if (contentDisposition) {
+          const match = contentDisposition.match(/filename="([^"]+)"/);
+          if (match) {
+            filename = match[1];
+          }
+        }
+
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+
+        // Dismiss loading toast and show success
+        toast.dismiss(loadingToast);
+        toast.success(`DOCX file "${filename}" downloaded successfully!`, {
+          duration: 4000,
+          style: {
+            background: "#10b981",
+            color: "white",
+          },
+        });
+      } else {
+        const errorData = await response.json();
+        toast.dismiss(loadingToast);
+        toast.error(errorData.error || "Failed to generate DOCX file");
+        setError(errorData.error || "Failed to generate DOCX file");
+      }
+    } catch (error) {
+      console.error("Error generating DOCX file:", error);
+      toast.dismiss(loadingToast);
+      toast.error("An error occurred while generating the DOCX file");
+      setError("An error occurred while generating the DOCX file");
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setSuccess("");
 
-    try {
-      if (!formData.file) {
-        setError("Please select a file to upload");
-        return;
-      }
+    if (!formData.file) {
+      toast.error("Please select a file to upload");
+      setError("Please select a file to upload");
+      setLoading(false);
+      return;
+    }
 
+    // Show loading toast
+    const uploadToast = toast.loading("Uploading your learning material...", {
+      style: {
+        background: "#8b5cf6",
+        color: "white",
+      },
+    });
+
+    try {
       const uploadFormData = new FormData();
       uploadFormData.append("file", formData.file);
       uploadFormData.append("title", formData.title);
@@ -144,14 +340,31 @@ export default function UploadPage() {
           file: null,
         });
         setAiAnalysis(null);
+        setGeneratedFile(null);
+        setGenerationInstructions("");
+        setDyslexiaFriendly(false);
         // Reset file input
         const fileInput = document.getElementById("file") as HTMLInputElement;
         if (fileInput) fileInput.value = "";
+
+        toast.dismiss(uploadToast);
+        toast.success("Material uploaded successfully!", {
+          duration: 4000,
+          style: {
+            background: "#10b981",
+            color: "white",
+          },
+        });
       } else {
+        toast.dismiss(uploadToast);
+        toast.error(data.error || "Failed to upload material");
         setError(data.error || "Failed to upload material");
       }
-    } catch {
-      setError("An error occurred while uploading");
+    } catch (error) {
+      console.error("Error uploading material:", error);
+      toast.dismiss(uploadToast);
+      toast.error("An error occurred while uploading the material");
+      setError("An error occurred while uploading the material");
     } finally {
       setLoading(false);
     }
@@ -175,340 +388,37 @@ export default function UploadPage() {
           <p className='text-gray-600 mt-2'>
             Upload files and tag them for AI-powered student recommendations
           </p>
-        </div>
-
-        <div className='max-w-2xl'>
-          <div className='bg-white rounded-lg shadow p-6'>
-            <form onSubmit={handleSubmit} className='space-y-6'>
-              {/* File Upload */}
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-2'>
-                  File *
-                </label>
-                <div className='border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors'>
-                  <Upload className='mx-auto h-12 w-12 text-gray-400' />
-                  <div className='mt-4'>
-                    <label htmlFor='file' className='cursor-pointer'>
-                      <span className='mt-2 block text-sm font-medium text-gray-900'>
-                        {formData.file
-                          ? formData.file.name
-                          : "Click to upload or drag and drop"}
-                      </span>
-                      {formData.file && (
-                        <span className='mt-1 block text-sm text-gray-500'>
-                          Size: {formatFileSize(formData.file.size)}
-                        </span>
-                      )}
-                      <input
-                        id='file'
-                        name='file'
-                        type='file'
-                        className='sr-only'
-                        onChange={handleFileChange}
-                        accept='.pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.gif,.ppt,.pptx,.xls,.xlsx'
-                        required
-                      />
-                    </label>
-                    <p className='mt-1 text-xs text-gray-500'>
-                      PDF, DOC, TXT, Images, PPT, XLS up to 10MB
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Title */}
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Title *
-                  {aiAnalysis && aiAnalysis.title && (
-                    <span className='text-xs text-blue-600 ml-2'>
-                      <Sparkles className='inline h-3 w-3 mr-1' />
-                      AI-suggested
-                    </span>
-                  )}
-                </label>
-                <div className='flex gap-2'>
-                  <input
-                    type='text'
-                    required
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    placeholder='Enter material title'
-                  />
-                  {aiAnalysis &&
-                    aiAnalysis.title &&
-                    formData.title !== aiAnalysis.title && (
-                      <button
-                        type='button'
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            title: aiAnalysis.title!,
-                          }))
-                        }
-                        className='text-xs text-blue-600 hover:text-blue-800 px-2 py-1 border border-blue-200 rounded-md bg-blue-50'
-                      >
-                        Reset to AI suggestion
-                      </button>
-                    )}
-                </div>
-              </div>
-
-              {/* Description */}
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Description
-                  {aiAnalysis && (
-                    <span className='text-xs text-blue-600 ml-2'>
-                      <Sparkles className='inline h-3 w-3 mr-1' />
-                      AI-suggested
-                    </span>
-                  )}
-                </label>
-                <textarea
-                  rows={4}
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  placeholder={
-                    aiLoading
-                      ? "Generating AI analysis..."
-                      : "Brief description of the material"
-                  }
-                  disabled={aiLoading}
-                />
-                {aiAnalysis && (
-                  <div className='mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md'>
-                    <div className='flex items-center justify-between mb-2'>
-                      <span className='text-sm font-medium text-blue-900'>
-                        <Sparkles className='inline h-4 w-4 mr-1' />
-                        AI Analysis Complete
-                      </span>
-                      <button
-                        type='button'
-                        onClick={() =>
-                          setFormData({
-                            ...formData,
-                            description: aiAnalysis.description,
-                          })
-                        }
-                        className='text-xs text-blue-600 hover:text-blue-800'
-                      >
-                        Reset to AI suggestion
-                      </button>
-                    </div>
-                    <p className='text-sm text-blue-800 mb-2'>
-                      {aiAnalysis.description}
-                    </p>
-                    <div className='text-xs text-blue-700'>
-                      <strong>AI Suggestions:</strong> {aiAnalysis.topic} •{" "}
-                      {aiAnalysis.level} • {aiAnalysis.type} •{" "}
-                      {aiAnalysis.skill}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Dropdowns */}
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                {/* Topic */}
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-1'>
-                    Topic *
-                    {aiAnalysis && formData.topic === aiAnalysis.topic && (
-                      <span className='text-xs text-blue-600 ml-2'>
-                        <Sparkles className='inline h-3 w-3 mr-1' />
-                        AI-suggested
-                      </span>
-                    )}
-                  </label>
-                  <select
-                    required
-                    value={formData.topic}
-                    onChange={(e) =>
-                      setFormData({ ...formData, topic: e.target.value })
-                    }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  >
-                    <option value=''>Select topic</option>
-                    {MATERIAL_TOPICS.map((topic) => (
-                      <option key={topic} value={topic}>
-                        {topic}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Level */}
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-1'>
-                    Level *
-                    {aiAnalysis && formData.level === aiAnalysis.level && (
-                      <span className='text-xs text-blue-600 ml-2'>
-                        <Sparkles className='inline h-3 w-3 mr-1' />
-                        AI-suggested
-                      </span>
-                    )}
-                  </label>
-                  <select
-                    required
-                    value={formData.level}
-                    onChange={(e) =>
-                      setFormData({ ...formData, level: e.target.value })
-                    }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  >
-                    <option value=''>Select level</option>
-                    {MATERIAL_LEVELS.map((level) => (
-                      <option key={level} value={level}>
-                        {level}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Type */}
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-1'>
-                    Type *
-                    {aiAnalysis && formData.type === aiAnalysis.type && (
-                      <span className='text-xs text-blue-600 ml-2'>
-                        <Sparkles className='inline h-3 w-3 mr-1' />
-                        AI-suggested
-                      </span>
-                    )}
-                  </label>
-                  <select
-                    required
-                    value={formData.type}
-                    onChange={(e) =>
-                      setFormData({ ...formData, type: e.target.value })
-                    }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  >
-                    <option value=''>Select type</option>
-                    {MATERIAL_TYPES.map((type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Skill */}
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-1'>
-                    Skill Targeted *
-                    {aiAnalysis && formData.skill === aiAnalysis.skill && (
-                      <span className='text-xs text-blue-600 ml-2'>
-                        <Sparkles className='inline h-3 w-3 mr-1' />
-                        AI-suggested
-                      </span>
-                    )}
-                  </label>
-                  <select
-                    required
-                    value={formData.skill}
-                    onChange={(e) =>
-                      setFormData({ ...formData, skill: e.target.value })
-                    }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  >
-                    <option value=''>Select skill</option>
-                    {MATERIAL_SKILLS.map((skill) => (
-                      <option key={skill} value={skill}>
-                        {skill}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Additional Tags */}
-              <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
-                  Additional Tags
-                  {aiAnalysis &&
-                    formData.tags === aiAnalysis.tags.join(", ") && (
-                      <span className='text-xs text-blue-600 ml-2'>
-                        <Sparkles className='inline h-3 w-3 mr-1' />
-                        AI-suggested
-                      </span>
-                    )}
-                </label>
-                <input
-                  type='text'
-                  value={formData.tags}
-                  onChange={(e) =>
-                    setFormData({ ...formData, tags: e.target.value })
-                  }
-                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  placeholder='Enter tags separated by commas (e.g., beginner, interactive, visual)'
-                />
-                <p className='mt-1 text-xs text-gray-500'>
-                  Optional: Add custom tags to help with AI recommendations
-                </p>
-              </div>
-
-              {/* Messages */}
-              {error && (
-                <div className='text-red-600 text-sm bg-red-50 p-3 rounded-md flex items-center gap-2'>
-                  <FileText className='h-4 w-4' />
-                  {error}
-                </div>
-              )}
-
-              {success && (
-                <div className='text-green-600 text-sm bg-green-50 p-3 rounded-md flex items-center gap-2'>
-                  <BookOpen className='h-4 w-4' />
-                  {success}
-                </div>
-              )}
-
-              {/* Submit Button */}
-              <div className='flex gap-3'>
-                <button
-                  type='submit'
-                  disabled={loading}
-                  className='flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
-                >
-                  {loading ? (
-                    <>
-                      <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
-                      Uploading...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className='h-4 w-4' />
-                      Upload Material
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
+        </div>{" "}
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+          {/* Left Column - Main Form */}
+          <div className='lg:col-span-2'>
+            <MaterialForm
+              formData={formData}
+              setFormData={setFormData}
+              aiAnalysis={aiAnalysis}
+              aiLoading={aiLoading}
+              loading={loading}
+              error={error}
+              success={success}
+              onSubmit={handleSubmit}
+              onFileChange={handleFileChange}
+              formatFileSize={formatFileSize}
+            />
           </div>
 
-          {/* Information Panel */}
-          <div className='mt-6 bg-blue-50 rounded-lg p-4'>
-            <div className='flex items-start gap-3'>
-              <Tag className='h-5 w-5 text-blue-600 mt-0.5' />
-              <div>
-                <h3 className='text-sm font-medium text-blue-900'>
-                  AI-Powered Recommendations
-                </h3>
-                <p className='text-sm text-blue-700 mt-1'>
-                  The more detailed your tags and descriptions, the better our
-                  AI can recommend this material to students who need it.
-                  Consider including difficulty level, learning objectives, and
-                  any special requirements.
-                </p>
-              </div>
-            </div>
+          {/* Right Column - File Generation */}
+          <div className='lg:col-span-1'>
+            <FileGenerationPanel
+              formData={formData}
+              generating={generating}
+              generationInstructions={generationInstructions}
+              dyslexiaFriendly={dyslexiaFriendly}
+              onInstructionsChange={setGenerationInstructions}
+              onDyslexiaToggle={setDyslexiaFriendly}
+              onGenerateDocx={downloadGeneratedDocx}
+              generatedFile={generatedFile}
+              onDownload={downloadGeneratedFile}
+            />
           </div>
         </div>
       </div>

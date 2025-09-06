@@ -1,0 +1,234 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import OpenAI from "openai";
+import { Document, Packer, Paragraph, HeadingLevel, TextRun } from "docx";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const formData = await request.formData();
+
+    // Optional output format (e.g., 'docx' or fallback to JSON)
+    const output = (formData.get("output") as string) || "json";
+
+    // Get the form data that the user has potentially modified
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const topic = formData.get("topic") as string;
+    const level = formData.get("level") as string;
+    const type = formData.get("type") as string;
+    const skill = formData.get("skill") as string;
+    const tags = formData.get("tags") as string;
+    const instructions = formData.get("instructions") as string;
+
+    // Validate required fields
+    if (!title || !topic || !level || !type || !skill) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Missing required form fields. Please ensure all required fields are filled.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // Generate a similar file based on the user's form data (possibly modified)
+    const prompt = `Based on the following educational material specifications, create a new, similar learning material:
+
+Material Specifications:
+- Title: ${title}
+- Topic: ${topic}
+- Level: ${level}
+- Type: ${type}
+- Skill: ${skill}
+- Description: ${description || "No description provided"}
+- Tags: ${tags || "No tags provided"}
+
+${instructions ? `Special Instructions: ${instructions}` : ""}
+
+Please create a comprehensive educational material that:
+1. Covers the same topic and skill level but with different examples/content
+2. Maintains the same educational type and difficulty level
+3. Is appropriate for the target audience
+4. Includes exercises, examples, or activities as relevant
+5. Is well-structured and educational
+${instructions ? "6. Follows the special instructions provided above" : ""}
+
+Format the response as a complete educational document with:
+- Clear title
+- Introduction/overview
+- Main content sections
+- Examples or exercises
+- Summary or conclusion
+
+Make it engaging and educational while being different enough to serve as complementary material to the original.`;
+
+    console.log("AI Generation Prompt:", prompt);
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an expert educational content creator. Create high-quality, pedagogically sound learning materials that are engaging and appropriate for the specified level.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      max_tokens: 3000,
+      temperature: 0.7,
+    });
+
+    const generatedContent = completion.choices[0]?.message?.content;
+
+    if (!generatedContent) {
+      return NextResponse.json(
+        { success: false, error: "Failed to generate content" },
+        { status: 500 }
+      );
+    }
+
+    // If the caller asked for a DOCX file, build and return it
+    if (output === "docx") {
+      // Try to interpret the first non-empty line as a title
+      const lines = generatedContent.split(/\r?\n/);
+      let firstTitle = "Generated Material";
+      let firstContentIndex = 0;
+      for (let i = 0; i < lines.length; i++) {
+        const trimmed = lines[i].trim();
+        if (trimmed.length > 0) {
+          firstTitle = trimmed;
+          firstContentIndex = i + 1;
+          break;
+        }
+      }
+
+      // Convert remaining text into paragraphs, preserving blank lines as spacers
+      const paragraphs: Paragraph[] = [];
+      paragraphs.push(
+        new Paragraph({
+          text: firstTitle,
+          heading: HeadingLevel.TITLE,
+        })
+      );
+
+      // Add a small metadata header
+      paragraphs.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: `Topic: ${topic}` }),
+            new TextRun({ text: "  •  ", break: 0 }),
+            new TextRun({ text: `Level: ${level}` }),
+            new TextRun({ text: "  •  ", break: 0 }),
+            new TextRun({ text: `Type: ${type}` }),
+            new TextRun({ text: "  •  ", break: 0 }),
+            new TextRun({ text: `Skill: ${skill}` }),
+          ],
+        })
+      );
+
+      // Spacer
+      paragraphs.push(new Paragraph(""));
+
+      // Add the rest of the content as simple paragraphs
+      const rest = lines.slice(firstContentIndex).join("\n");
+      const blocks = rest.split(/\n{2,}/); // split on blank lines
+      for (const block of blocks) {
+        const trimmed = block.trim();
+        if (trimmed.length === 0) {
+          paragraphs.push(new Paragraph(""));
+          continue;
+        }
+        // Further split block into lines to avoid overly long runs
+        const blockLines = trimmed.split(/\n/);
+        for (let i = 0; i < blockLines.length; i++) {
+          const l = blockLines[i].trimEnd();
+          if (l.length === 0) {
+            paragraphs.push(new Paragraph(""));
+          } else {
+            paragraphs.push(new Paragraph(l));
+          }
+        }
+        paragraphs.push(new Paragraph(""));
+      }
+
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: paragraphs,
+          },
+        ],
+      });
+
+      const timestampDocx = new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace(/[:-]/g, "");
+      const docxFilename = `Generated_${topic.replace(
+        /\s+/g,
+        "_"
+      )}_${level.replace(/\s+/g, "_")}_${timestampDocx}.docx`;
+
+      const buffer = await Packer.toBuffer(doc);
+      // Convert Buffer to Uint8Array for Response compatibility
+      const uint8Array = new Uint8Array(buffer);
+      return new Response(uint8Array, {
+        status: 200,
+        headers: {
+          "Content-Type":
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "Content-Disposition": `attachment; filename="${docxFilename}"`,
+          "Cache-Control": "no-store",
+        },
+      });
+    }
+
+    // Generate a filename for the JSON/text path
+    const timestamp = new Date()
+      .toISOString()
+      .slice(0, 19)
+      .replace(/[:-]/g, "");
+    const filename = `Generated_${topic.replace(/\s+/g, "_")}_${level.replace(
+      /\s+/g,
+      "_"
+    )}_${timestamp}.txt`;
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        content: generatedContent,
+        filename: filename,
+        analysis: {
+          topic: topic,
+          level: level,
+          type: type,
+          skill: skill,
+          generatedTitle: `Generated: ${topic} - ${level} Level`,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Error generating file:", error);
+    return NextResponse.json(
+      { success: false, error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
