@@ -3,6 +3,15 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+interface CreateStudentData {
+  name: string;
+  age: number | null;
+  grade: string | null;
+  notes: string | null;
+  learningBarriers: string[];
+  teacherId: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
@@ -14,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, age, grade, notes } = body;
+    const { name, age, grade, notes, learningBarriers } = body;
 
     // Validate required fields
     if (!name) {
@@ -25,14 +34,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Create student
+    const studentData: CreateStudentData = {
+      name,
+      age: age ? parseInt(age) : null,
+      grade,
+      notes,
+      learningBarriers: learningBarriers || [],
+      teacherId: session.user.id,
+    };
+
     const student = await prisma.student.create({
-      data: {
-        name,
-        age: age ? parseInt(age) : null,
-        grade,
-        notes,
-        teacherId: session.user.id,
-      },
+      data: studentData,
       include: {
         teacher: {
           select: {
