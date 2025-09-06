@@ -330,7 +330,7 @@ export default function StudentsPage() {
                   </div>
                 )}
 
-                <div className='mt-4 flex gap-2'>
+                {/* <div className='mt-4 flex gap-2'>
                   <Link
                     href={`/students/${student.id}`}
                     className='flex-1 text-sm bg-blue-50 text-blue-700 py-2 px-3 rounded-md hover:bg-blue-100 text-center'
@@ -343,7 +343,7 @@ export default function StudentsPage() {
                   >
                     Add Report
                   </button>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>

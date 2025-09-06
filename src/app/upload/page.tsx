@@ -81,9 +81,9 @@ export default function UploadPage() {
 
       if (data.success && data.data) {
         setAiAnalysis(data.data);
-        // Auto-populate form fields with AI suggestions
         setFormData((prev) => ({
           ...prev,
+          title: data.data!.title || prev.title, // Set AI title if provided
           description: data.data!.description,
           topic: data.data!.topic,
           level: data.data!.level,
@@ -220,17 +220,41 @@ export default function UploadPage() {
               <div>
                 <label className='block text-sm font-medium text-gray-700 mb-1'>
                   Title *
+                  {aiAnalysis && aiAnalysis.title && (
+                    <span className='text-xs text-blue-600 ml-2'>
+                      <Sparkles className='inline h-3 w-3 mr-1' />
+                      AI-suggested
+                    </span>
+                  )}
                 </label>
-                <input
-                  type='text'
-                  required
-                  value={formData.title}
-                  onChange={(e) =>
-                    setFormData({ ...formData, title: e.target.value })
-                  }
-                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                  placeholder='Enter material title'
-                />
+                <div className='flex gap-2'>
+                  <input
+                    type='text'
+                    required
+                    value={formData.title}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
+                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    placeholder='Enter material title'
+                  />
+                  {aiAnalysis &&
+                    aiAnalysis.title &&
+                    formData.title !== aiAnalysis.title && (
+                      <button
+                        type='button'
+                        onClick={() =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            title: aiAnalysis.title!,
+                          }))
+                        }
+                        className='text-xs text-blue-600 hover:text-blue-800 px-2 py-1 border border-blue-200 rounded-md bg-blue-50'
+                      >
+                        Reset to AI suggestion
+                      </button>
+                    )}
+                </div>
               </div>
 
               {/* Description */}

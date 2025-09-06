@@ -5,6 +5,7 @@ const openai = new OpenAI({
 });
 
 export interface AIAnalysisResult {
+  title?: string; // AI-suggested title (optional for backward compatibility)
   description: string;
   topic: string;
   level: string;
@@ -31,12 +32,13 @@ ${fileContent.substring(0, 4000)} ${
     }
 
 Please analyze the content and provide the following information:
-1. A clear description of what this material contains
-2. The main topic/subject area
-3. The appropriate grade level
-4. The type of material (worksheet, quiz, reading, etc.)
-5. The primary skill being targeted
-6. Relevant tags for categorization
+1. A clear, concise title for this material (max 10 words)
+2. A clear description of what this material contains
+3. The main topic/subject area
+4. The appropriate grade level
+5. The type of material (worksheet, quiz, reading, etc.)
+6. The primary skill being targeted
+7. Relevant tags for categorization
 `;
 
     const completion = await openai.chat.completions.create({
@@ -60,6 +62,11 @@ Please analyze the content and provide the following information:
           parameters: {
             type: "object",
             properties: {
+              title: {
+                type: "string",
+                description:
+                  "A clear, concise title for the material (max 10 words)",
+              },
               description: {
                 type: "string",
                 description:
@@ -143,6 +150,7 @@ Please analyze the content and provide the following information:
               },
             },
             required: [
+              "title",
               "description",
               "topic",
               "level",
@@ -165,6 +173,7 @@ Please analyze the content and provide the following information:
 
     // Fallback if function calling fails
     return {
+      title: undefined,
       description:
         "Unable to analyze the content automatically. Please provide a description.",
       topic: "Other",

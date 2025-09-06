@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Users, FileText, Upload, BookOpen } from "lucide-react";
+import Link from "next/link";
 
 async function getDashboardData(teacherId: string) {
   const [students, materials, recentReports] = await Promise.all([
@@ -91,7 +92,7 @@ export default async function Dashboard() {
               </div>
             </div>
           </div>
-
+          {/*
           <div className='bg-white rounded-lg shadow p-6'>
             <div className='flex items-center justify-between'>
               <div>
@@ -106,9 +107,9 @@ export default async function Dashboard() {
                 <BookOpen className='h-6 w-6 text-yellow-600' />
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className='bg-white rounded-lg shadow p-6'>
+          <Link href='/materials' className='bg-white rounded-lg shadow p-6'>
             <div className='flex items-center justify-between'>
               <div>
                 <p className='text-sm font-medium text-gray-600'>
@@ -120,11 +121,11 @@ export default async function Dashboard() {
                 <Upload className='h-6 w-6 text-purple-600' />
               </div>
             </div>
-          </div>
+          </Link>
         </div>
 
         {/* Recent Reports */}
-        <div className='bg-white rounded-lg shadow'>
+        {/* <div className='bg-white rounded-lg shadow'>
           <div className='px-6 py-4 border-b border-gray-200'>
             <h2 className='text-lg font-medium text-gray-900'>
               Recent Student Reports
@@ -169,7 +170,7 @@ export default async function Dashboard() {
               </div>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
     </DashboardLayout>
   );
