@@ -109,9 +109,9 @@ export default function UploadPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file size (10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        setError("File size must be less than 10MB");
+      // Validate file size (2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        setError("File size must be less than 2MB");
         return;
       }
       setFormData({ ...formData, file });
