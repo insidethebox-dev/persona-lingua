@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { ApiResponse, StudentWithReports } from "@/types";
 import { StudentReport } from "@prisma/client";
+import toast from "react-hot-toast";
 
 export default function StudentsPage() {
   const { data: session, status } = useSession();
@@ -78,6 +79,13 @@ export default function StudentsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const loadingToast = toast.loading('Creating student...', {
+      style: {
+        background: '#8b5cf6',
+        color: 'white',
+      },
+    });
+
     try {
       const response = await fetch("/api/students", {
         method: "POST",
@@ -90,6 +98,7 @@ export default function StudentsPage() {
       const data: ApiResponse = await response.json();
 
       if (data.success) {
+        toast.dismiss(loadingToast);
         setFormData({
           name: "",
           age: "",
@@ -99,12 +108,17 @@ export default function StudentsPage() {
         });
         setShowAddForm(false);
         fetchStudents();
+        toast.success("Student created successfully!", {
+          duration: 4000,
+        });
       } else {
-        alert(data.error || "Failed to create student");
+        toast.dismiss(loadingToast);
+        toast.error(data.error || "Failed to create student");
       }
     } catch (error) {
       console.error("Error creating student:", error);
-      alert("Failed to create student");
+      toast.dismiss(loadingToast);
+      toast.error("Failed to create student");
     }
   };
 
@@ -137,6 +151,13 @@ export default function StudentsPage() {
     e.preventDefault();
     if (!selectedStudent) return;
 
+    const loadingToast = toast.loading(editingReport ? 'Updating report...' : 'Creating report...', {
+      style: {
+        background: '#3b82f6',
+        color: 'white',
+      },
+    });
+
     try {
       const url = "/api/reports";
       const method = editingReport ? "PUT" : "POST";
@@ -159,16 +180,22 @@ export default function StudentsPage() {
       const data: ApiResponse = await response.json();
 
       if (data.success) {
+        toast.dismiss(loadingToast);
         setReportFormData({ title: "", content: "" });
         setShowReportForm(false);
         setEditingReport(null);
         fetchStudents(); // Refresh to get updated reports
+        toast.success(editingReport ? "Report updated successfully!" : "Report created successfully!", {
+          duration: 4000,
+        });
       } else {
-        alert(data.error || "Failed to save report");
+        toast.dismiss(loadingToast);
+        toast.error(data.error || "Failed to save report");
       }
     } catch (error) {
       console.error("Error saving report:", error);
-      alert("Failed to save report");
+      toast.dismiss(loadingToast);
+      toast.error("Failed to save report");
     }
   };
 
@@ -184,12 +211,15 @@ export default function StudentsPage() {
 
       if (data.success) {
         fetchStudents(); // Refresh to get updated reports
+        toast.success("Report deleted successfully!", {
+          duration: 4000,
+        });
       } else {
-        alert(data.error || "Failed to delete report");
+        toast.error(data.error || "Failed to delete report");
       }
     } catch (error) {
       console.error("Error deleting report:", error);
-      alert("Failed to delete report");
+      toast.error("Failed to delete report");
     }
   };
 
@@ -456,7 +486,7 @@ export default function StudentsPage() {
                   >
                     Add Report
                   </button>
-                </div> */}
+                </div>
               </div>
             ))}
           </div>
