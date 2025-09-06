@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Users, FileText, Upload, BookOpen } from "lucide-react";
+import { Users, FileText, Upload } from "lucide-react";
 import Link from "next/link";
 
 async function getDashboardData(teacherId: string) {
