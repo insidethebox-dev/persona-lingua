@@ -6,6 +6,8 @@ An AI-powered learning material recommendation system built with Next.js, TypeSc
 
 - **Fixed maximum file size limit and student age in form
 
+- **Fixed file attachment being processed in the AI generation material
+
 ## Features
 
 ### ✅ Core Features
