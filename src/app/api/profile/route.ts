@@ -32,6 +32,8 @@ export async function GET() {
           id: true,
           name: true,
           email: true,
+          address: true,
+          phone: true,
           profilePicture: true,
           publicId: true,
         },
@@ -99,7 +101,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { name, subject, bio } = await request.json();
+    const { name, subject, bio, address, phone, email } = await request.json();
     const userId = session.user.id;
     const isSchoolAdmin = session.user.isSchoolAdmin;
 
@@ -111,13 +113,42 @@ export async function PUT(request: NextRequest) {
     }
 
     if (isSchoolAdmin) {
+      // For school admins, validate email if it's being changed
+      if (email && email !== session.user.email) {
+        const existingSchool = await prisma.school.findUnique({
+          where: { email: email.trim() },
+        });
+
+        if (existingSchool && existingSchool.id !== userId) {
+          return NextResponse.json(
+            { message: "Email is already in use" },
+            { status: 400 }
+          );
+        }
+      }
+
+      const updateData: {
+        name: string;
+        address?: string | null;
+        phone?: string | null;
+        email?: string;
+      } = {
+        name: name.trim(),
+      };
+
+      if (address !== undefined) updateData.address = address?.trim() || null;
+      if (phone !== undefined) updateData.phone = phone?.trim() || null;
+      if (email !== undefined) updateData.email = email.trim();
+
       const updatedProfile = await prisma.school.update({
         where: { id: userId },
-        data: { name: name.trim() },
+        data: updateData,
         select: {
           id: true,
           name: true,
           email: true,
+          address: true,
+          phone: true,
           profilePicture: true,
           publicId: true,
         },

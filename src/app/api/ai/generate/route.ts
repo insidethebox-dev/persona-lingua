@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OpenAI from "openai";
 import { Document, Packer, Paragraph, HeadingLevel, TextRun } from "docx";
+import { extractTextFromFile } from "@/lib/openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -33,6 +34,24 @@ export async function POST(request: NextRequest) {
     const tags = formData.get("tags") as string;
     const instructions = formData.get("instructions") as string;
 
+    // Get the uploaded file for additional context
+    const file = formData.get("file") as File | null;
+    let fileContent = "";
+
+    // Extract text content from uploaded file if provided
+    if (file) {
+      try {
+        fileContent = await extractTextFromFile(file);
+        console.log(
+          "Extracted file content for AI context:",
+          fileContent.substring(0, 200) + "..."
+        );
+      } catch (error) {
+        console.error("Error extracting file content:", error);
+        // Continue without file content if extraction fails
+      }
+    }
+
     // Validate required fields
     if (!title || !topic || !level || !type || !skill) {
       return NextResponse.json(
@@ -57,15 +76,35 @@ Material Specifications:
 - Description: ${description || "No description provided"}
 - Tags: ${tags || "No tags provided"}
 
+${
+  fileContent
+    ? `\nOriginal Material Content for Context:\n${fileContent.substring(
+        0,
+        3000
+      )}${
+        fileContent.length > 3000 ? "\n...(content truncated for length)" : ""
+      }\n`
+    : ""
+}
+
 ${instructions ? `Special Instructions: ${instructions}` : ""}
 
 Please create a comprehensive educational material that:
-1. Covers the same topic and skill level but with different examples/content
+1. ${
+      fileContent
+        ? "Uses the uploaded material as inspiration and context, creating similar but distinct content"
+        : "Covers the topic and skill level specified"
+    }
 2. Maintains the same educational type and difficulty level
 3. Is appropriate for the target audience
 4. Includes exercises, examples, or activities as relevant
 5. Is well-structured and educational
-${instructions ? "6. Follows the special instructions provided above" : ""}
+${
+  fileContent
+    ? "6. Complements the original material while being unique and valuable"
+    : "6. Is engaging and pedagogically sound"
+}
+${instructions ? "7. Follows the special instructions provided above" : ""}
 
 Format the response as a complete educational document with:
 - Clear title
@@ -74,7 +113,11 @@ Format the response as a complete educational document with:
 - Examples or exercises
 - Summary or conclusion
 
-Make it engaging and educational while being different enough to serve as complementary material to the original.`;
+${
+  fileContent
+    ? "Make it complementary to the uploaded material while being different enough to serve as additional practice or extension material."
+    : "Make it engaging and educational for the specified level and skill."
+}`;
 
     console.log("AI Generation Prompt:", prompt);
 

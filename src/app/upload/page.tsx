@@ -74,7 +74,7 @@ export default function UploadPage() {
         </div>
       ),
       {
-        duration: 150000, // 8 seconds
+        duration: 15000,
         position: "bottom-right",
         style: {
           background: "linear-gradient(to right, #3b82f6, #8b5cf6)",
@@ -210,6 +210,11 @@ export default function UploadPage() {
       generateFormData.append("skill", formData.skill);
       generateFormData.append("tags", formData.tags);
       generateFormData.append("output", "docx"); // Request DOCX format
+
+      // Include the uploaded file for AI context
+      if (formData.file) {
+        generateFormData.append("file", formData.file);
+      }
 
       // Add dyslexia instructions if toggle is enabled
       let finalInstructions = generationInstructions;
