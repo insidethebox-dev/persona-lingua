@@ -12,6 +12,7 @@ import {
   BookOpen,
   Users,
   Filter,
+  Edit3,
 } from "lucide-react";
 import { ApiResponse } from "@/types";
 import { formatDate, formatFileSize } from "@/lib/utils";
@@ -24,17 +25,25 @@ interface Material {
   mimeType: string;
   size: number;
   fileUrl: string | null;
-  topic: string;
+  topic: string | null; // Made optional
   level: string;
   type: string;
   skill: string;
   tags: string[];
   createdAt: string;
   updatedAt: string;
+  teacher?: {
+    name: string;
+    email: string;
+    subject: string | null;
+  };
+  school?: {
+    name: string;
+  };
 }
 
 export default function MaterialsPage() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const [materials, setMaterials] = useState<Material[]>([]);
   const [loading, setLoading] = useState(true);
   const [filteredMaterials, setFilteredMaterials] = useState<Material[]>([]);
@@ -188,8 +197,17 @@ export default function MaterialsPage() {
               Browse and manage uploaded learning materials
             </p>
           </div>
-          <div className='text-sm text-gray-500'>
-            {filteredMaterials.length} of {materials.length} materials
+          <div className='flex items-center gap-4'>
+            <div className='text-sm text-gray-500'>
+              {filteredMaterials.length} of {materials.length} materials
+            </div>
+            <a
+              href='/upload'
+              className='inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors'
+            >
+              <FileText className='h-4 w-4' />
+              Upload Material
+            </a>
           </div>
         </div>
 
@@ -323,13 +341,24 @@ export default function MaterialsPage() {
                         </p>
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleDownload(material)}
-                      className='p-2 text-gray-400 hover:text-blue-600 transition-colors'
-                      title='Download'
-                    >
-                      <Download className='h-4 w-4' />
-                    </button>
+                    <div className='flex gap-1'>
+                      {session?.user?.isAdmin && (
+                        <button
+                          onClick={() => window.location.href = `/materials/${material.id}/edit`}
+                          className='p-2 text-gray-400 hover:text-green-600 transition-colors'
+                          title='Edit'
+                        >
+                          <Edit3 className='h-4 w-4' />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDownload(material)}
+                        className='p-2 text-gray-400 hover:text-blue-600 transition-colors'
+                        title='Download'
+                      >
+                        <Download className='h-4 w-4' />
+                      </button>
+                    </div>
                   </div>
 
                   {material.description && (
@@ -342,7 +371,7 @@ export default function MaterialsPage() {
                     <div className='grid grid-cols-2 gap-3 text-xs'>
                       <div className='flex items-center gap-1 text-gray-600'>
                         <BookOpen className='h-3 w-3' />
-                        <span>{material.topic}</span>
+                        <span>{material.topic || "No topic specified"}</span>
                       </div>
                       <div className='flex items-center gap-1 text-gray-600'>
                         <Users className='h-3 w-3' />
@@ -380,9 +409,22 @@ export default function MaterialsPage() {
                       </div>
                     )}
 
-                    <div className='flex items-center gap-1 text-xs text-gray-500 pt-2 border-t'>
-                      <Calendar className='h-3 w-3' />
-                      <span>Uploaded {formatDate(material.createdAt)}</span>
+                    <div className='space-y-1 pt-2 border-t'>
+                      <div className='flex items-center gap-1 text-xs text-gray-500'>
+                        <Calendar className='h-3 w-3' />
+                        <span>Uploaded {formatDate(material.createdAt)}</span>
+                      </div>
+                      {material.teacher && (
+                        <div className='flex items-center gap-1 text-xs text-gray-500'>
+                          <Users className='h-3 w-3' />
+                          <span>By {material.teacher.name}</span>
+                          {material.teacher.subject && (
+                            <span className='text-gray-400'>
+                              ({material.teacher.subject})
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

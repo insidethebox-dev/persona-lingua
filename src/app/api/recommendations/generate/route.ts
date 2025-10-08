@@ -79,7 +79,11 @@ export async function POST(request: NextRequest) {
     );
 
     // Step 2: Filter materials based on AI-determined criteria
+    // Only include materials from the same school as the teacher
     const allMaterials = await prisma.learningMaterial.findMany({
+      where: {
+        schoolId: teacher.schoolId, // Only materials from the same school
+      },
       select: {
         id: true,
         title: true,

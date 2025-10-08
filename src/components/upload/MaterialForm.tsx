@@ -112,11 +112,10 @@ export default function MaterialForm({
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
           <SelectField
             label='Topic'
-            required
             value={formData.topic}
             onChange={(value) => setFormData({ ...formData, topic: value })}
             options={MATERIAL_TOPICS}
-            placeholder='Select topic'
+            placeholder='Select topic (optional)'
             aiAnalysis={aiAnalysis}
             aiSuggestionKey='topic'
           />

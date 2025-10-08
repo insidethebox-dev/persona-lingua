@@ -177,7 +177,6 @@ export default function UploadPage() {
     // Validate required fields first
     if (
       !formData.title ||
-      !formData.topic ||
       !formData.level ||
       !formData.type ||
       !formData.skill

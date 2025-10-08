@@ -6,12 +6,18 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Users, FileText, Upload } from "lucide-react";
 import Link from "next/link";
 
-async function getDashboardData(teacherId: string) {
+async function getDashboardData(teacherId: string, schoolId: string) {
   const [students, materials, recentReports] = await Promise.all([
     prisma.student.count({
       where: { teacherId },
     }),
-    prisma.learningMaterial.count(),
+    prisma.learningMaterial.count({
+      where: {
+        teacher: {
+          schoolId: schoolId,
+        },
+      },
+    }),
     prisma.studentReport.findMany({
       where: {
         student: {
@@ -46,7 +52,7 @@ export default async function Dashboard() {
     redirect("/auth/signin");
   }
 
-  const dashboardData = await getDashboardData(session.user.id);
+  const dashboardData = await getDashboardData(session.user.id, session.user.schoolId || "");
 
   return (
     <DashboardLayout>

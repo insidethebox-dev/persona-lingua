@@ -27,7 +27,7 @@ describe("Database Schema Tests", () => {
   afterAll(async () => {
     // Clean up ONLY test data by ID
     console.log("🧹 Cleaning up test records...");
-    
+
     try {
       // Delete test records by their specific IDs
       if (testIds.recommendations.length > 0) {
@@ -63,7 +63,7 @@ describe("Database Schema Tests", () => {
     } catch (error) {
       console.error("Error cleaning up test data:", error);
     }
-    
+
     await prisma.$disconnect();
   });
 
@@ -82,7 +82,7 @@ describe("Database Schema Tests", () => {
       const school = await prisma.school.create({
         data: schoolData,
       });
-      
+
       // Track test school ID for cleanup
       testIds.schools.push(school.id);
 

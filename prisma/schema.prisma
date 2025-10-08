@@ -41,22 +41,23 @@ model Teacher {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  school   School?   @relation(fields: [schoolId], references: [id], onDelete: SetNull)
-  students Student[]
+  school            School?            @relation(fields: [schoolId], references: [id], onDelete: SetNull)
+  students          Student[]
+  learningMaterials LearningMaterial[]
 
   @@map("teachers")
 }
 
 model Student {
-  id              String   @id @default(cuid())
-  name            String
-  age             Int?
-  grade           String?
-  notes           String?
+  id               String   @id @default(cuid())
+  name             String
+  age              Int?
+  grade            String?
+  notes            String?
   learningBarriers String[] @default([]) // Learning barriers/accessibility needs
-  teacherId       String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  teacherId        String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   teacher         Teacher          @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   reports         StudentReport[]
@@ -89,7 +90,7 @@ model LearningMaterial {
   size         Int
   fileUrl      String? // URL for cloud storage (Cloudinary)
   publicId     String? // Cloudinary public ID for management
-  topic        String // Subject topic
+  topic        String? // Subject topic (optional)
   level        String // Grade level
   type         String // Material type (question, multiple choice, summary)
   skill        String // Skill targeted (grammar, vocabulary, listening)
@@ -100,6 +101,7 @@ model LearningMaterial {
   updatedAt    DateTime @updatedAt
 
   school          School?          @relation(fields: [schoolId], references: [id], onDelete: SetNull)
+  teacher         Teacher          @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
   recommendations Recommendation[]
 
   @@map("learning_materials")
