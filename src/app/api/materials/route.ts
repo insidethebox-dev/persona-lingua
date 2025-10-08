@@ -45,7 +45,33 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Upload to Cloudinary
+    // Helper functions for better file handling
+    const isPdf = (name: string, type: string) =>
+      type === "application/pdf" || /\.pdf$/i.test(name);
+
+    const stripExt = (name: string) => name.replace(/\.[^/.]+$/, "");
+
+    // Simple slug (keeps ASCII, dashes)
+    const slugify = (s: string) =>
+      s
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "") // remove diacritics
+        .replace(/[^a-zA-Z0-9._-]+/g, "-") // safe chars
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    // Sanitize filename
+    const base = stripExt(file.name);
+    const safeBase = slugify(base);
+    const pdf = isPdf(file.name, file.type);
+
+    const publicId = pdf
+      ? `${Date.now()}-${safeBase}.pdf` // include .pdf exactly once (RAW)
+      : `${Date.now()}-${safeBase}`; // no extension for images/videos
+
+    const resourceType = pdf ? "raw" : "auto"; // use "raw" for PDFs, "auto" for others
+
+    // Upload to Cloudinary with proper sanitization
     const uploadResult = await new Promise<{
       secure_url: string;
       public_id: string;
@@ -53,9 +79,10 @@ export async function POST(request: NextRequest) {
       cloudinary.uploader
         .upload_stream(
           {
-            resource_type: "auto",
+            resource_type: resourceType,
             folder: process.env.CLOUDINARY_FOLDER || "personalingua",
-            public_id: `${Date.now()}-${file.name}`,
+            public_id: publicId, // we've sanitized it
+            unique_filename: false, // since we control the public_id
           },
           (error, result) => {
             if (error) reject(error);

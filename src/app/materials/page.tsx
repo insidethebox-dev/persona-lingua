@@ -133,8 +133,33 @@ export default function MaterialsPage() {
     ).filter(Boolean);
   };
 
-  const handleDownload = (material: Material) => {
-    if (material.fileUrl) {
+  const handleDownload = async (material: Material) => {
+    if (!material.fileUrl) return;
+
+    try {
+      // Create download URL through our API proxy
+      const downloadUrl = `/api/materials/download?url=${encodeURIComponent(
+        material.fileUrl
+      )}&filename=${encodeURIComponent(
+        material.filename || material.title || "download"
+      )}`;
+
+      // Create a temporary anchor element and trigger download
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = material.filename || material.title || "download";
+
+      // Temporarily add to DOM and click
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      setTimeout(() => {
+        document.body.removeChild(link);
+      }, 100);
+    } catch (error) {
+      console.error("Download failed:", error);
+      // Fallback to direct URL
       window.open(material.fileUrl, "_blank");
     }
   };
