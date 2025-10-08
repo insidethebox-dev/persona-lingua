@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { ApiResponse } from "@/types";
 import { formatDate, formatFileSize } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 interface Material {
   id: string;
@@ -47,12 +48,18 @@ export default function MaterialsPage() {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [loading, setLoading] = useState(true);
   const [filteredMaterials, setFilteredMaterials] = useState<Material[]>([]);
+  const [downloadingIds, setDownloadingIds] = useState<Set<string>>(new Set());
   const [filters, setFilters] = useState({
     topic: "",
     level: "",
     type: "",
     skill: "",
     search: "",
+  });
+
+  // Debug: Track component renders
+  useEffect(() => {
+    console.log('MaterialsPage rendered, materials count:', materials.length);
   });
 
   useEffect(() => {
@@ -142,36 +149,53 @@ export default function MaterialsPage() {
     ).filter(Boolean);
   };
 
-  const handleDownload = async (material: Material) => {
-    if (!material.fileUrl) return;
+  const handleDownload = useCallback(async (material: Material) => {
+    console.log('handleDownload called for:', material.id, 'Already downloading:', downloadingIds.has(material.id));
+    
+    // Check if already downloading this material
+    if (downloadingIds.has(material.id)) {
+      console.log('Download blocked - already in progress for:', material.id);
+      return;
+    }
+
+    // Add to downloading set
+    setDownloadingIds(prev => {
+      const newSet = new Set(prev);
+      newSet.add(material.id);
+      console.log('Added to downloading set:', material.id, 'Set size:', newSet.size);
+      return newSet;
+    });
 
     try {
-      // Create download URL through our API proxy
-      const downloadUrl = `/api/materials/download?url=${encodeURIComponent(
-        material.fileUrl
-      )}&filename=${encodeURIComponent(
-        material.filename || material.title || "download"
-      )}`;
-
-      // Create a temporary anchor element and trigger download
+      // The API now directly streams the file with proper filename
+      const downloadUrl = `/api/materials/download?id=${material.id}`;
+      
       const link = document.createElement("a");
       link.href = downloadUrl;
       link.download = material.filename || material.title || "download";
-
-      // Temporarily add to DOM and click
+      link.rel = "noopener";
       document.body.appendChild(link);
       link.click();
-
-      // Clean up
-      setTimeout(() => {
-        document.body.removeChild(link);
-      }, 100);
+      document.body.removeChild(link);
+      
+      toast.success('Download started!', { duration: 2000 });
     } catch (error) {
       console.error("Download failed:", error);
-      // Fallback to direct URL
-      window.open(material.fileUrl, "_blank");
+      toast.error("Unable to download file. Opening original link instead.");
+      if (material.fileUrl) {
+        window.open(material.fileUrl, "_blank", "noopener");
+      }
+    } finally {
+      // Remove from downloading set after a delay
+      setTimeout(() => {
+        setDownloadingIds(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(material.id);
+          return newSet;
+        });
+      }, 3000);
     }
-  };
+  }, [downloadingIds]);
 
   if (status === "loading" || loading) {
     return (
@@ -344,7 +368,9 @@ export default function MaterialsPage() {
                     <div className='flex gap-1'>
                       {session?.user?.isAdmin && (
                         <button
-                          onClick={() => window.location.href = `/materials/${material.id}/edit`}
+                          onClick={() =>
+                            (window.location.href = `/materials/${material.id}/edit`)
+                          }
                           className='p-2 text-gray-400 hover:text-green-600 transition-colors'
                           title='Edit'
                         >
@@ -352,11 +378,23 @@ export default function MaterialsPage() {
                         </button>
                       )}
                       <button
-                        onClick={() => handleDownload(material)}
-                        className='p-2 text-gray-400 hover:text-blue-600 transition-colors'
-                        title='Download'
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          void handleDownload(material);
+                        }}
+                        disabled={downloadingIds.has(material.id)}
+                        className={`p-2 transition-colors ${
+                          downloadingIds.has(material.id)
+                            ? 'text-gray-300 cursor-not-allowed'
+                            : 'text-gray-400 hover:text-blue-600'
+                        }`}
+                        title={downloadingIds.has(material.id) ? 'Downloading...' : 'Download'}
                       >
-                        <Download className='h-4 w-4' />
+                        <Download className={`h-4 w-4 ${
+                          downloadingIds.has(material.id) ? 'animate-bounce' : ''
+                        }`} />
                       </button>
                     </div>
                   </div>

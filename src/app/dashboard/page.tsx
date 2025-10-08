@@ -52,7 +52,10 @@ export default async function Dashboard() {
     redirect("/auth/signin");
   }
 
-  const dashboardData = await getDashboardData(session.user.id, session.user.schoolId || "");
+  const dashboardData = await getDashboardData(
+    session.user.id,
+    session.user.schoolId || ""
+  );
 
   return (
     <DashboardLayout>

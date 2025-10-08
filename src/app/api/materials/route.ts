@@ -70,7 +70,11 @@ export async function POST(request: NextRequest) {
 
     const isImage = file.type.startsWith("image/");
     const isVideo = file.type.startsWith("video/");
-    const resourceType = isImage ? "image" : isVideo ? "video" : "raw";
+    const resourceType: "image" | "video" | "raw" | "auto" = isImage
+      ? "image"
+      : isVideo
+      ? "video"
+      : "raw";
 
     // Upload to Cloudinary with proper configuration
     const uploadOptions: {
@@ -84,7 +88,7 @@ export async function POST(request: NextRequest) {
       delivery_type: "upload";
       flags?: string;
     } = {
-      resource_type: resourceType as "image" | "raw" | "video" | "auto",
+      resource_type: resourceType,
       folder: process.env.CLOUDINARY_FOLDER || "personalingua",
       public_id: publicId,
       unique_filename: false,
@@ -172,7 +176,7 @@ export async function GET() {
     }
 
     // Filter materials by school - only show materials from the user's school
-    const whereClause = session.user.schoolId 
+    const whereClause = session.user.schoolId
       ? { schoolId: session.user.schoolId }
       : { uploadedBy: session.user.id }; // Fallback for independent teachers
 

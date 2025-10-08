@@ -93,7 +93,10 @@ export async function PATCH(
     // Only school admins can edit materials
     if (!session.user.isAdmin) {
       return NextResponse.json(
-        { success: false, error: "Only school administrators can edit materials" },
+        {
+          success: false,
+          error: "Only school administrators can edit materials",
+        },
         { status: 403 }
       );
     }
@@ -181,7 +184,10 @@ export async function DELETE(
     // Only school admins can delete materials
     if (!session.user.isAdmin) {
       return NextResponse.json(
-        { success: false, error: "Only school administrators can delete materials" },
+        {
+          success: false,
+          error: "Only school administrators can delete materials",
+        },
         { status: 403 }
       );
     }
