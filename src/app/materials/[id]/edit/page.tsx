@@ -5,13 +5,7 @@ import { useSession } from "next-auth/react";
 import { redirect, useParams, useRouter } from "next/navigation";
 
 import DashboardLayout from "@/components/DashboardLayout";
-import {
-  Save,
-  ArrowLeft,
-  Download,
-  FileText,
-  Image as ImageIcon,
-} from "lucide-react";
+import { Save, ArrowLeft, Trash2 } from "lucide-react";
 import { ApiResponse } from "@/types";
 import toast from "react-hot-toast";
 import {
@@ -44,14 +38,17 @@ export default function EditMaterialPage() {
 
   // Debug: Log component mounts
   useEffect(() => {
-    console.log('EditMaterialPage mounted with materialId:', materialId);
+    console.log("EditMaterialPage mounted with materialId:", materialId);
     return () => {
-      console.log('EditMaterialPage unmounting');
+      console.log("EditMaterialPage unmounting");
     };
   }, [materialId]);
 
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [material, setMaterial] = useState<Material | null>(null);
@@ -64,7 +61,6 @@ export default function EditMaterialPage() {
     skill: "",
     tags: "",
   });
-  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -110,39 +106,6 @@ export default function EditMaterialPage() {
       fetchMaterial();
     }
   }, [materialId, status, fetchMaterial]);
-
-  const handleDownload = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (!material || isDownloading) {
-      console.log('Download blocked:', { material: !!material, isDownloading });
-      return;
-    }
-    
-    setIsDownloading(true);
-    console.log('Starting download for material:', material.id, material.filename);
-    
-    try {
-      const link = document.createElement("a");
-      link.href = `/api/materials/download?id=${material.id}`;
-      link.download = material.filename;
-      link.rel = "noopener";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      toast.success('Download started!', { duration: 2000 });
-    } catch (error) {
-      console.error('Download error:', error);
-      toast.error('Download failed');
-    } finally {
-      // Reset the flag after a delay
-      setTimeout(() => {
-        setIsDownloading(false);
-      }, 2000);
-    }
-  }, [material, isDownloading]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -212,12 +175,64 @@ export default function EditMaterialPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (deleteConfirmText !== material?.title) {
+      toast.error("Please type the exact material title to confirm deletion");
+      return;
+    }
+
+    setDeleting(true);
+    const deleteToast = toast.loading("Deleting material...", {
+      style: {
+        background: "#ef4444",
+        color: "white",
+      },
+    });
+
+    try {
+      const response = await fetch(`/api/materials/${materialId}`, {
+        method: "DELETE",
+      });
+
+      const data: ApiResponse = await response.json();
+
+      if (data.success) {
+        toast.dismiss(deleteToast);
+        toast.success("Material deleted successfully!", {
+          duration: 4000,
+          style: {
+            background: "#10b981",
+            color: "white",
+          },
+        });
+
+        // Redirect back to materials page after a short delay
+        setTimeout(() => {
+          router.push("/materials");
+        }, 1500);
+      } else {
+        toast.dismiss(deleteToast);
+        toast.error(data.error || "Failed to delete material");
+        setError(data.error || "Failed to delete material");
+      }
+    } catch (error) {
+      console.error("Error deleting material:", error);
+      toast.dismiss(deleteToast);
+      toast.error("An error occurred while deleting the material");
+      setError("An error occurred while deleting the material");
+    } finally {
+      setDeleting(false);
+      setShowDeleteConfirm(false);
+      setDeleteConfirmText("");
+    }
+  };
+
   if (status === "loading" || loading) {
     return (
       <DashboardLayout>
-        <div className='p-8'>
-          <div className='flex items-center justify-center h-64'>
-            <div className='text-gray-500'>Loading...</div>
+        <div className="p-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-gray-500">Loading...</div>
           </div>
         </div>
       </DashboardLayout>
@@ -227,19 +242,19 @@ export default function EditMaterialPage() {
   if (!material) {
     return (
       <DashboardLayout>
-        <div className='p-8'>
-          <div className='text-center py-12'>
-            <h2 className='text-xl font-semibold text-gray-900'>
+        <div className="p-8">
+          <div className="text-center py-12">
+            <h2 className="text-xl font-semibold text-gray-900">
               Material not found
             </h2>
-            <p className='text-gray-600 mt-2'>
+            <p className="text-gray-600 mt-2">
               The material you&apos;re looking for doesn&apos;t exist.
             </p>
             <button
               onClick={() => router.push("/materials")}
-              className='mt-4 inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'
+              className="mt-4 inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
             >
-              <ArrowLeft className='h-4 w-4' />
+              <ArrowLeft className="h-4 w-4" />
               Back to Materials
             </button>
           </div>
@@ -250,369 +265,323 @@ export default function EditMaterialPage() {
 
   return (
     <DashboardLayout>
-      <div className='p-8'>
-        <div className='mb-8'>
-          <div className='flex items-center gap-4 mb-4'>
+      <div className="p-8">
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
             <button
               onClick={() => router.push("/materials")}
-              className='p-2 text-gray-400 hover:text-gray-600 transition-colors'
-              title='Back to Materials'
+              className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+              title="Back to Materials"
             >
-              <ArrowLeft className='h-5 w-5' />
+              <ArrowLeft className="h-5 w-5" />
             </button>
             <div>
-              <h1 className='text-2xl font-bold text-gray-900'>
+              <h1 className="text-2xl font-bold text-gray-900">
                 Edit Material
               </h1>
-              <p className='text-gray-600 mt-2'>
+              <p className="text-gray-600 mt-2">
                 Update the material information
               </p>
             </div>
           </div>
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
-          {/* Left Column - Edit Form */}
-          <div className='lg:col-span-2'>
-            <div className='bg-white rounded-lg shadow-lg p-8'>
-              <form onSubmit={handleSubmit} className='space-y-6'>
-                {/* Title */}
+        <div className="max-w-4xl mx-auto">
+          {/* Edit Form */}
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Title */}
+              <div>
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Title <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  required
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter material title"
+                />
+              </div>
+
+              {/* Description */}
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  rows={3}
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Brief description of the material"
+                />
+              </div>
+
+              {/* Dropdowns */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Topic */}
                 <div>
                   <label
-                    htmlFor='title'
-                    className='block text-sm font-medium text-gray-700 mb-2'
+                    htmlFor="topic"
+                    className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Title <span className='text-red-500'>*</span>
+                    Topic
                   </label>
-                  <input
-                    type='text'
-                    id='title'
+                  <select
+                    id="topic"
+                    value={formData.topic}
+                    onChange={(e) =>
+                      setFormData({ ...formData, topic: e.target.value })
+                    }
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select topic (optional)</option>
+                    {MATERIAL_TOPICS.map((topic) => (
+                      <option key={topic} value={topic}>
+                        {topic}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Level */}
+                <div>
+                  <label
+                    htmlFor="level"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Level <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="level"
                     required
-                    value={formData.title}
+                    value={formData.level}
                     onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
+                      setFormData({ ...formData, level: e.target.value })
                     }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    placeholder='Enter material title'
-                  />
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select level</option>
+                    {MATERIAL_LEVELS.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
-                {/* Description */}
+                {/* Type */}
                 <div>
                   <label
-                    htmlFor='description'
-                    className='block text-sm font-medium text-gray-700 mb-2'
+                    htmlFor="type"
+                    className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Description
+                    Type <span className="text-red-500">*</span>
                   </label>
-                  <textarea
-                    id='description'
-                    rows={3}
-                    value={formData.description}
+                  <select
+                    id="type"
+                    required
+                    value={formData.type}
                     onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
+                      setFormData({ ...formData, type: e.target.value })
                     }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    placeholder='Brief description of the material'
-                  />
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select type</option>
+                    {MATERIAL_TYPES.map((type) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
-                {/* Dropdowns */}
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  {/* Topic */}
-                  <div>
-                    <label
-                      htmlFor='topic'
-                      className='block text-sm font-medium text-gray-700 mb-2'
-                    >
-                      Topic
-                    </label>
-                    <select
-                      id='topic'
-                      value={formData.topic}
-                      onChange={(e) =>
-                        setFormData({ ...formData, topic: e.target.value })
-                      }
-                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    >
-                      <option value=''>Select topic (optional)</option>
-                      {MATERIAL_TOPICS.map((topic) => (
-                        <option key={topic} value={topic}>
-                          {topic}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Level */}
-                  <div>
-                    <label
-                      htmlFor='level'
-                      className='block text-sm font-medium text-gray-700 mb-2'
-                    >
-                      Level <span className='text-red-500'>*</span>
-                    </label>
-                    <select
-                      id='level'
-                      required
-                      value={formData.level}
-                      onChange={(e) =>
-                        setFormData({ ...formData, level: e.target.value })
-                      }
-                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    >
-                      <option value=''>Select level</option>
-                      {MATERIAL_LEVELS.map((level) => (
-                        <option key={level} value={level}>
-                          {level}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Type */}
-                  <div>
-                    <label
-                      htmlFor='type'
-                      className='block text-sm font-medium text-gray-700 mb-2'
-                    >
-                      Type <span className='text-red-500'>*</span>
-                    </label>
-                    <select
-                      id='type'
-                      required
-                      value={formData.type}
-                      onChange={(e) =>
-                        setFormData({ ...formData, type: e.target.value })
-                      }
-                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    >
-                      <option value=''>Select type</option>
-                      {MATERIAL_TYPES.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Skill */}
-                  <div>
-                    <label
-                      htmlFor='skill'
-                      className='block text-sm font-medium text-gray-700 mb-2'
-                    >
-                      Skill Targeted <span className='text-red-500'>*</span>
-                    </label>
-                    <select
-                      id='skill'
-                      required
-                      value={formData.skill}
-                      onChange={(e) =>
-                        setFormData({ ...formData, skill: e.target.value })
-                      }
-                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    >
-                      <option value=''>Select skill</option>
-                      {MATERIAL_SKILLS.map((skill) => (
-                        <option key={skill} value={skill}>
-                          {skill}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Tags */}
+                {/* Skill */}
                 <div>
                   <label
-                    htmlFor='tags'
-                    className='block text-sm font-medium text-gray-700 mb-2'
+                    htmlFor="skill"
+                    className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Additional Tags
+                    Skill Targeted <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type='text'
-                    id='tags'
-                    value={formData.tags}
+                  <select
+                    id="skill"
+                    required
+                    value={formData.skill}
                     onChange={(e) =>
-                      setFormData({ ...formData, tags: e.target.value })
+                      setFormData({ ...formData, skill: e.target.value })
                     }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                    placeholder='Enter tags separated by commas (e.g., beginner, interactive, visual)'
-                  />
-                  <p className='mt-1 text-xs text-gray-500'>
-                    Optional: Add custom tags to help with AI recommendations
-                  </p>
-                </div>
-
-                {/* Error/Success Messages */}
-                {error && (
-                  <div className='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded'>
-                    {error}
-                  </div>
-                )}
-                {success && (
-                  <div className='bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded'>
-                    {success}
-                  </div>
-                )}
-
-                {/* Submit Button */}
-                <div className='flex gap-3'>
-                  <button
-                    type='button'
-                    onClick={() => router.push("/materials")}
-                    className='flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed'
-                    disabled={submitting}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    Cancel
-                  </button>
-                  <button
-                    type='submit'
-                    disabled={submitting}
-                    className='flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
-                  >
-                    {submitting ? (
-                      <>
-                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
-                        Updating...
-                      </>
-                    ) : (
-                      <>
-                        <Save className='h-4 w-4' />
-                        Update Material
-                      </>
-                    )}
-                  </button>
+                    <option value="">Select skill</option>
+                    {MATERIAL_SKILLS.map((skill) => (
+                      <option key={skill} value={skill}>
+                        {skill}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              </form>
-            </div>
-          </div>
+              </div>
 
-          {/* Right Column - File Preview */}
-          <div className='lg:col-span-1'>
-            <div className='bg-white rounded-lg shadow-lg p-6'>
-              <h3 className='text-lg font-medium text-gray-900 mb-4'>
-                File Preview
-              </h3>
+              {/* Tags */}
+              <div>
+                <label
+                  htmlFor="tags"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Additional Tags
+                </label>
+                <input
+                  type="text"
+                  id="tags"
+                  value={formData.tags}
+                  onChange={(e) =>
+                    setFormData({ ...formData, tags: e.target.value })
+                  }
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter tags separated by commas (e.g., beginner, interactive, visual)"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Optional: Add custom tags to help with AI recommendations
+                </p>
+              </div>
 
-              {material?.fileUrl ? (
-                <div className='space-y-4'>
-                  {/* File Info */}
-                  <div className='flex items-center gap-3 p-3 bg-gray-50 rounded-lg'>
-                    <div className='bg-blue-100 p-2 rounded-full'>
-                      {material.mimeType.startsWith("image/") ? (
-                        <ImageIcon className='h-5 w-5 text-blue-600' />
-                      ) : (
-                        <FileText className='h-5 w-5 text-blue-600' />
-                      )}
-                    </div>
-                    <div className='flex-1 min-w-0'>
-                      <p className='text-sm font-medium text-gray-900 truncate'>
-                        {material.filename}
-                      </p>
-                      <p className='text-xs text-gray-500'>
-                        {material.mimeType} • {Math.round(material.size / 1024)}{" "}
-                        KB
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Preview Section */}
-                  {material.mimeType.startsWith("image/") ? (
-                    <div className='space-y-2'>
-                      <p className='text-sm font-medium text-gray-700'>
-                        Image Preview:
-                      </p>
-                      <div className='border border-gray-200 rounded-lg overflow-hidden'>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={material.fileUrl}
-                          alt={material.title}
-                          className='w-full h-auto max-h-64 object-contain bg-gray-50'
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const parent = target.parentElement;
-                            if (parent) {
-                              parent.innerHTML = `
-                              <div class="flex items-center justify-center h-32 bg-gray-100 text-gray-500">
-                                <div class="text-center">
-                                  <FileText class="h-8 w-8 mx-auto mb-2" />
-                                  <p class="text-sm">Preview not available</p>
-                                </div>
-                              </div>
-                            `;
-                            }
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : material.mimeType === "application/pdf" ? (
-                    <div className='space-y-2'>
-                      <p className='text-sm font-medium text-gray-700'>
-                        PDF Preview:
-                      </p>
-                      <div className='border border-gray-200 rounded-lg overflow-hidden h-64'>
-                        <iframe
-                          src={`${material.fileUrl}#view=FitH`}
-                          className='w-full h-full'
-                          title={`Preview of ${material.filename}`}
-                          onError={() => {
-                            console.log("PDF preview failed");
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className='space-y-2'>
-                      <p className='text-sm font-medium text-gray-700'>
-                        File Type:
-                      </p>
-                      <div className='flex items-center justify-center h-32 bg-gray-50 border border-gray-200 rounded-lg'>
-                        <div className='text-center'>
-                          <FileText className='h-8 w-8 mx-auto mb-2 text-gray-400' />
-                          <p className='text-sm text-gray-600'>
-                            Preview not available
-                          </p>
-                          <p className='text-xs text-gray-500'>
-                            {material.mimeType.split("/")[1].toUpperCase()} file
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Download Button */}
-                  <button
-                    type="button"
-                    onClick={handleDownload}
-                    disabled={isDownloading}
-                    className={`w-full px-4 py-2 rounded-lg transition-colors flex items-center justify-center gap-2 ${
-                      isDownloading 
-                        ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                        : 'bg-gray-600 text-white hover:bg-gray-700'
-                    }`}
-                  >
-                    <Download className='h-4 w-4' />
-                    {isDownloading ? 'Downloading...' : 'Download File'}
-                  </button>
-                </div>
-              ) : (
-                <div className='text-center py-8'>
-                  <FileText className='mx-auto h-12 w-12 text-gray-400' />
-                  <h3 className='mt-2 text-sm font-medium text-gray-900'>
-                    No file available
-                  </h3>
-                  <p className='mt-1 text-sm text-gray-500'>
-                    This material doesn&apos;t have an associated file.
-                  </p>
+              {/* Error/Success Messages */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                  {error}
                 </div>
               )}
-            </div>
+              {success && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
+                  {success}
+                </div>
+              )}
+
+              {/* Submit Button */}
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => router.push("/materials")}
+                  className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={submitting || deleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting || deleting}
+                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {submitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      Updating...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      Update Material
+                    </>
+                  )}
+                </button>
+                {session?.user?.isAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => setShowDeleteConfirm(true)}
+                    disabled={submitting || deleting}
+                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    Delete
+                  </button>
+                )}
+              </div>
+            </form>
           </div>
         </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+              <div className="text-center mb-6">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                  <Trash2 className="h-6 w-6 text-red-600" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  Delete Material
+                </h3>
+                <p className="text-sm text-gray-500 mb-4">
+                  This action cannot be undone. This will permanently delete the
+                  material and all associated data.
+                </p>
+                <p className="text-sm text-gray-700 mb-4">
+                  To confirm deletion, type the material title: <br />
+                  <span className="font-medium bg-gray-100 px-2 py-1 rounded text-xs">
+                    {material?.title}
+                  </span>
+                </p>
+              </div>
+
+              <div className="mb-6">
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder="Type the material title exactly"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                />
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDeleteConfirm(false);
+                    setDeleteConfirmText("");
+                  }}
+                  disabled={deleting}
+                  className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={deleting || deleteConfirmText !== material?.title}
+                  className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {deleting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      Deleting...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="h-4 w-4" />
+                      Delete Material
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
