@@ -125,3 +125,88 @@ export async function GET() {
     );
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const studentId = searchParams.get("id");
+
+    if (!studentId) {
+      return NextResponse.json(
+        { success: false, error: "Student ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // First, verify the student exists and belongs to the current teacher
+    const student = await prisma.student.findUnique({
+      where: { id: studentId },
+      include: {
+        teacher: {
+          select: {
+            id: true,
+            schoolId: true,
+          },
+        },
+      },
+    });
+
+    if (!student) {
+      return NextResponse.json(
+        { success: false, error: "Student not found" },
+        { status: 404 }
+      );
+    }
+
+    // Check if the student belongs to the current teacher
+    if (student.teacherId !== session.user.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unauthorized - You can only delete your own students",
+        },
+        { status: 403 }
+      );
+    }
+
+    // Get current teacher's school to double-check authorization
+    const currentTeacher = await prisma.teacher.findUnique({
+      where: { id: session.user.id },
+      select: { schoolId: true },
+    });
+
+    if (
+      !currentTeacher ||
+      currentTeacher.schoolId !== student.teacher.schoolId
+    ) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized - Cross-school access denied" },
+        { status: 403 }
+      );
+    }
+
+    // Delete the student (this will cascade delete reports and recommendations due to schema)
+    await prisma.student.delete({
+      where: { id: studentId },
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: "Student deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    return NextResponse.json(
+      { success: false, error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

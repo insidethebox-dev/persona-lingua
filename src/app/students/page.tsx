@@ -50,6 +50,10 @@ export default function StudentsPage() {
   });
   const [showBarrierInfo, setShowBarrierInfo] =
     useState<LearningBarrier | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState<{
+    isOpen: boolean;
+    student: StudentWithReports | null;
+  }>({ isOpen: false, student: null });
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -231,12 +235,53 @@ export default function StudentsPage() {
     }
   };
 
+  const handleDeleteStudent = async (studentId: string) => {
+    const loadingToast = toast.loading("Deleting student...", {
+      style: {
+        background: "#ef4444",
+        color: "white",
+      },
+    });
+
+    try {
+      const response = await fetch(`/api/students?id=${studentId}`, {
+        method: "DELETE",
+      });
+
+      const data: ApiResponse = await response.json();
+
+      if (data.success) {
+        toast.dismiss(loadingToast);
+        fetchStudents(); // Refresh the students list
+        setDeleteConfirmation({ isOpen: false, student: null });
+        toast.success("Student deleted successfully!", {
+          duration: 4000,
+        });
+      } else {
+        toast.dismiss(loadingToast);
+        toast.error(data.error || "Failed to delete student");
+      }
+    } catch (error) {
+      console.error("Error deleting student:", error);
+      toast.dismiss(loadingToast);
+      toast.error("Failed to delete student");
+    }
+  };
+
+  const openDeleteConfirmation = (student: StudentWithReports) => {
+    setDeleteConfirmation({ isOpen: true, student });
+  };
+
+  const closeDeleteConfirmation = () => {
+    setDeleteConfirmation({ isOpen: false, student: null });
+  };
+
   if (status === "loading" || loading) {
     return (
       <DashboardLayout>
-        <div className='p-8'>
-          <div className='flex items-center justify-center h-64'>
-            <div className='text-gray-500'>Loading...</div>
+        <div className="p-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-gray-500">Loading...</div>
           </div>
         </div>
       </DashboardLayout>
@@ -249,62 +294,62 @@ export default function StudentsPage() {
 
   return (
     <DashboardLayout>
-      <div className='p-8'>
-        <div className='flex items-center justify-between mb-8'>
+      <div className="p-8">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className='text-2xl font-bold text-gray-900'>My Students</h1>
-            <p className='text-gray-600 mt-2'>
+            <h1 className="text-2xl font-bold text-gray-900">My Students</h1>
+            <p className="text-gray-600 mt-2">
               Manage your students and track their progress
             </p>
           </div>
           <button
             onClick={() => setShowAddForm(true)}
-            className='bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 flex items-center gap-2 transition-colors duration-200'
+            className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 flex items-center gap-2 transition-colors duration-200"
           >
-            <Plus className='h-4 w-4' />
+            <Plus className="h-4 w-4" />
             Add Student
           </button>
         </div>
 
         {/* Add Student Form */}
         {showAddForm && (
-          <div className='bg-white rounded-lg shadow p-6 mb-8'>
-            <h2 className='text-lg font-medium text-gray-900 mb-4'>
+          <div className="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">
               Add New Student
             </h2>
-            <form onSubmit={handleSubmit} className='space-y-4'>
-              <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-1'>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Name *
                   </label>
                   <input
-                    type='text'
+                    type="text"
                     required
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-1'>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Age
                   </label>
                   <input
-                    type='number'
-                    min='3'
-                    max='100'
+                    type="number"
+                    min="3"
+                    max="100"
                     value={formData.age}
                     onChange={(e) =>
                       setFormData({ ...formData, age: e.target.value })
                     }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-1'>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
                     Grade / Level
                   </label>
                   <select
@@ -312,9 +357,9 @@ export default function StudentsPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, grade: e.target.value })
                     }
-                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white'
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   >
-                    <option value=''>Select a level...</option>
+                    <option value="">Select a level...</option>
                     {MATERIAL_LEVELS.map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -324,7 +369,7 @@ export default function StudentsPage() {
                 </div>
               </div>
               <div>
-                <label className='block text-sm font-medium text-gray-700 mb-1'>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Notes
                 </label>
                 <textarea
@@ -333,24 +378,24 @@ export default function StudentsPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, notes: e.target.value })
                   }
-                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               {/* Learning Barriers Section */}
               <div>
-                <label className='block text-sm font-medium text-gray-700 mb-3'>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
                   Learning Barriers / Accessibility Needs
                 </label>
-                <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {LEARNING_BARRIERS.map((barrier) => (
                     <div
                       key={barrier}
-                      className='flex items-center justify-between p-3 border rounded-lg'
+                      className="flex items-center justify-between p-3 border rounded-lg"
                     >
-                      <div className='flex items-center gap-2'>
+                      <div className="flex items-center gap-2">
                         <input
-                          type='checkbox'
+                          type="checkbox"
                           id={`barrier-${barrier}`}
                           checked={formData.learningBarriers.includes(barrier)}
                           onChange={(e) =>
@@ -359,46 +404,46 @@ export default function StudentsPage() {
                               e.target.checked
                             )
                           }
-                          className='rounded text-blue-600 focus:ring-blue-500'
+                          className="rounded text-blue-600 focus:ring-blue-500"
                         />
                         <label
                           htmlFor={`barrier-${barrier}`}
-                          className='text-sm font-medium text-gray-700'
+                          className="text-sm font-medium text-gray-700"
                         >
                           {barrier}
                         </label>
                       </div>
                       <button
-                        type='button'
+                        type="button"
                         onClick={() => setShowBarrierInfo(barrier)}
-                        className='text-blue-600 hover:text-blue-800 p-1'
+                        className="text-blue-600 hover:text-blue-800 p-1"
                         title={`Learn more about ${barrier}`}
                       >
-                        <Info className='h-4 w-4' />
+                        <Info className="h-4 w-4" />
                       </button>
                     </div>
                   ))}
                 </div>
                 {formData.learningBarriers.length > 0 && (
-                  <div className='mt-2 p-2 bg-blue-50 rounded-md'>
-                    <p className='text-sm text-blue-800'>
+                  <div className="mt-2 p-2 bg-blue-50 rounded-md">
+                    <p className="text-sm text-blue-800">
                       Selected: {formData.learningBarriers.join(", ")}
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className='flex gap-3'>
+              <div className="flex gap-3">
                 <button
-                  type='submit'
-                  className='bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900 transition-colors duration-200'
+                  type="submit"
+                  className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900 transition-colors duration-200"
                 >
                   Add Student
                 </button>
                 <button
-                  type='button'
+                  type="button"
                   onClick={() => setShowAddForm(false)}
-                  className='bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200'
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
                 >
                   Cancel
                 </button>
@@ -409,43 +454,52 @@ export default function StudentsPage() {
 
         {/* Students List */}
         {students.length > 0 ? (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {students.map((student) => (
               <div
                 key={student.id}
-                className='bg-white rounded-lg shadow p-6 flex flex-col h-full'
+                className="bg-white rounded-lg shadow p-6 flex flex-col h-full"
               >
-                <div className='flex items-center justify-between mb-4'>
-                  <div className='flex items-center gap-3'>
-                    <div className='bg-blue-100 p-2 rounded-full'>
-                      <GraduationCap className='h-5 w-5 text-blue-600' />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-blue-100 p-2 rounded-full">
+                      <GraduationCap className="h-5 w-5 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className='font-medium text-gray-900'>
+                      <h3 className="font-medium text-gray-900">
                         {student.name}
                       </h3>
                       {student.grade && (
-                        <p className='text-sm text-gray-500'>
+                        <p className="text-sm text-gray-500">
                           Level {student.grade}
                         </p>
                       )}
                     </div>
                   </div>
-                  {student.age && (
-                    <span className='text-sm text-gray-500'>
-                      Age {student.age}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {student.age && (
+                      <span className="text-sm text-gray-500">
+                        Age {student.age}
+                      </span>
+                    )}
+                    <button
+                      onClick={() => openDeleteConfirmation(student)}
+                      className="text-red-600 hover:text-red-800 p-1 rounded-md hover:bg-red-50 transition-colors duration-200"
+                      title={`Delete ${student.name}`}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
 
-                <div className='flex-1'>
-                  <div className='space-y-3 mb-4'>
-                    <div className='flex items-center gap-2 text-sm text-gray-600'>
-                      <FileText className='h-4 w-4' />
+                <div className="flex-1">
+                  <div className="space-y-3 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <FileText className="h-4 w-4" />
                       <span>{student.reports?.length || 0} reports</span>
                     </div>
-                    <div className='flex items-center gap-2 text-sm text-gray-600'>
-                      <Calendar className='h-4 w-4' />
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <Calendar className="h-4 w-4" />
                       <span>
                         Added {new Date(student.createdAt).toLocaleDateString()}
                       </span>
@@ -453,23 +507,23 @@ export default function StudentsPage() {
                   </div>
 
                   {student.notes && (
-                    <div className='mb-4 p-3 bg-gray-50 rounded-md'>
-                      <p className='text-sm text-gray-700'>{student.notes}</p>
+                    <div className="mb-4 p-3 bg-gray-50 rounded-md">
+                      <p className="text-sm text-gray-700">{student.notes}</p>
                     </div>
                   )}
 
                   {student.learningBarriers &&
                     student.learningBarriers.length > 0 && (
-                      <div className='mb-4 p-3 bg-orange-50 rounded-md'>
-                        <h4 className='text-sm font-medium text-orange-800 mb-2'>
+                      <div className="mb-4 p-3 bg-orange-50 rounded-md">
+                        <h4 className="text-sm font-medium text-orange-800 mb-2">
                           Learning Barriers:
                         </h4>
-                        <div className='flex flex-wrap gap-1'>
+                        <div className="flex flex-wrap gap-1">
                           {student.learningBarriers.map(
                             (barrier: LearningBarrier) => (
                               <span
                                 key={barrier}
-                                className='inline-block px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded-full'
+                                className="inline-block px-2 py-1 text-xs bg-orange-100 text-orange-700 rounded-full"
                               >
                                 {barrier}
                               </span>
@@ -480,17 +534,17 @@ export default function StudentsPage() {
                     )}
                 </div>
 
-                <div className='flex gap-2 mt-auto'>
+                <div className="flex gap-2 mt-auto">
                   {/* Buttons are now always at the bottom */}
                   <Link
                     href={`/students/${student.id}`}
-                    className='flex-1 text-sm bg-gray-800 text-white py-2 px-3 rounded-md hover:bg-gray-900 text-center transition-colors duration-200'
+                    className="flex-1 text-sm bg-gray-800 text-white py-2 px-3 rounded-md hover:bg-gray-900 text-center transition-colors duration-200"
                   >
                     View Student
                   </Link>
                   <button
                     onClick={() => handleAddReport(student)}
-                    className='flex-1 text-sm bg-gray-200 text-gray-900 py-2 px-3 rounded-md hover:bg-gray-300 hover:cursor-pointer text-center transition-colors duration-200'
+                    className="flex-1 text-sm bg-gray-200 text-gray-900 py-2 px-3 rounded-md hover:bg-gray-300 hover:cursor-pointer text-center transition-colors duration-200"
                   >
                     Add Report
                   </button>
@@ -499,19 +553,19 @@ export default function StudentsPage() {
             ))}
           </div>
         ) : (
-          <div className='text-center py-12'>
-            <GraduationCap className='mx-auto h-12 w-12 text-gray-400' />
-            <h3 className='mt-2 text-sm font-medium text-gray-900'>
+          <div className="text-center py-12">
+            <GraduationCap className="mx-auto h-12 w-12 text-gray-400" />
+            <h3 className="mt-2 text-sm font-medium text-gray-900">
               No students yet
             </h3>
-            <p className='mt-1 text-sm text-gray-500'>
+            <p className="mt-1 text-sm text-gray-500">
               Get started by adding your first student.
             </p>
             <button
               onClick={() => setShowAddForm(true)}
-              className='mt-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 flex items-center gap-2 mx-auto transition-colors duration-200'
+              className="mt-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 flex items-center gap-2 mx-auto transition-colors duration-200"
             >
-              <Plus className='h-4 w-4' />
+              <Plus className="h-4 w-4" />
               Add Student
             </button>
           </div>
@@ -519,82 +573,82 @@ export default function StudentsPage() {
 
         {/* Reports Modal */}
         {showReports && selectedStudent && (
-          <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50'>
-            <div className='bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-hidden'>
-              <div className='flex items-center justify-between p-6 border-b'>
-                <h2 className='text-lg font-medium text-gray-900'>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              <div className="flex items-center justify-between p-6 border-b">
+                <h2 className="text-lg font-medium text-gray-900">
                   Reports for {selectedStudent.name}
                 </h2>
                 <button
                   onClick={() => setShowReports(false)}
-                  className='text-gray-400 hover:text-gray-600'
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  <X className='h-6 w-6' />
+                  <X className="h-6 w-6" />
                 </button>
               </div>
-              <div className='p-6 overflow-y-auto max-h-[70vh]'>
+              <div className="p-6 overflow-y-auto max-h-[70vh]">
                 {selectedStudent.reports &&
                 selectedStudent.reports.length > 0 ? (
-                  <div className='space-y-4'>
+                  <div className="space-y-4">
                     {selectedStudent.reports.map((report) => (
-                      <div key={report.id} className='border rounded-lg p-4'>
-                        <div className='flex items-center justify-between mb-2'>
-                          <h3 className='font-medium text-gray-900'>
+                      <div key={report.id} className="border rounded-lg p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-medium text-gray-900">
                             {report.title}
                           </h3>
-                          <div className='flex gap-2'>
+                          <div className="flex gap-2">
                             <button
                               onClick={() => handleEditReport(report)}
-                              className='text-blue-600 hover:text-blue-800'
+                              className="text-blue-600 hover:text-blue-800"
                             >
-                              <Edit className='h-4 w-4' />
+                              <Edit className="h-4 w-4" />
                             </button>
                             <button
                               onClick={() => handleDeleteReport(report.id)}
-                              className='text-red-600 hover:text-red-800'
+                              className="text-red-600 hover:text-red-800"
                             >
-                              <Trash2 className='h-4 w-4' />
+                              <Trash2 className="h-4 w-4" />
                             </button>
                           </div>
                         </div>
-                        <p className='text-gray-700 text-sm mb-2'>
+                        <p className="text-gray-700 text-sm mb-2">
                           {report.content}
                         </p>
-                        <p className='text-xs text-gray-500'>
+                        <p className="text-xs text-gray-500">
                           Created: {new Date(report.createdAt).toLocaleString()}
                         </p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className='text-center py-8'>
-                    <FileText className='mx-auto h-12 w-12 text-gray-400' />
-                    <h3 className='mt-2 text-sm font-medium text-gray-900'>
+                  <div className="text-center py-8">
+                    <FileText className="mx-auto h-12 w-12 text-gray-400" />
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">
                       No reports yet
                     </h3>
-                    <p className='mt-1 text-sm text-gray-500'>
+                    <p className="mt-1 text-sm text-gray-500">
                       Start by adding a progress report for this student.
                     </p>
                     <button
                       onClick={() => handleAddReport(selectedStudent)}
-                      className='mt-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition-colors duration-200'
+                      className="mt-4 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition-colors duration-200"
                     >
                       Add First Report
                     </button>
                   </div>
                 )}
               </div>
-              <div className='flex justify-end gap-3 p-6 border-t'>
+              <div className="flex justify-end gap-3 p-6 border-t">
                 <button
                   onClick={() => handleAddReport(selectedStudent)}
-                  className='bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900 flex items-center gap-2 hover:cursor-pointer transition-colors duration-200'
+                  className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900 flex items-center gap-2 hover:cursor-pointer transition-colors duration-200"
                 >
-                  <Plus className='h-4 w-4' />
+                  <Plus className="h-4 w-4" />
                   Add Report
                 </button>
                 <button
                   onClick={() => setShowReports(false)}
-                  className='bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200'
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
                 >
                   Close
                 </button>
@@ -605,28 +659,28 @@ export default function StudentsPage() {
 
         {/* Report Form Modal */}
         {showReportForm && selectedStudent && (
-          <div className='fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50'>
-            <div className='bg-white rounded-lg shadow-lg max-w-2xl w-full'>
-              <div className='flex items-center justify-between p-6 border-b'>
-                <h2 className='text-lg font-medium text-gray-900'>
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full">
+              <div className="flex items-center justify-between p-6 border-b">
+                <h2 className="text-lg font-medium text-gray-900">
                   {editingReport ? "Edit Report" : "Add New Report"} for{" "}
                   {selectedStudent.name}
                 </h2>
                 <button
                   onClick={() => setShowReportForm(false)}
-                  className='text-gray-400 hover:text-gray-600'
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  <X className='h-6 w-6' />
+                  <X className="h-6 w-6" />
                 </button>
               </div>
-              <form onSubmit={handleReportSubmit} className='p-6'>
-                <div className='space-y-4'>
+              <form onSubmit={handleReportSubmit} className="p-6">
+                <div className="space-y-4">
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Report Title *
                     </label>
                     <input
-                      type='text'
+                      type="text"
                       required
                       value={reportFormData.title}
                       onChange={(e) =>
@@ -635,12 +689,12 @@ export default function StudentsPage() {
                           title: e.target.value,
                         })
                       }
-                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-                      placeholder='e.g., Weekly Progress Report, Assessment Results'
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., Weekly Progress Report, Assessment Results"
                     />
                   </div>
                   <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
                       Report Content *
                     </label>
                     <textarea
@@ -653,22 +707,22 @@ export default function StudentsPage() {
                           content: e.target.value,
                         })
                       }
-                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="Describe the student's progress, achievements, areas for improvement, etc."
                     />
                   </div>
                 </div>
-                <div className='flex gap-3 mt-6'>
+                <div className="flex gap-3 mt-6">
                   <button
-                    type='submit'
-                    className='bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900 transition-colors duration-200'
+                    type="submit"
+                    className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-900 transition-colors duration-200"
                   >
                     {editingReport ? "Update Report" : "Create Report"}
                   </button>
                   <button
-                    type='button'
+                    type="button"
                     onClick={() => setShowReportForm(false)}
-                    className='bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200'
+                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
                   >
                     Cancel
                   </button>
@@ -680,26 +734,26 @@ export default function StudentsPage() {
 
         {/* Learning Barrier Info Modal */}
         {showBarrierInfo && (
-          <div className='fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50'>
-            <div className='bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-hidden'>
-              <div className='flex items-center justify-between p-6 border-b'>
-                <h2 className='text-lg font-medium text-gray-900'>
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-hidden">
+              <div className="flex items-center justify-between p-6 border-b">
+                <h2 className="text-lg font-medium text-gray-900">
                   {showBarrierInfo}
                 </h2>
                 <button
                   onClick={() => setShowBarrierInfo(null)}
-                  className='text-gray-400 hover:text-gray-600'
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  <X className='h-6 w-6' />
+                  <X className="h-6 w-6" />
                 </button>
               </div>
-              <div className='p-6 overflow-y-auto'>
-                <div className='space-y-4'>
+              <div className="p-6 overflow-y-auto">
+                <div className="space-y-4">
                   <div>
-                    <h3 className='font-medium text-gray-900 mb-2'>
+                    <h3 className="font-medium text-gray-900 mb-2">
                       Characteristics
                     </h3>
-                    <ul className='list-disc list-inside space-y-1 text-sm text-gray-700'>
+                    <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
                       {LEARNING_BARRIER_INFO[
                         showBarrierInfo
                       ].characteristics.map((char, index) => (
@@ -708,10 +762,10 @@ export default function StudentsPage() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className='font-medium text-gray-900 mb-2'>
+                    <h3 className="font-medium text-gray-900 mb-2">
                       Recommended Adaptations
                     </h3>
-                    <ul className='list-disc list-inside space-y-1 text-sm text-gray-700'>
+                    <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
                       {LEARNING_BARRIER_INFO[showBarrierInfo].adaptations.map(
                         (adaptation, index) => (
                           <li key={index}>{adaptation}</li>
@@ -721,10 +775,10 @@ export default function StudentsPage() {
                   </div>
                 </div>
               </div>
-              <div className='flex justify-end p-6 border-t'>
+              <div className="flex justify-end p-6 border-t">
                 <button
                   onClick={() => setShowBarrierInfo(null)}
-                  className='bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200'
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200"
                 >
                   Close
                 </button>
@@ -732,7 +786,152 @@ export default function StudentsPage() {
             </div>
           </div>
         )}
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirmation.isOpen && deleteConfirmation.student && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+              {/* Header */}
+              <div className="flex items-center gap-3 p-6 border-b border-gray-200">
+                <div className="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <Trash2 className="h-5 w-5 text-red-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Delete Student
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    This action cannot be undone
+                  </p>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6">
+                <p className="text-gray-700 mb-4">
+                  Are you sure you want to delete{" "}
+                  <span className="font-semibold text-gray-900">
+                    {deleteConfirmation.student.name}
+                  </span>
+                  ?
+                </p>
+
+                <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-red-600"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-medium text-red-800 mb-1">
+                        This will permanently delete:
+                      </h4>
+                      <ul className="text-sm text-red-700 space-y-1">
+                        <li>• The student profile</li>
+                        <li>
+                          • All progress reports (
+                          {deleteConfirmation.student.reports?.length || 0}{" "}
+                          reports)
+                        </li>
+                        <li>• All learning recommendations</li>
+                        <li>• All associated learning data</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-sm text-gray-600 mb-6">
+                  <p>
+                    To confirm deletion, please type{" "}
+                    <span className="font-mono bg-gray-100 px-2 py-1 rounded text-gray-900">
+                      DELETE
+                    </span>{" "}
+                    in the field below:
+                  </p>
+                </div>
+
+                <ConfirmationInput
+                  onConfirm={() =>
+                    handleDeleteStudent(deleteConfirmation.student!.id)
+                  }
+                  onCancel={closeDeleteConfirmation}
+                  studentName={deleteConfirmation.student.name}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
+  );
+}
+
+// Confirmation Input Component
+function ConfirmationInput({
+  onConfirm,
+  onCancel,
+  studentName,
+}: {
+  onConfirm: () => void;
+  onCancel: () => void;
+  studentName: string;
+}) {
+  const [inputValue, setInputValue] = useState("");
+  const [isValid, setIsValid] = useState(false);
+
+  useEffect(() => {
+    setIsValid(inputValue === "DELETE");
+  }, [inputValue]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isValid) {
+      onConfirm();
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-6">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Type DELETE to confirm"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+          autoFocus
+        />
+      </div>
+
+      <div className="flex gap-3 justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors duration-200"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          disabled={!isValid}
+          className={`px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200 ${
+            isValid
+              ? "bg-red-600 hover:bg-red-700"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
+        >
+          Delete {studentName}
+        </button>
+      </div>
+    </form>
   );
 }
