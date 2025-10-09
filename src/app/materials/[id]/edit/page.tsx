@@ -230,9 +230,9 @@ export default function EditMaterialPage() {
   if (status === "loading" || loading) {
     return (
       <DashboardLayout>
-        <div className="p-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-gray-500">Loading...</div>
+        <div className='p-8'>
+          <div className='flex items-center justify-center h-64'>
+            <div className='text-gray-500'>Loading...</div>
           </div>
         </div>
       </DashboardLayout>
@@ -242,19 +242,19 @@ export default function EditMaterialPage() {
   if (!material) {
     return (
       <DashboardLayout>
-        <div className="p-8">
-          <div className="text-center py-12">
-            <h2 className="text-xl font-semibold text-gray-900">
+        <div className='p-8'>
+          <div className='text-center py-12'>
+            <h2 className='text-xl font-semibold text-gray-900'>
               Material not found
             </h2>
-            <p className="text-gray-600 mt-2">
+            <p className='text-gray-600 mt-2'>
               The material you&apos;re looking for doesn&apos;t exist.
             </p>
             <button
               onClick={() => router.push("/materials")}
-              className="mt-4 inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className='mt-4 inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className='h-4 w-4' />
               Back to Materials
             </button>
           </div>
@@ -265,91 +265,91 @@ export default function EditMaterialPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-8">
-        <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
+      <div className='p-8'>
+        <div className='mb-8'>
+          <div className='flex items-center gap-4 mb-4'>
             <button
               onClick={() => router.push("/materials")}
-              className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-              title="Back to Materials"
+              className='p-2 text-gray-400 hover:text-gray-600 transition-colors'
+              title='Back to Materials'
             >
-              <ArrowLeft className="h-5 w-5" />
+              <ArrowLeft className='h-5 w-5' />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className='text-2xl font-bold text-gray-900'>
                 Edit Material
               </h1>
-              <p className="text-gray-600 mt-2">
+              <p className='text-gray-600 mt-2'>
                 Update the material information
               </p>
             </div>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className='max-w-4xl mx-auto'>
           {/* Edit Form */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className='bg-white rounded-lg shadow-lg p-8'>
+            <form onSubmit={handleSubmit} className='space-y-6'>
               {/* Title */}
               <div>
                 <label
-                  htmlFor="title"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  htmlFor='title'
+                  className='block text-sm font-medium text-gray-700 mb-2'
                 >
-                  Title <span className="text-red-500">*</span>
+                  Title <span className='text-red-500'>*</span>
                 </label>
                 <input
-                  type="text"
-                  id="title"
+                  type='text'
+                  id='title'
                   required
                   value={formData.title}
                   onChange={(e) =>
                     setFormData({ ...formData, title: e.target.value })
                   }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter material title"
+                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  placeholder='Enter material title'
                 />
               </div>
 
               {/* Description */}
               <div>
                 <label
-                  htmlFor="description"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  htmlFor='description'
+                  className='block text-sm font-medium text-gray-700 mb-2'
                 >
                   Description
                 </label>
                 <textarea
-                  id="description"
+                  id='description'
                   rows={3}
                   value={formData.description}
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
                   }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Brief description of the material"
+                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  placeholder='Brief description of the material'
                 />
               </div>
 
               {/* Dropdowns */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 {/* Topic */}
                 <div>
                   <label
-                    htmlFor="topic"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    htmlFor='topic'
+                    className='block text-sm font-medium text-gray-700 mb-2'
                   >
                     Topic
                   </label>
                   <select
-                    id="topic"
+                    id='topic'
                     value={formData.topic}
                     onChange={(e) =>
                       setFormData({ ...formData, topic: e.target.value })
                     }
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
                   >
-                    <option value="">Select topic (optional)</option>
+                    <option value=''>Select topic (optional)</option>
                     {MATERIAL_TOPICS.map((topic) => (
                       <option key={topic} value={topic}>
                         {topic}
@@ -361,21 +361,21 @@ export default function EditMaterialPage() {
                 {/* Level */}
                 <div>
                   <label
-                    htmlFor="level"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    htmlFor='level'
+                    className='block text-sm font-medium text-gray-700 mb-2'
                   >
-                    Level <span className="text-red-500">*</span>
+                    Level <span className='text-red-500'>*</span>
                   </label>
                   <select
-                    id="level"
+                    id='level'
                     required
                     value={formData.level}
                     onChange={(e) =>
                       setFormData({ ...formData, level: e.target.value })
                     }
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
                   >
-                    <option value="">Select level</option>
+                    <option value=''>Select level</option>
                     {MATERIAL_LEVELS.map((level) => (
                       <option key={level} value={level}>
                         {level}
@@ -387,21 +387,21 @@ export default function EditMaterialPage() {
                 {/* Type */}
                 <div>
                   <label
-                    htmlFor="type"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    htmlFor='type'
+                    className='block text-sm font-medium text-gray-700 mb-2'
                   >
-                    Type <span className="text-red-500">*</span>
+                    Type <span className='text-red-500'>*</span>
                   </label>
                   <select
-                    id="type"
+                    id='type'
                     required
                     value={formData.type}
                     onChange={(e) =>
                       setFormData({ ...formData, type: e.target.value })
                     }
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
                   >
-                    <option value="">Select type</option>
+                    <option value=''>Select type</option>
                     {MATERIAL_TYPES.map((type) => (
                       <option key={type} value={type}>
                         {type}
@@ -413,21 +413,21 @@ export default function EditMaterialPage() {
                 {/* Skill */}
                 <div>
                   <label
-                    htmlFor="skill"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    htmlFor='skill'
+                    className='block text-sm font-medium text-gray-700 mb-2'
                   >
-                    Skill Targeted <span className="text-red-500">*</span>
+                    Skill Targeted <span className='text-red-500'>*</span>
                   </label>
                   <select
-                    id="skill"
+                    id='skill'
                     required
                     value={formData.skill}
                     onChange={(e) =>
                       setFormData({ ...formData, skill: e.target.value })
                     }
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
                   >
-                    <option value="">Select skill</option>
+                    <option value=''>Select skill</option>
                     {MATERIAL_SKILLS.map((skill) => (
                       <option key={skill} value={skill}>
                         {skill}
@@ -440,73 +440,73 @@ export default function EditMaterialPage() {
               {/* Tags */}
               <div>
                 <label
-                  htmlFor="tags"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  htmlFor='tags'
+                  className='block text-sm font-medium text-gray-700 mb-2'
                 >
                   Additional Tags
                 </label>
                 <input
-                  type="text"
-                  id="tags"
+                  type='text'
+                  id='tags'
                   value={formData.tags}
                   onChange={(e) =>
                     setFormData({ ...formData, tags: e.target.value })
                   }
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter tags separated by commas (e.g., beginner, interactive, visual)"
+                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  placeholder='Enter tags separated by commas (e.g., beginner, interactive, visual)'
                 />
-                <p className="mt-1 text-xs text-gray-500">
+                <p className='mt-1 text-xs text-gray-500'>
                   Optional: Add custom tags to help with AI recommendations
                 </p>
               </div>
 
               {/* Error/Success Messages */}
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                <div className='bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded'>
                   {error}
                 </div>
               )}
               {success && (
-                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
+                <div className='bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded'>
                   {success}
                 </div>
               )}
 
               {/* Submit Button */}
-              <div className="flex gap-3">
+              <div className='flex gap-3'>
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => router.push("/materials")}
-                  className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className='flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed'
                   disabled={submitting || deleting}
                 >
                   Cancel
                 </button>
                 <button
-                  type="submit"
+                  type='submit'
                   disabled={submitting || deleting}
-                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className='flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
                 >
                   {submitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
                       Updating...
                     </>
                   ) : (
                     <>
-                      <Save className="h-4 w-4" />
+                      <Save className='h-4 w-4' />
                       Update Material
                     </>
                   )}
                 </button>
                 {session?.user?.isAdmin && (
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => setShowDeleteConfirm(true)}
                     disabled={submitting || deleting}
-                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className='bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className='h-4 w-4' />
                     Delete
                   </button>
                 )}
@@ -517,63 +517,63 @@ export default function EditMaterialPage() {
 
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
-              <div className="text-center mb-6">
-                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-                  <Trash2 className="h-6 w-6 text-red-600" />
+          <div className='fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50'>
+            <div className='bg-white rounded-lg p-8 max-w-md w-full mx-4'>
+              <div className='text-center mb-6'>
+                <div className='mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4'>
+                  <Trash2 className='h-6 w-6 text-red-600' />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                <h3 className='text-lg font-medium text-gray-900 mb-2'>
                   Delete Material
                 </h3>
-                <p className="text-sm text-gray-500 mb-4">
+                <p className='text-sm text-gray-500 mb-4'>
                   This action cannot be undone. This will permanently delete the
                   material and all associated data.
                 </p>
-                <p className="text-sm text-gray-700 mb-4">
+                <p className='text-sm text-gray-700 mb-4'>
                   To confirm deletion, type the material title: <br />
-                  <span className="font-medium bg-gray-100 px-2 py-1 rounded text-xs">
+                  <span className='font-medium bg-gray-100 px-2 py-1 rounded text-xs'>
                     {material?.title}
                   </span>
                 </p>
               </div>
 
-              <div className="mb-6">
+              <div className='mb-6'>
                 <input
-                  type="text"
+                  type='text'
                   value={deleteConfirmText}
                   onChange={(e) => setDeleteConfirmText(e.target.value)}
-                  placeholder="Type the material title exactly"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                  placeholder='Type the material title exactly'
+                  className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500'
                 />
               </div>
 
-              <div className="flex gap-3">
+              <div className='flex gap-3'>
                 <button
-                  type="button"
+                  type='button'
                   onClick={() => {
                     setShowDeleteConfirm(false);
                     setDeleteConfirmText("");
                   }}
                   disabled={deleting}
-                  className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50"
+                  className='flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 disabled:opacity-50'
                 >
                   Cancel
                 </button>
                 <button
-                  type="button"
+                  type='button'
                   onClick={handleDelete}
                   disabled={deleting || deleteConfirmText !== material?.title}
-                  className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className='flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
                 >
                   {deleting ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
                       Deleting...
                     </>
                   ) : (
                     <>
-                      <Trash2 className="h-4 w-4" />
+                      <Trash2 className='h-4 w-4' />
                       Delete Material
                     </>
                   )}

@@ -213,9 +213,9 @@ export default function MaterialsPage() {
   if (status === "loading" || loading) {
     return (
       <DashboardLayout>
-        <div className="p-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-gray-500">Loading...</div>
+        <div className='p-8'>
+          <div className='flex items-center justify-center h-64'>
+            <div className='text-gray-500'>Loading...</div>
           </div>
         </div>
       </DashboardLayout>
@@ -224,35 +224,35 @@ export default function MaterialsPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className='p-8'>
+        <div className='flex items-center justify-between mb-8'>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className='text-2xl font-bold text-gray-900'>
               Learning Materials
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className='text-gray-600 mt-2'>
               Browse and manage uploaded learning materials
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-500">
+          <div className='flex items-center gap-4'>
+            <div className='text-sm text-gray-500'>
               {filteredMaterials.length} of {materials.length} materials
             </div>
             <a
-              href="/upload"
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              href='/upload'
+              className='inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors'
             >
-              <FileText className="h-4 w-4" />
+              <FileText className='h-4 w-4' />
               Upload Material
             </a>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Filter className="h-5 w-5 text-gray-400" />
-            <h2 className="text-lg font-medium text-gray-900">Filters</h2>
+        <div className='bg-white rounded-lg shadow p-6 mb-6'>
+          <div className='flex items-center gap-2 mb-4'>
+            <Filter className='h-5 w-5 text-gray-400' />
+            <h2 className='text-lg font-medium text-gray-900'>Filters</h2>
             {(filters.topic ||
               filters.level ||
               filters.type ||
@@ -260,24 +260,24 @@ export default function MaterialsPage() {
               filters.search) && (
               <button
                 onClick={clearFilters}
-                className="ml-auto text-sm text-blue-600 hover:text-blue-700"
+                className='ml-auto text-sm text-blue-600 hover:text-blue-700'
               >
                 Clear all
               </button>
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4'>
             {/* Search */}
             <div>
               <input
-                type="text"
-                placeholder="Search materials..."
+                type='text'
+                placeholder='Search materials...'
                 value={filters.search}
                 onChange={(e) =>
                   setFilters({ ...filters, search: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className='w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
               />
             </div>
 
@@ -288,9 +288,9 @@ export default function MaterialsPage() {
                 onChange={(e) =>
                   setFilters({ ...filters, topic: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className='w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
               >
-                <option value="">All Topics</option>
+                <option value=''>All Topics</option>
                 {getUniqueValues("topic").map((topic) => (
                   <option key={topic} value={topic}>
                     {topic}
@@ -306,9 +306,9 @@ export default function MaterialsPage() {
                 onChange={(e) =>
                   setFilters({ ...filters, level: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className='w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
               >
-                <option value="">All Levels</option>
+                <option value=''>All Levels</option>
                 {getUniqueValues("level").map((level) => (
                   <option key={level} value={level}>
                     {level}
@@ -324,9 +324,9 @@ export default function MaterialsPage() {
                 onChange={(e) =>
                   setFilters({ ...filters, type: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className='w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
               >
-                <option value="">All Types</option>
+                <option value=''>All Types</option>
                 {getUniqueValues("type").map((type) => (
                   <option key={type} value={type}>
                     {type}
@@ -342,9 +342,9 @@ export default function MaterialsPage() {
                 onChange={(e) =>
                   setFilters({ ...filters, skill: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className='w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
               >
-                <option value="">All Skills</option>
+                <option value=''>All Skills</option>
                 {getUniqueValues("skill").map((skill) => (
                   <option key={skill} value={skill}>
                     {skill}
@@ -357,41 +357,41 @@ export default function MaterialsPage() {
 
         {/* Materials Grid */}
         {filteredMaterials.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {filteredMaterials.map((material) => (
               <div
                 key={material.id}
-                className="bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+                className='bg-white rounded-lg shadow hover:shadow-md transition-shadow'
               >
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
-                      <div className="bg-blue-100 p-2 rounded-full flex-shrink-0">
-                        <FileText className="h-5 w-5 text-blue-600" />
+                <div className='p-6'>
+                  <div className='flex items-start justify-between mb-4'>
+                    <div className='flex items-center gap-3 flex-1 min-w-0 pr-2'>
+                      <div className='bg-blue-100 p-2 rounded-full flex-shrink-0'>
+                        <FileText className='h-5 w-5 text-blue-600' />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900 truncate">
+                      <div className='flex-1 min-w-0'>
+                        <h3 className='font-medium text-gray-900 truncate'>
                           {material.title}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        <p className='text-sm text-gray-500'>
                           {formatFileSize(material.size)}
                         </p>
                       </div>
                     </div>
-                    <div className="flex gap-1 flex-shrink-0">
+                    <div className='flex gap-1 flex-shrink-0'>
                       {session?.user?.isAdmin && (
                         <button
                           onClick={() =>
                             (window.location.href = `/materials/${material.id}/edit`)
                           }
-                          className="p-2 text-gray-400 hover:text-green-600 transition-colors"
-                          title="Edit"
+                          className='p-2 text-gray-400 hover:text-green-600 transition-colors'
+                          title='Edit'
                         >
-                          <Edit3 className="h-4 w-4" />
+                          <Edit3 className='h-4 w-4' />
                         </button>
                       )}
                       <button
-                        type="button"
+                        type='button'
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
@@ -421,64 +421,64 @@ export default function MaterialsPage() {
                   </div>
 
                   {material.description && (
-                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    <p className='text-sm text-gray-600 mb-4 line-clamp-2'>
                       {material.description}
                     </p>
                   )}
 
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <BookOpen className="h-3 w-3" />
+                  <div className='space-y-3'>
+                    <div className='grid grid-cols-2 gap-3 text-xs'>
+                      <div className='flex items-center gap-1 text-gray-600'>
+                        <BookOpen className='h-3 w-3' />
                         <span>{material.topic || "No topic specified"}</span>
                       </div>
-                      <div className="flex items-center gap-1 text-gray-600">
-                        <Users className="h-3 w-3" />
+                      <div className='flex items-center gap-1 text-gray-600'>
+                        <Users className='h-3 w-3' />
                         <span>{material.level}</span>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div className="text-gray-600">
-                        <span className="font-medium">Type:</span>{" "}
+                    <div className='grid grid-cols-2 gap-3 text-xs'>
+                      <div className='text-gray-600'>
+                        <span className='font-medium'>Type:</span>{" "}
                         {material.type}
                       </div>
-                      <div className="text-gray-600">
-                        <span className="font-medium">Skill:</span>{" "}
+                      <div className='text-gray-600'>
+                        <span className='font-medium'>Skill:</span>{" "}
                         {material.skill}
                       </div>
                     </div>
 
                     {material.tags.length > 0 && (
-                      <div className="flex items-center gap-1 flex-wrap">
-                        <Tag className="h-3 w-3 text-gray-400" />
+                      <div className='flex items-center gap-1 flex-wrap'>
+                        <Tag className='h-3 w-3 text-gray-400' />
                         {material.tags.slice(0, 3).map((tag, index) => (
                           <span
                             key={index}
-                            className="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded"
+                            className='inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded'
                           >
                             {tag}
                           </span>
                         ))}
                         {material.tags.length > 3 && (
-                          <span className="text-xs text-gray-500">
+                          <span className='text-xs text-gray-500'>
                             +{material.tags.length - 3} more
                           </span>
                         )}
                       </div>
                     )}
 
-                    <div className="space-y-1 pt-2 border-t">
-                      <div className="flex items-center gap-1 text-xs text-gray-500">
-                        <Calendar className="h-3 w-3" />
+                    <div className='space-y-1 pt-2 border-t'>
+                      <div className='flex items-center gap-1 text-xs text-gray-500'>
+                        <Calendar className='h-3 w-3' />
                         <span>Uploaded {formatDate(material.createdAt)}</span>
                       </div>
                       {material.teacher && (
-                        <div className="flex items-center gap-1 text-xs text-gray-500">
-                          <Users className="h-3 w-3" />
+                        <div className='flex items-center gap-1 text-xs text-gray-500'>
+                          <Users className='h-3 w-3' />
                           <span>By {material.teacher.name}</span>
                           {material.teacher.subject && (
-                            <span className="text-gray-400">
+                            <span className='text-gray-400'>
                               ({material.teacher.subject})
                             </span>
                           )}
@@ -491,25 +491,25 @@ export default function MaterialsPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <FileText className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">
+          <div className='text-center py-12'>
+            <FileText className='mx-auto h-12 w-12 text-gray-400' />
+            <h3 className='mt-2 text-sm font-medium text-gray-900'>
               {materials.length === 0
                 ? "No materials yet"
                 : "No materials match your filters"}
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className='mt-1 text-sm text-gray-500'>
               {materials.length === 0
                 ? "Get started by uploading your first learning material."
                 : "Try adjusting your search criteria or clearing the filters."}
             </p>
             {materials.length === 0 && (
-              <div className="mt-6">
+              <div className='mt-6'>
                 <a
-                  href="/upload"
-                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  href='/upload'
+                  className='inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'
                 >
-                  <FileText className="h-4 w-4" />
+                  <FileText className='h-4 w-4' />
                   Upload Material
                 </a>
               </div>

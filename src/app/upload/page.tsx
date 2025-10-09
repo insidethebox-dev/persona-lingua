@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import DashboardLayout from "@/components/DashboardLayout";
-import { MaterialForm, FileGenerationPanel } from "@/components/upload";
+import { MaterialForm, FileGenerationPanel, FilenameConversionDialog } from "@/components/upload";
 import { ApiResponse } from "@/types";
 import { AIAnalysisResult } from "@/lib/openai";
+import { hasNonAsciiChars } from "@/utils/greeklish";
 import toast from "react-hot-toast";
 
 interface GeneratedFile {
@@ -34,6 +35,8 @@ export default function UploadPage() {
   const [generating, setGenerating] = useState(false);
   const [generationInstructions, setGenerationInstructions] = useState("");
   const [dyslexiaFriendly, setDyslexiaFriendly] = useState(false);
+  const [showFilenameDialog, setShowFilenameDialog] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -115,11 +118,47 @@ export default function UploadPage() {
         setError("File size must be less than 10MB");
         return;
       }
-      setFormData({ ...formData, file });
-      setError("");
 
-      // Generate AI summary for the file
-      generateAISummary(file);
+      // Check if filename contains non-ASCII characters
+      if (hasNonAsciiChars(file.name)) {
+        // Show conversion dialog
+        setPendingFile(file);
+        setShowFilenameDialog(true);
+        setError("");
+      } else {
+        // File is already ASCII-compatible, proceed normally
+        setFormData({ ...formData, file });
+        setError("");
+        generateAISummary(file);
+      }
+    }
+  };
+
+  const handleFilenameConfirm = (newFilename: string) => {
+    if (pendingFile) {
+      // Create a new File object with the converted filename
+      const convertedFile = new File([pendingFile], newFilename, {
+        type: pendingFile.type,
+        lastModified: pendingFile.lastModified,
+      });
+      
+      setFormData({ ...formData, file: convertedFile });
+      setError("");
+      setShowFilenameDialog(false);
+      setPendingFile(null);
+      
+      // Generate AI summary for the converted file
+      generateAISummary(convertedFile);
+    }
+  };
+
+  const handleFilenameCancel = () => {
+    setShowFilenameDialog(false);
+    setPendingFile(null);
+    // Reset the file input
+    const fileInput = document.getElementById('file') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
     }
   };
 
@@ -427,6 +466,14 @@ Rewrite the following text accordingly:
           </div>
         </div>
       </div>
+
+      {/* Filename Conversion Dialog */}
+      <FilenameConversionDialog
+        isOpen={showFilenameDialog}
+        originalFilename={pendingFile?.name || ""}
+        onConfirm={handleFilenameConfirm}
+        onCancel={handleFilenameCancel}
+      />
     </DashboardLayout>
   );
 }

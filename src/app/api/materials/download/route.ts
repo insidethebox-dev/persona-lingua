@@ -9,9 +9,10 @@ const IMAGE_EXTENSIONS = new Set(["jpg", "jpeg", "png", "gif", "webp", "svg"]);
 const VIDEO_EXTENSIONS = new Set(["mp4", "mov", "avi", "mkv", "webm"]);
 
 const sanitizeFilename = (name: string, fallback: string) => {
+  // Preserve Unicode characters (including Greek) but remove problematic characters for filenames
   const cleaned = name
-    .replace(/[^\w\s.-]/g, " ")
-    .replace(/\s+/g, " ")
+    .replace(/[<>:"/\\|?*]/g, " ") // Remove only characters that are invalid in filenames
+    .replace(/\s+/g, " ") // Replace multiple spaces with single space
     .trim();
   return cleaned || fallback;
 };
@@ -118,12 +119,20 @@ export async function GET(request: NextRequest) {
     const extension = derivedExtension ?? undefined;
 
     const safeDownloadName = (() => {
-      const base = material.filename || material.title || "material";
-      const sanitized = sanitizeFilename(base, "material");
-      
+      // Use original filename (with Greek characters) for download
+      const originalFilename = material.filename || material.originalName || material.title || "material";
+      const sanitized = sanitizeFilename(originalFilename, "material");
+
+      console.log('Download filename processing:', {
+        original: originalFilename,
+        sanitized: sanitized,
+        extension: extension,
+        publicId: material.publicId
+      });
+
       // Check if the sanitized filename already has an extension
       const hasExtension = /\.[a-zA-Z0-9]{1,6}$/.test(sanitized);
-      
+
       if (hasExtension) {
         return sanitized; // Already has extension
       } else if (extension) {
@@ -150,20 +159,25 @@ export async function GET(request: NextRequest) {
 
     // Fetch the file and stream it with proper filename
     const fileResponse = await fetch(fileUrl);
-    
+
     if (!fileResponse.ok) {
       throw new Error(`Failed to fetch file: ${fileResponse.status}`);
     }
 
     const fileData = await fileResponse.arrayBuffer();
-    const contentType = fileResponse.headers.get("content-type") || "application/octet-stream";
+    const contentType =
+      fileResponse.headers.get("content-type") || "application/octet-stream";
 
     // Return the file with proper headers including the correct filename
+    // Use RFC 5987 encoding for international characters in filenames
+    const encodedFilename = encodeURIComponent(safeDownloadName);
+    const contentDisposition = `attachment; filename*=UTF-8''${encodedFilename}; filename="${safeDownloadName}"`;
+    
     return new NextResponse(fileData, {
       status: 200,
       headers: {
         "Content-Type": contentType,
-        "Content-Disposition": `attachment; filename="${safeDownloadName}"`,
+        "Content-Disposition": contentDisposition,
         "Content-Length": fileData.byteLength.toString(),
         "Cache-Control": "public, max-age=31536000",
       },

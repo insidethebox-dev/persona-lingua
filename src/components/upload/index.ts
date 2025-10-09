@@ -7,3 +7,4 @@ export { default as StatusMessages } from "./StatusMessages";
 export { default as GeneratedFileDisplay } from "./GeneratedFileDisplay";
 export { default as FileGenerationPanel } from "./FileGenerationPanel";
 export { default as MaterialForm } from "./MaterialForm";
+export { default as FilenameConversionDialog } from "./FilenameConversionDialog";
