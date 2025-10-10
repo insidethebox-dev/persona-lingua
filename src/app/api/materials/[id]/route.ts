@@ -18,8 +18,9 @@ const updateMaterialSchema = z.object({
 // GET /api/materials/[id] - Get a single material
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const params = await context.params;
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -79,8 +80,9 @@ export async function GET(
 // PATCH /api/materials/[id] - Update a material
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const params = await context.params;
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
@@ -170,8 +172,9 @@ export async function PATCH(
 // DELETE /api/materials/[id] - Delete a material (optional for future use)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const params = await context.params;
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {

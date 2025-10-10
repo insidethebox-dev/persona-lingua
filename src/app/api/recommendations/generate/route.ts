@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
     // Filter materials based on student needs analysis
     const filteredMaterials = allMaterials.filter((material) => {
       // Check if material matches any of the recommended criteria
-      const topicMatch = studentNeeds.topic.includes(material.topic);
+      const topicMatch = material.topic ? studentNeeds.topic.includes(material.topic) : false;
       const levelMatch = studentNeeds.level.includes(material.level);
       const typeMatch = studentNeeds.type.includes(material.type);
       const skillMatch = studentNeeds.skill.includes(material.skill);
@@ -141,9 +141,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Step 3: Use AI to recommend the best materials from the filtered set
+    // Prepare data for AI analysis
     const materialsForAI = filteredMaterials.map((material) => ({
       ...material,
       description: material.description || undefined,
+      topic: material.topic || "general", // Ensure topic is never null
     }));
 
     const aiRecommendations = await generateRecommendationsFromFiltered(
