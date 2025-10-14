@@ -13,6 +13,7 @@ import {
   MATERIAL_LEVELS,
   MATERIAL_TYPES,
   MATERIAL_SKILLS,
+  MATERIAL_LANGUAGES,
 } from "@/constants/materials";
 
 interface Material {
@@ -23,6 +24,7 @@ interface Material {
   level: string;
   type: string;
   skill: string;
+  language: string;
   tags: string[];
   filename: string;
   mimeType: string;
@@ -59,6 +61,7 @@ export default function EditMaterialPage() {
     level: "",
     type: "",
     skill: "",
+    language: "",
     tags: "",
   });
 
@@ -86,6 +89,7 @@ export default function EditMaterialPage() {
           level: material.level,
           type: material.type,
           skill: material.skill,
+          language: material.language,
           tags: material.tags.join(", "),
         });
       } else {
@@ -431,6 +435,32 @@ export default function EditMaterialPage() {
                     {MATERIAL_SKILLS.map((skill) => (
                       <option key={skill} value={skill}>
                         {skill}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Language */}
+                <div>
+                  <label
+                    htmlFor='language'
+                    className='block text-sm font-medium text-gray-700 mb-2'
+                  >
+                    Language <span className='text-red-500'>*</span>
+                  </label>
+                  <select
+                    id='language'
+                    required
+                    value={formData.language}
+                    onChange={(e) =>
+                      setFormData({ ...formData, language: e.target.value })
+                    }
+                    className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                  >
+                    <option value=''>Select language</option>
+                    {MATERIAL_LANGUAGES.map((language) => (
+                      <option key={language} value={language}>
+                        {language}
                       </option>
                     ))}
                   </select>

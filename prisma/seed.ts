@@ -58,6 +58,7 @@ async function main() {
         name: "Alice Johnson",
         age: 12,
         grade: "7th Grade",
+        language: "English",
         notes:
           "Excellent in mathematics, needs help with reading comprehension.",
         teacherId: teacher.id,
@@ -68,6 +69,7 @@ async function main() {
         name: "Bob Wilson",
         age: 13,
         grade: "8th Grade",
+        language: "English",
         notes: "Strong in science, creative in art projects.",
         teacherId: teacher.id,
       },
@@ -77,6 +79,7 @@ async function main() {
         name: "Carol Davis",
         age: 11,
         grade: "6th Grade",
+        language: "Spanish",
         notes: "Shows great potential in language arts and writing.",
         teacherId: teacher.id,
       },

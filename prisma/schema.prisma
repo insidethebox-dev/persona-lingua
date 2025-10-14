@@ -55,6 +55,7 @@ model Student {
   grade            String?
   notes            String?
   learningBarriers String[] @default([]) // Learning barriers/accessibility needs
+  language         String // Student's native/primary language
   teacherId        String
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -94,6 +95,7 @@ model LearningMaterial {
   level        String // Grade level
   type         String // Material type (question, multiple choice, summary)
   skill        String // Skill targeted (grammar, vocabulary, listening)
+  language     String // Language of the material (e.g., "English", "Greek", "Spanish")
   tags         String[] @default([]) // Additional custom tags
   uploadedBy   String // Teacher ID who uploaded
   schoolId     String? // School this material belongs to (null for independent teachers)
@@ -113,6 +115,8 @@ model Recommendation {
   learningMaterialId String
   reason             String
   confidence         Float    @default(0.0)
+  preScore           Float? // Deterministic pre-score (0-100)
+  scoreRationale     String? // Explanation of the pre-score
   viewed             Boolean  @default(false)
   createdAt          DateTime @default(now())
 

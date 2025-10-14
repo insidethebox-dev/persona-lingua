@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useParams, redirect } from "next/navigation";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -13,12 +13,13 @@ import {
   Edit,
   Trash2,
   X,
-  BookOpen,
   Lightbulb,
   ArrowLeft,
   Mail,
   User,
+  Download,
 } from "lucide-react";
+import { toast } from "react-hot-toast";
 import { ApiResponse, StudentWithReports } from "@/types";
 import {
   StudentReport,
@@ -56,6 +57,31 @@ export default function StudentDetailPage() {
   const isTeacher = session?.user && !session.user.isSchoolAdmin;
 
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = useCallback(async (material: LearningMaterial) => {
+    try {
+      // Use the download API endpoint with proper filename
+      const downloadUrl = `/api/materials/download?id=${material.id}`;
+
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = material.filename || material.title || "download";
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success("Download started!", { duration: 2000 });
+    } catch (error) {
+      console.error("Download failed:", error);
+      toast.error("Unable to download file. Opening original link instead.");
+
+      // Fallback to opening the file URL directly
+      if (material.fileUrl) {
+        window.open(material.fileUrl, "_blank", "noopener,noreferrer");
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -227,9 +253,9 @@ export default function StudentDetailPage() {
   if (status === "loading" || loading) {
     return (
       <DashboardLayout>
-        <div className="p-8">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-gray-500">Loading...</div>
+        <div className='p-8'>
+          <div className='flex items-center justify-center h-64'>
+            <div className='text-gray-500'>Loading...</div>
           </div>
         </div>
       </DashboardLayout>
@@ -239,22 +265,22 @@ export default function StudentDetailPage() {
   if (!student) {
     return (
       <DashboardLayout>
-        <div className="p-8">
-          <div className="text-center py-12">
-            <Users className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">
+        <div className='p-8'>
+          <div className='text-center py-12'>
+            <Users className='mx-auto h-12 w-12 text-gray-400' />
+            <h3 className='mt-2 text-sm font-medium text-gray-900'>
               Student not found
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className='mt-1 text-sm text-gray-500'>
               The student you&apos;re looking for doesn&apos;t exist or you
               don&apos;t have access to view them.
             </p>
-            <div className="mt-6">
+            <div className='mt-6'>
               <Link
-                href="/students"
-                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                href='/students'
+                className='inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700'
               >
-                <ArrowLeft className="mr-2 h-4 w-4" />
+                <ArrowLeft className='mr-2 h-4 w-4' />
                 Back to Students
               </Link>
             </div>
@@ -266,23 +292,28 @@ export default function StudentDetailPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-8">
+      <div className='p-8'>
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
+        <div className='flex items-center justify-between mb-8'>
+          <div className='flex items-center gap-4'>
             <Link
-              href="/students"
-              className="text-gray-600 hover:text-gray-800"
+              href='/students'
+              className='text-gray-600 hover:text-gray-800'
             >
-              <ArrowLeft className="h-6 w-6" />
+              <ArrowLeft className='h-6 w-6' />
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className='text-2xl font-bold text-gray-900'>
                 {student.name}
               </h1>
-              <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
+              <div className='flex items-center gap-4 text-sm text-gray-500 mt-1'>
                 {student.age && <span>Age: {student.age}</span>}
                 {student.grade && <span>Grade: {student.grade}</span>}
+                {student.language && (
+                  <span className='inline-block px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full'>
+                    Language: {student.language}
+                  </span>
+                )}
                 <span>
                   Joined: {new Date(student.createdAt).toLocaleDateString()}
                 </span>
@@ -292,60 +323,60 @@ export default function StudentDetailPage() {
         </div>
 
         {/* Notes */}
-        <div className="mb-8">
-          <h2 className="text-lg font-medium text-gray-900 mb-3">Notes</h2>
+        <div className='mb-8'>
+          <h2 className='text-lg font-medium text-gray-900 mb-3'>Notes</h2>
           {student.notes ? (
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-700">{student.notes}</p>
+            <div className='bg-gray-50 rounded-lg p-4'>
+              <p className='text-gray-700'>{student.notes}</p>
             </div>
           ) : (
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-gray-500 italic">No notes available</p>
+            <div className='bg-gray-50 rounded-lg p-4'>
+              <p className='text-gray-500 italic'>No notes available</p>
             </div>
           )}
         </div>
 
         {/* About the Teacher */}
         {student.teacher && (
-          <div className="mb-8">
-            <h2 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
-              <User className="h-5 w-5" />
+          <div className='mb-8'>
+            <h2 className='text-lg font-medium text-gray-900 mb-4 flex items-center gap-2'>
+              <User className='h-5 w-5' />
               About the Teacher
             </h2>
-            <div className="bg-white border rounded-lg p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
+            <div className='bg-white border rounded-lg p-6'>
+              <div className='flex items-start gap-4'>
+                <div className='flex-shrink-0'>
                   {student.teacher.profilePicture ? (
                     <Image
                       src={student.teacher.profilePicture}
                       alt={`${student.teacher.name}'s profile`}
                       width={80}
                       height={80}
-                      className="w-20 h-20 rounded-full object-cover"
+                      className='w-20 h-20 rounded-full object-cover'
                     />
                   ) : (
-                    <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
-                      <User className="w-8 h-8 text-gray-400" />
+                    <div className='w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center'>
+                      <User className='w-8 h-8 text-gray-400' />
                     </div>
                   )}
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <div className='flex-1'>
+                  <h3 className='text-xl font-semibold text-gray-900 mb-2'>
                     {student.teacher.name}
                   </h3>
                   {student.teacher.subject && (
-                    <p className="text-sm text-blue-600 font-medium mb-2">
+                    <p className='text-sm text-blue-600 font-medium mb-2'>
                       {student.teacher.subject}
                     </p>
                   )}
                   {student.teacher.bio && (
-                    <p className="text-gray-600 mb-4">{student.teacher.bio}</p>
+                    <p className='text-gray-600 mb-4'>{student.teacher.bio}</p>
                   )}
                   <a
                     href={`mailto:${student.teacher.email}`}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors"
+                    className='inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors'
                   >
-                    <Mail className="w-4 h-4" />
+                    <Mail className='w-4 h-4' />
                     Contact Teacher
                   </a>
                 </div>
@@ -354,70 +385,70 @@ export default function StudentDetailPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
           {/* Reports Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                <FileText className="h-5 w-5" />
+          <div className='space-y-6'>
+            <div className='flex items-center justify-between'>
+              <h2 className='text-lg font-medium text-gray-900 flex items-center gap-2'>
+                <FileText className='h-5 w-5' />
                 Progress Reports ({student.reports?.length || 0})
               </h2>
               {isTeacher && (
                 <button
                   onClick={handleAddReport}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm hover:cursor-pointer"
+                  className='bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm hover:cursor-pointer'
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className='h-4 w-4' />
                   Add Report
                 </button>
               )}
             </div>
 
             {student.reports && student.reports.length > 0 ? (
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 {student.reports.map((report) => (
                   <div
                     key={report.id}
-                    className="bg-white border rounded-lg p-6"
+                    className='bg-white border rounded-lg p-6'
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <h3 className="font-medium text-gray-900">
+                    <div className='flex items-start justify-between mb-3'>
+                      <h3 className='font-medium text-gray-900'>
                         {report.title}
                       </h3>
                       {isTeacher && (
-                        <div className="flex gap-2">
+                        <div className='flex gap-2'>
                           <button
                             onClick={() => handleEditReport(report)}
-                            className="text-blue-600 hover:text-blue-800"
+                            className='text-blue-600 hover:text-blue-800'
                           >
-                            <Edit className="h-4 w-4" />
+                            <Edit className='h-4 w-4' />
                           </button>
                           <button
                             onClick={() => handleDeleteReport(report.id)}
-                            className="text-red-600 hover:text-red-800"
+                            className='text-red-600 hover:text-red-800'
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className='h-4 w-4' />
                           </button>
                         </div>
                       )}
                     </div>
-                    <p className="text-gray-700 text-sm mb-3 whitespace-pre-wrap">
+                    <p className='text-gray-700 text-sm mb-3 whitespace-pre-wrap'>
                       {report.content}
                     </p>
-                    <p className="text-xs text-gray-500 flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
+                    <p className='text-xs text-gray-500 flex items-center gap-1'>
+                      <Calendar className='h-3 w-3' />
                       {new Date(report.createdAt).toLocaleString()}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <FileText className="mx-auto h-8 w-8 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">
+              <div className='text-center py-8 bg-gray-50 rounded-lg'>
+                <FileText className='mx-auto h-8 w-8 text-gray-400' />
+                <h3 className='mt-2 text-sm font-medium text-gray-900'>
                   No reports yet
                 </h3>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className='mt-1 text-sm text-gray-500'>
                   {isTeacher
                     ? "Start by adding a progress report for this student."
                     : "No progress reports have been added yet."}
@@ -427,19 +458,19 @@ export default function StudentDetailPage() {
           </div>
 
           {/* Recommendations Section */}
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-medium text-gray-900 flex items-center gap-2">
-                <Lightbulb className="h-5 w-5" />
+          <div className='space-y-6'>
+            <div className='flex items-center justify-between'>
+              <h2 className='text-lg font-medium text-gray-900 flex items-center gap-2'>
+                <Lightbulb className='h-5 w-5' />
                 AI Recommendations ({recommendations.length})
               </h2>
               {isTeacher && student.reports && student.reports.length > 0 && (
                 <button
                   onClick={generateRecommendations}
                   disabled={generatingRecommendations}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 flex items-center gap-2 text-sm"
+                  className='bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
                 >
-                  <Lightbulb className="h-4 w-4" />
+                  <Lightbulb className='h-4 w-4' />
                   {generatingRecommendations
                     ? "Generating..."
                     : "Generate Recommendations"}
@@ -449,8 +480,8 @@ export default function StudentDetailPage() {
 
             {recommendations.length > 0 ? (
               <>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                  <p className="text-sm text-blue-800">
+                <div className='bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4'>
+                  <p className='text-sm text-blue-800'>
                     <strong>Smart Recommendations:</strong> These suggestions
                     are generated using our two-step AI process that first
                     analyzes the student&apos;s progress reports to identify
@@ -458,58 +489,56 @@ export default function StudentDetailPage() {
                     suitable materials from our database.
                   </p>
                 </div>
-                <div className="space-y-4">
+                <div className='space-y-4'>
                   {recommendations.map((rec) => (
                     <div
                       key={rec.id}
-                      className="bg-white border rounded-lg p-6"
+                      className='bg-white border rounded-lg p-6'
                     >
-                      <div className="flex items-start justify-between mb-3">
-                        <h3 className="font-medium text-gray-900">
+                      <div className='flex items-start justify-between mb-3'>
+                        <h3 className='font-medium text-gray-900'>
                           {rec.learningMaterial.title}
                         </h3>
-                        <div className="flex items-center gap-1 text-xs">
-                          <div className="bg-green-100 text-green-800 px-2 py-1 rounded">
+                        <div className='flex items-center gap-1 text-xs'>
+                          <div className='bg-green-100 text-green-800 px-2 py-1 rounded'>
                             {Math.round(rec.confidence * 100)}% match
                           </div>
                         </div>
                       </div>
 
                       {rec.learningMaterial.description && (
-                        <p className="text-sm text-gray-600 mb-2">
+                        <p className='text-sm text-gray-600 mb-2'>
                           {rec.learningMaterial.description}
                         </p>
                       )}
 
-                      <p className="text-sm text-blue-700 mb-3 italic">
+                      <p className='text-sm text-blue-700 mb-3 italic'>
                         &quot;{rec.reason}&quot;
                       </p>
 
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
-                          <span className="bg-gray-100 px-2 py-1 rounded">
+                      <div className='flex items-center justify-between'>
+                        <div className='flex items-center gap-2 text-xs text-gray-500 flex-wrap'>
+                          <span className='bg-gray-100 px-2 py-1 rounded'>
                             {rec.learningMaterial.topic}
                           </span>
-                          <span className="bg-gray-100 px-2 py-1 rounded">
+                          <span className='bg-gray-100 px-2 py-1 rounded'>
                             {rec.learningMaterial.level}
                           </span>
-                          <span className="bg-gray-100 px-2 py-1 rounded">
+                          <span className='bg-gray-100 px-2 py-1 rounded'>
                             {rec.learningMaterial.type}
                           </span>
-                          <span className="bg-gray-100 px-2 py-1 rounded">
+                          <span className='bg-gray-100 px-2 py-1 rounded'>
                             {rec.learningMaterial.skill}
                           </span>
                         </div>
-                        <div className="flex gap-2">
-                          <a
-                            href={rec.learningMaterial.fileUrl || "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
+                        <div className='flex gap-2'>
+                          <button
+                            onClick={() => handleDownload(rec.learningMaterial)}
+                            className='text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1'
                           >
-                            <BookOpen className="h-4 w-4" />
-                            View Material
-                          </a>
+                            <Download className='h-4 w-4' />
+                            Download Material
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -517,12 +546,12 @@ export default function StudentDetailPage() {
                 </div>
               </>
             ) : (
-              <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <Lightbulb className="mx-auto h-8 w-8 text-gray-400" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">
+              <div className='text-center py-8 bg-gray-50 rounded-lg'>
+                <Lightbulb className='mx-auto h-8 w-8 text-gray-400' />
+                <h3 className='mt-2 text-sm font-medium text-gray-900'>
                   No recommendations yet
                 </h3>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className='mt-1 text-sm text-gray-500'>
                   {student.reports && student.reports.length > 0
                     ? "Click 'Generate Recommendations' to get AI-powered learning material suggestions based on this student's progress reports."
                     : "Add progress reports to get AI-powered learning material recommendations."}
@@ -534,31 +563,31 @@ export default function StudentDetailPage() {
 
         {/* Report Form Modal */}
         {showReportForm && isTeacher && (
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className='fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50'>
             <div
               ref={modalRef}
-              className="bg-white rounded-lg shadow-lg max-w-2xl w-full"
+              className='bg-white rounded-lg shadow-lg max-w-2xl w-full'
             >
-              <div className="flex items-center justify-between p-6 border-b">
-                <h2 className="text-lg font-medium text-gray-900">
+              <div className='flex items-center justify-between p-6 border-b'>
+                <h2 className='text-lg font-medium text-gray-900'>
                   {editingReport ? "Edit Report" : "Add New Report"} for{" "}
                   {student.name}
                 </h2>
                 <button
                   onClick={() => setShowReportForm(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className='text-gray-400 hover:text-gray-600'
                 >
-                  <X className="h-6 w-6" />
+                  <X className='h-6 w-6' />
                 </button>
               </div>
-              <form onSubmit={handleReportSubmit} className="p-6">
-                <div className="space-y-4">
+              <form onSubmit={handleReportSubmit} className='p-6'>
+                <div className='space-y-4'>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>
                       Report Title *
                     </label>
                     <input
-                      type="text"
+                      type='text'
                       required
                       value={reportFormData.title}
                       onChange={(e) =>
@@ -567,12 +596,12 @@ export default function StudentDetailPage() {
                           title: e.target.value,
                         })
                       }
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      placeholder="e.g., Weekly Progress Report, Assessment Results"
+                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                      placeholder='e.g., Weekly Progress Report, Assessment Results'
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>
                       Report Content *
                     </label>
                     <textarea
@@ -585,22 +614,22 @@ export default function StudentDetailPage() {
                           content: e.target.value,
                         })
                       }
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className='w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
                       placeholder="Describe the student's progress, achievements, areas for improvement, etc."
                     />
                   </div>
                 </div>
-                <div className="flex gap-3 mt-6">
+                <div className='flex gap-3 mt-6'>
                   <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                    type='submit'
+                    className='bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700'
                   >
                     {editingReport ? "Update Report" : "Create Report"}
                   </button>
                   <button
-                    type="button"
+                    type='button'
                     onClick={() => setShowReportForm(false)}
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
+                    className='bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400'
                   >
                     Cancel
                   </button>

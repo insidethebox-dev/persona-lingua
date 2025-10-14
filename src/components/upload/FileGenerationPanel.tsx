@@ -29,8 +29,10 @@ interface FileGenerationPanelProps {
   generating: boolean;
   generationInstructions: string;
   dyslexiaFriendly: boolean;
+  outputLanguage: string;
   onInstructionsChange: (value: string) => void;
   onDyslexiaToggle: (value: boolean) => void;
+  onOutputLanguageChange: (value: string) => void;
   onGenerateDocx: () => void;
   generatedFile: GeneratedFile | null;
   onDownload: () => void;
@@ -41,8 +43,10 @@ export default function FileGenerationPanel({
   generating,
   generationInstructions,
   dyslexiaFriendly,
+  outputLanguage,
   onInstructionsChange,
   onDyslexiaToggle,
+  onOutputLanguageChange,
   onGenerateDocx,
   generatedFile,
   onDownload,
@@ -92,10 +96,66 @@ export default function FileGenerationPanel({
               ></div>
             </div>
           </div>
-          <span className='text-sm font-medium text-purple-900'>
-            Make dyslexia-friendly
-          </span>
+          <div className='flex-1'>
+            <span className='text-sm font-medium text-purple-900 block'>
+              Apply dyslexic-friendly formatting
+            </span>
+            <span className='text-xs text-purple-600'>
+              Uses special font, larger text (14pt), and increased line spacing
+            </span>
+          </div>
         </label>
+
+        {dyslexiaFriendly && (
+          <div className='mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg'>
+            <div className='text-xs text-purple-700'>
+              <div className='font-medium mb-2'>
+                Dyslexic-friendly formatting will be applied:
+              </div>
+              <div className='grid grid-cols-2 gap-2 text-purple-600'>
+                <div className='flex items-center gap-1'>
+                  <span className='w-1 h-1 bg-purple-400 rounded-full'></span>
+                  <span>Font: OpenDyslexic</span>
+                </div>
+                <div className='flex items-center gap-1'>
+                  <span className='w-1 h-1 bg-purple-400 rounded-full'></span>
+                  <span>Size: 14pt</span>
+                </div>
+                <div className='flex items-center gap-1'>
+                  <span className='w-1 h-1 bg-purple-400 rounded-full'></span>
+                  <span>Line spacing: 1.5x</span>
+                </div>
+                <div className='flex items-center gap-1'>
+                  <span className='w-1 h-1 bg-purple-400 rounded-full'></span>
+                  <span>Letter spacing: +0.5pt</span>
+                </div>
+              </div>
+              <div className='mt-2 text-xs text-purple-500'>
+                Research-based formatting to improve readability for dyslexic
+                users
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Output Language Selection */}
+      <div className='mb-6'>
+        <label className='block text-sm font-medium text-purple-900 mb-2'>
+          Output Language
+        </label>
+        <select
+          value={outputLanguage}
+          onChange={(e) => onOutputLanguageChange(e.target.value)}
+          className='w-full border border-purple-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white shadow-sm'
+        >
+          <option value='English'>English</option>
+          <option value='Greek'>Greek (Ελληνικά)</option>
+          <option value='Spanish'>Spanish (Español)</option>
+        </select>
+        <p className='text-xs text-purple-600 mt-2'>
+          Choose the language for the generated educational material
+        </p>
       </div>
 
       {/* Generation Instructions Field */}

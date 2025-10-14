@@ -11,6 +11,7 @@ import {
   MATERIAL_LEVELS,
   MATERIAL_TYPES,
   MATERIAL_SKILLS,
+  MATERIAL_LANGUAGES,
 } from "@/constants/materials";
 
 interface FormData {
@@ -20,6 +21,7 @@ interface FormData {
   level: string;
   type: string;
   skill: string;
+  language: string;
   tags: string;
   file: File | null;
 }
@@ -151,6 +153,15 @@ export default function MaterialForm({
             placeholder='Select skill'
             aiAnalysis={aiAnalysis}
             aiSuggestionKey='skill'
+          />
+
+          <SelectField
+            label='Language'
+            required
+            value={formData.language}
+            onChange={(value) => setFormData({ ...formData, language: value })}
+            options={MATERIAL_LANGUAGES}
+            placeholder='Select language'
           />
         </div>
 

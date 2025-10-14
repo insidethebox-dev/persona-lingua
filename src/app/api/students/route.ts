@@ -8,6 +8,7 @@ interface CreateStudentData {
   age: number | null;
   grade: string | null;
   notes: string | null;
+  language: string;
   learningBarriers: string[];
   teacherId: string;
 }
@@ -23,12 +24,19 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, age, grade, notes, learningBarriers } = body;
+    const { name, age, grade, notes, language, learningBarriers } = body;
 
     // Validate required fields
     if (!name) {
       return NextResponse.json(
         { success: false, error: "Student name is required" },
+        { status: 400 }
+      );
+    }
+
+    if (!language) {
+      return NextResponse.json(
+        { success: false, error: "Language is required" },
         { status: 400 }
       );
     }
@@ -39,6 +47,7 @@ export async function POST(request: NextRequest) {
       age: age ? parseInt(age) : null,
       grade,
       notes,
+      language,
       learningBarriers: learningBarriers || [],
       teacherId: session.user.id,
     };

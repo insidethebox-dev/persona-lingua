@@ -89,6 +89,7 @@ export interface ApiResponse<T = unknown> {
   data?: T;
   error?: string;
   message?: string;
+  metadata?: Record<string, unknown>; // Optional metadata for enhanced responses
 }
 
 // Auth types

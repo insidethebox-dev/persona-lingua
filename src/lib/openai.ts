@@ -200,15 +200,59 @@ export async function generateFileSummary(
 
 export async function extractTextFromFile(file: File): Promise<string> {
   const mimeType = file.type;
+  const fileName = file.name.toLowerCase();
 
-  // For text files, read directly
-  if (mimeType.startsWith("text/")) {
-    return await file.text();
+  try {
+    // For text files, read directly
+    if (mimeType.startsWith("text/")) {
+      return await file.text();
+    }
+
+    // For PDF files
+    if (mimeType === "application/pdf" || fileName.endsWith(".pdf")) {
+      try {
+        // Skip PDF parsing for now to avoid server-side import issues
+        // TODO: Implement proper server-side PDF parsing
+        return `PDF File: ${file.name}\nSize: ${file.size} bytes\nType: ${mimeType}\n\nPDF text extraction is temporarily disabled due to server compatibility issues. Please provide a manual description for AI analysis.`;
+      } catch (pdfError) {
+        console.warn("PDF extraction failed:", pdfError);
+        return `PDF File: ${file.name}\nSize: ${file.size} bytes\n\nPDF text extraction failed. Please provide a manual description for better AI analysis.`;
+      }
+    }
+
+    // For DOCX files
+    if (
+      mimeType ===
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      fileName.endsWith(".docx")
+    ) {
+      try {
+        const mammoth = await import("mammoth");
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await mammoth.extractRawText({ arrayBuffer });
+        return result.value || "DOCX content could not be extracted";
+      } catch (docxError) {
+        console.warn("DOCX extraction failed:", docxError);
+        return `DOCX File: ${file.name}\nSize: ${file.size} bytes\n\nDOCX text extraction failed. Please provide a manual description for better AI analysis.`;
+      }
+    }
+
+    // For DOC files (older format)
+    if (mimeType === "application/msword" || fileName.endsWith(".doc")) {
+      return `DOC File: ${file.name}\nSize: ${file.size} bytes\nType: ${mimeType}\n\nDOC files require conversion to DOCX for text extraction. Please convert to DOCX or provide a manual description.`;
+    }
+
+    // For other supported formats, provide helpful feedback
+    if (fileName.endsWith(".rtf")) {
+      return `RTF File: ${file.name}\nSize: ${file.size} bytes\n\nRTF files are not yet supported for text extraction. Please convert to TXT or DOCX, or provide a manual description.`;
+    }
+
+    // Fallback for unsupported file types
+    return `File: ${file.name}\nSize: ${file.size} bytes\nType: ${mimeType}\n\nThis file type is not supported for automatic text extraction. Please add a manual description for AI analysis.\n\nSupported formats: TXT, PDF, DOCX`;
+  } catch (error) {
+    console.error("File extraction error:", error);
+    return `File: ${file.name}\nSize: ${file.size} bytes\nType: ${mimeType}\n\nAn error occurred during file processing. Please provide a manual description for AI analysis.`;
   }
-
-  // For other file types, we'll need to implement extraction
-  // For now, return basic file info
-  return `File: ${file.name}\nSize: ${file.size} bytes\nType: ${mimeType}\n\nThis file requires specialized extraction. Please add a manual description for AI analysis.`;
 }
 
 export interface AIRecommendationResult {
@@ -335,20 +379,52 @@ export interface StudentNeedsAnalysis {
   reasoning: string;
 }
 
+export interface StudentContext {
+  name: string;
+  language: string;
+  grade: string | null;
+  age: number | null;
+  learningBarriers: string[];
+  reportMetadata: Array<{
+    title: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }>;
+}
+
 export async function analyzeStudentNeeds(
   studentReports: string[],
-  studentName: string
+  studentContext: StudentContext
 ): Promise<StudentNeedsAnalysis> {
   try {
     const reportsText = studentReports.join("\n\n---\n\n");
+    const reportTitles = studentContext.reportMetadata
+      .map((r) => r.title)
+      .join(", ");
+    const barriers = studentContext.learningBarriers.join(", ");
+
     const prompt = `
 Analyze these student progress reports to determine what types of learning materials would be most beneficial.
 
-Student: ${studentName}
+Student Profile:
+- Name: ${studentContext.name}
+- Language: ${studentContext.language}
+- Grade: ${studentContext.grade || "Not specified"}
+- Age: ${studentContext.age || "Not specified"}
+- Learning Barriers: ${barriers || "None specified"}
+- Recent Report Titles: ${reportTitles}
+
 Progress Reports:
 ${reportsText}
 
-Based on these reports, identify the student's learning needs and recommend what types of materials would help them most.
+Consider the student's language (${
+      studentContext.language
+    }) when making recommendations. Pay special attention to any learning barriers (${barriers}) and how materials can accommodate these needs.
+
+Based on these reports and student context, identify the student's learning needs and recommend what types of materials would help them most, prioritizing materials that:
+1. Match their language preference (${studentContext.language})
+2. Accommodate their learning barriers
+3. Are appropriate for their grade/age level
 `;
 
     const completion = await openai.chat.completions.create({
@@ -357,7 +433,7 @@ Based on these reports, identify the student's learning needs and recommend what
         {
           role: "system",
           content:
-            "You are an educational specialist analyzing student progress reports to identify learning needs and recommend appropriate material types.",
+            "You are an educational specialist analyzing student progress reports to identify learning needs and recommend appropriate material types. You have expertise in multilingual education and learning accessibility. Always consider language compatibility, cultural relevance, and learning barrier accommodations when making recommendations.",
         },
         {
           role: "user",
@@ -497,8 +573,14 @@ Based on these reports, identify the student's learning needs and recommend what
   }
 }
 
+interface CrossLanguageGuidance {
+  message: string;
+  availableLanguages: string[];
+  mitigation: string;
+}
+
 export async function generateRecommendationsFromFiltered(
-  studentName: string,
+  studentContext: StudentContext,
   studentNeeds: StudentNeedsAnalysis,
   filteredMaterials: Array<{
     id: string;
@@ -509,13 +591,32 @@ export async function generateRecommendationsFromFiltered(
     type: string;
     skill: string;
     tags: string[];
-  }>
+    language?: string;
+    preScore?: number;
+    scoreRationale?: string;
+  }>,
+  crossLanguageGuidance?: CrossLanguageGuidance | null
 ): Promise<AIRecommendationResult[]> {
   try {
+    const barriers = studentContext.learningBarriers.join(", ") || "None";
+    const languageContext = crossLanguageGuidance
+      ? `\n\nIMPORTANT: ${
+          crossLanguageGuidance.message
+        }\nAvailable languages: ${crossLanguageGuidance.availableLanguages.join(
+          ", "
+        )}\nMitigation strategy: ${crossLanguageGuidance.mitigation}`
+      : `\nStudent's preferred language: ${studentContext.language}`;
+
     const prompt = `
 Based on the student's analyzed learning needs, recommend the most suitable materials from the filtered options.
 
-Student: ${studentName}
+Student Profile:
+- Name: ${studentContext.name}
+- Language: ${studentContext.language}
+- Grade: ${studentContext.grade || "Not specified"}
+- Learning Barriers: ${barriers}
+${languageContext}
+
 Learning Needs Analysis: ${studentNeeds.reasoning}
 
 Recommended criteria:
@@ -525,7 +626,7 @@ Recommended criteria:
 - Skills: ${studentNeeds.skill.join(", ")}
 - Tags: ${studentNeeds.tags.join(", ")}
 
-Available Materials (pre-filtered based on criteria):
+Available Materials (pre-scored and filtered):
 ${filteredMaterials
   .map(
     (m) => `
@@ -536,12 +637,25 @@ Topic: ${m.topic}
 Level: ${m.level}
 Type: ${m.type}
 Skill: ${m.skill}
+Language: ${m.language || "Not specified"}
+Pre-Score: ${m.preScore || 0}/100
+Score Rationale: ${m.scoreRationale || "No scoring data"}
 Tags: ${m.tags.join(", ")}
 `
   )
   .join("\n---\n")}
 
-Please rank and recommend the most suitable materials for this student, focusing on how well each material addresses their specific learning needs.
+Please rank and recommend the most suitable materials for this student, focusing on:
+
+1. Language alignment - Prioritize materials in the student's preferred language (${
+      studentContext.language
+    })
+2. Learning barrier accommodations - Consider materials that address specific learning barriers: ${barriers}
+3. Cultural relevance - Consider if materials are culturally appropriate and engaging
+4. Pre-scoring context - Use the pre-scores as a starting point, but apply your expertise to refine recommendations
+5. Accessibility features - Favor materials that accommodate the student's learning barriers
+
+When recommending cross-language materials, provide specific adaptation strategies in your reasoning.
 `;
 
     const completion = await openai.chat.completions.create({
@@ -550,7 +664,7 @@ Please rank and recommend the most suitable materials for this student, focusing
         {
           role: "system",
           content:
-            "You are an educational specialist who recommends learning materials based on detailed student needs analysis. Focus on matching materials to specific learning gaps and goals.",
+            "You are an educational specialist who recommends learning materials based on detailed student needs analysis. You have expertise in multilingual education, learning accessibility, and cultural competency. Consider language compatibility, learning barrier accommodations, and cultural relevance when making recommendations. Always explain how materials can be adapted for cross-language use when necessary.",
         },
         {
           role: "user",

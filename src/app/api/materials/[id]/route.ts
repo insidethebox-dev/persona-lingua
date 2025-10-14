@@ -12,6 +12,7 @@ const updateMaterialSchema = z.object({
   level: z.string().min(1, "Level is required"),
   type: z.string().min(1, "Type is required"),
   skill: z.string().min(1, "Skill is required"),
+  language: z.string().min(1, "Language is required"),
   tags: z.array(z.string()).optional(),
 });
 
@@ -144,6 +145,7 @@ export async function PATCH(
         level: validatedData.level,
         type: validatedData.type,
         skill: validatedData.skill,
+        language: validatedData.language,
         tags: validatedData.tags || [],
         updatedAt: new Date(),
       },

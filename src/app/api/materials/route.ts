@@ -23,10 +23,11 @@ export async function POST(request: NextRequest) {
     const level = formData.get("level") as string;
     const type = formData.get("type") as string;
     const skill = formData.get("skill") as string;
+    const language = formData.get("language") as string;
     const tags = formData.get("tags") as string;
 
     // Validate required fields (topic is now optional)
-    if (!file || !title || !level || !type || !skill) {
+    if (!file || !title || !level || !type || !skill || !language) {
       return NextResponse.json(
         { success: false, error: "Missing required fields" },
         { status: 400 }
@@ -145,6 +146,7 @@ export async function POST(request: NextRequest) {
         level,
         type,
         skill,
+        language,
         tags: tagArray,
         uploadedBy: session.user.id,
         schoolId: session.user.schoolId || null, // Handle null schoolId

@@ -62,10 +62,13 @@ export const MATERIAL_SKILLS = [
   "Intercultural Communication",
 ] as const;
 
+export const MATERIAL_LANGUAGES = ["English", "Greek", "Spanish"] as const;
+
 export type MaterialTopic = (typeof MATERIAL_TOPICS)[number];
 export type MaterialLevel = (typeof MATERIAL_LEVELS)[number];
 export type MaterialType = (typeof MATERIAL_TYPES)[number];
 export type MaterialSkill = (typeof MATERIAL_SKILLS)[number];
+export type MaterialLanguage = (typeof MATERIAL_LANGUAGES)[number];
 
 // Learning barriers and accessibility needs
 export const LEARNING_BARRIERS = [

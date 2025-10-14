@@ -4,7 +4,11 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import DashboardLayout from "@/components/DashboardLayout";
-import { MaterialForm, FileGenerationPanel, FilenameConversionDialog } from "@/components/upload";
+import {
+  MaterialForm,
+  FileGenerationPanel,
+  FilenameConversionDialog,
+} from "@/components/upload";
 import { ApiResponse } from "@/types";
 import { AIAnalysisResult } from "@/lib/openai";
 import { hasNonAsciiChars } from "@/utils/greeklish";
@@ -35,6 +39,7 @@ export default function UploadPage() {
   const [generating, setGenerating] = useState(false);
   const [generationInstructions, setGenerationInstructions] = useState("");
   const [dyslexiaFriendly, setDyslexiaFriendly] = useState(false);
+  const [outputLanguage, setOutputLanguage] = useState("English");
   const [showFilenameDialog, setShowFilenameDialog] = useState(false);
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
@@ -44,6 +49,7 @@ export default function UploadPage() {
     level: "",
     type: "",
     skill: "",
+    language: "",
     tags: "",
     file: null as File | null,
   });
@@ -141,12 +147,12 @@ export default function UploadPage() {
         type: pendingFile.type,
         lastModified: pendingFile.lastModified,
       });
-      
+
       setFormData({ ...formData, file: convertedFile });
       setError("");
       setShowFilenameDialog(false);
       setPendingFile(null);
-      
+
       // Generate AI summary for the converted file
       generateAISummary(convertedFile);
     }
@@ -156,9 +162,9 @@ export default function UploadPage() {
     setShowFilenameDialog(false);
     setPendingFile(null);
     // Reset the file input
-    const fileInput = document.getElementById('file') as HTMLInputElement;
+    const fileInput = document.getElementById("file") as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = '';
+      fileInput.value = "";
     }
   };
 
@@ -277,6 +283,7 @@ Rewrite the following text accordingly:
       }
 
       generateFormData.append("instructions", finalInstructions);
+      generateFormData.append("outputLanguage", outputLanguage);
 
       const response = await fetch("/api/ai/generate", {
         method: "POST",
@@ -285,7 +292,36 @@ Rewrite the following text accordingly:
 
       if (response.ok) {
         // Handle DOCX download
-        const blob = await response.blob();
+        let blob = await response.blob();
+
+        // Apply dyslexic-friendly formatting if enabled
+        if (dyslexiaFriendly) {
+          try {
+            // Show formatting progress
+            toast.dismiss(loadingToast);
+            const formattingToast = toast.loading(
+              "Applying dyslexic-friendly formatting...",
+              {
+                style: {
+                  background: "#8b5cf6",
+                  color: "white",
+                },
+              }
+            );
+
+            const { applyDyslexicFormatting } = await import(
+              "@/lib/dyslexic-formatting"
+            );
+            blob = await applyDyslexicFormatting(blob);
+
+            toast.dismiss(formattingToast);
+          } catch (formatError) {
+            console.warn("Failed to apply dyslexic formatting:", formatError);
+            toast.error("Formatting failed, downloading original file");
+            // Continue with original blob if formatting fails
+          }
+        }
+
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
@@ -297,6 +333,17 @@ Rewrite the following text accordingly:
           const match = contentDisposition.match(/filename="([^"]+)"/);
           if (match) {
             filename = match[1];
+          }
+        }
+
+        // Add dyslexic indicator to filename if formatting was applied
+        if (dyslexiaFriendly) {
+          const extensionIndex = filename.lastIndexOf(".docx");
+          if (extensionIndex !== -1) {
+            filename =
+              filename.substring(0, extensionIndex) + "-dyslexic-friendly.docx";
+          } else {
+            filename = filename + "-dyslexic-friendly";
           }
         }
 
@@ -363,6 +410,7 @@ Rewrite the following text accordingly:
       uploadFormData.append("type", formData.type);
       uploadFormData.append("skill", formData.skill);
       uploadFormData.append("tags", formData.tags);
+      uploadFormData.append("language", formData.language);
 
       const response = await fetch("/api/materials", {
         method: "POST",
@@ -380,6 +428,7 @@ Rewrite the following text accordingly:
           level: "",
           type: "",
           skill: "",
+          language: "",
           tags: "",
           file: null,
         });
@@ -457,8 +506,10 @@ Rewrite the following text accordingly:
               generating={generating}
               generationInstructions={generationInstructions}
               dyslexiaFriendly={dyslexiaFriendly}
+              outputLanguage={outputLanguage}
               onInstructionsChange={setGenerationInstructions}
               onDyslexiaToggle={setDyslexiaFriendly}
+              onOutputLanguageChange={setOutputLanguage}
               onGenerateDocx={downloadGeneratedDocx}
               generatedFile={generatedFile}
               onDownload={downloadGeneratedFile}

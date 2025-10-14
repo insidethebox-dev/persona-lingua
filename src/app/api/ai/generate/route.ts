@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
     const skill = formData.get("skill") as string;
     const tags = formData.get("tags") as string;
     const instructions = formData.get("instructions") as string;
+    const outputLanguage = (formData.get("outputLanguage") as string) || "English";
 
     // Get the uploaded file for additional context
     const file = formData.get("file") as File | null;
@@ -117,7 +118,9 @@ ${
   fileContent
     ? "Make it complementary to the uploaded material while being different enough to serve as additional practice or extension material."
     : "Make it engaging and educational for the specified level and skill."
-}`;
+}
+
+IMPORTANT: Generate the entire content in ${outputLanguage}. All text, headings, instructions, and examples must be written in ${outputLanguage}.`;
 
     console.log("AI Generation Prompt:", prompt);
 
@@ -127,7 +130,7 @@ ${
         {
           role: "system",
           content:
-            "You are an expert educational content creator. Create high-quality, pedagogically sound learning materials that are engaging and appropriate for the specified level.",
+            `You are an expert educational content creator. Create high-quality, pedagogically sound learning materials that are engaging and appropriate for the specified level. You must write all content in the requested language (${outputLanguage}). If the requested language is not English, ensure all text, headings, instructions, and examples are properly translated and culturally appropriate.`,
         },
         {
           role: "user",
