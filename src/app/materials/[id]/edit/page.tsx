@@ -133,11 +133,14 @@ export default function EditMaterialPage() {
         level: formData.level,
         type: formData.type,
         skill: formData.skill,
+        language: formData.language,
         tags: formData.tags
           .split(",")
           .map((tag) => tag.trim())
           .filter(Boolean),
       };
+
+      console.log("Sending update data:", updateData);
 
       const response = await fetch(`/api/materials/${materialId}`, {
         method: "PATCH",
@@ -148,6 +151,8 @@ export default function EditMaterialPage() {
       });
 
       const data: ApiResponse = await response.json();
+
+      console.log("API Response:", { status: response.status, data });
 
       if (data.success) {
         setSuccess("Material updated successfully!");

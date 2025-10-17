@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
     const skill = formData.get("skill") as string;
     const tags = formData.get("tags") as string;
     const instructions = formData.get("instructions") as string;
-    const outputLanguage = (formData.get("outputLanguage") as string) || "English";
+    const outputLanguage =
+      (formData.get("outputLanguage") as string) || "English";
 
     // Get the uploaded file for additional context
     const file = formData.get("file") as File | null;
@@ -129,8 +130,7 @@ IMPORTANT: Generate the entire content in ${outputLanguage}. All text, headings,
       messages: [
         {
           role: "system",
-          content:
-            `You are an expert educational content creator. Create high-quality, pedagogically sound learning materials that are engaging and appropriate for the specified level. You must write all content in the requested language (${outputLanguage}). If the requested language is not English, ensure all text, headings, instructions, and examples are properly translated and culturally appropriate.`,
+          content: `You are an expert educational content creator. Create high-quality, pedagogically sound learning materials that are engaging and appropriate for the specified level. You must write all content in the requested language (${outputLanguage}). If the requested language is not English, ensure all text, headings, instructions, and examples are properly translated and culturally appropriate.`,
         },
         {
           role: "user",
