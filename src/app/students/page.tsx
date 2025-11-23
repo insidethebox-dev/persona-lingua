@@ -372,7 +372,7 @@ export default function StudentsPage() {
                 </div>
                 <div>
                   <label className='block text-sm font-medium text-gray-700 mb-1'>
-                    Native Language <span className='text-red-500'>*</span>
+                    Learning Language <span className='text-red-500'>*</span>
                   </label>
                   <select
                     value={formData.language}

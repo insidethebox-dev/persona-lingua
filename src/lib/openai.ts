@@ -4,6 +4,18 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+export interface GeneratedMaterial {
+  title: string;
+  content: string;
+  metadata: {
+    topic: string;
+    level: string;
+    skill: string;
+    language: string;
+    estimatedDuration: string;
+  };
+}
+
 export interface AIAnalysisResult {
   title?: string; // AI-suggested title (optional for backward compatibility)
   description: string;
@@ -92,18 +104,32 @@ Please analyze the content and provide the following information:
                 ],
               },
               level: {
-                type: "string",
-                description: "The appropriate grade/difficulty level",
-                enum: [
-                  "Preschool",
-                  "Kindergarten",
-                  "Elementary (1-3)",
-                  "Elementary (4-5)",
-                  "Middle School (6-8)",
-                  "High School (9-12)",
-                  "Adult Education",
-                  "Mixed Levels",
-                ],
+                type: "array",
+                items: {
+                  type: "string",
+                  enum: [
+                    "Preschool",
+                    "Kindergarten",
+                    "Elementary (1-3)",
+                    "Elementary (4-5)",
+                    "Middle School (6-8)",
+                    "High School (9-12)",
+                    "Adult Education",
+                    "Mixed Levels",
+                    "A1.1 (Beginner Low)",
+                    "A1.2 (Beginner High)",
+                    "A2.1 (Elementary Low)",
+                    "A2.2 (Elementary High)",
+                    "B1.1 (Intermediate Low)",
+                    "B1.2 (Intermediate High)",
+                    "B2.1 (Upper-Intermediate Low)",
+                    "B2.2 (Upper-Intermediate High)",
+                    "C1.1 (Advanced Low)",
+                    "C1.2 (Advanced High)",
+                    "C2 (Proficient/Mastery)",
+                  ],
+                },
+                description: "Appropriate difficulty levels for this student",
               },
               type: {
                 type: "string",
@@ -428,7 +454,7 @@ Based on these reports and student context, identify the student's learning need
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-turbo-preview", // Upgraded for better educational reasoning
       messages: [
         {
           role: "system",
@@ -453,19 +479,20 @@ Based on these reports and student context, identify the student's learning need
                 items: {
                   type: "string",
                   enum: [
-                    "Mathematics",
-                    "Science",
-                    "English Language Arts",
-                    "Social Studies",
-                    "History",
-                    "Geography",
-                    "Art",
-                    "Music",
-                    "Physical Education",
-                    "Computer Science",
-                    "Foreign Language",
-                    "Life Skills",
-                    "Other",
+                    "Daily Life",
+                    "Travel",
+                    "Food & Drink",
+                    "Work & Professions",
+                    "Education",
+                    "Health & Wellness",
+                    "Environment",
+                    "Technology",
+                    "Culture & Traditions",
+                    "Sports & Hobbies",
+                    "Shopping",
+                    "Relationships",
+                    "Holidays & Celebrations",
+                    "News & Current Events",
                   ],
                 },
                 description:
@@ -476,14 +503,17 @@ Based on these reports and student context, identify the student's learning need
                 items: {
                   type: "string",
                   enum: [
-                    "Preschool",
-                    "Kindergarten",
-                    "Elementary (1-3)",
-                    "Elementary (4-5)",
-                    "Middle School (6-8)",
-                    "High School (9-12)",
-                    "Adult Education",
-                    "Mixed Levels",
+                    "A1.1 (Beginner Low)",
+                    "A1.2 (Beginner High)",
+                    "A2.1 (Elementary Low)",
+                    "A2.2 (Elementary High)",
+                    "B1.1 (Intermediate Low)",
+                    "B1.2 (Intermediate High)",
+                    "B2.1 (Upper-Intermediate Low)",
+                    "B2.2 (Upper-Intermediate High)",
+                    "C1.1 (Advanced Low)",
+                    "C1.2 (Advanced High)",
+                    "C2 (Proficient/Mastery)",
                   ],
                 },
                 description: "Appropriate difficulty levels for this student",
@@ -494,15 +524,23 @@ Based on these reports and student context, identify the student's learning need
                   type: "string",
                   enum: [
                     "Worksheet",
-                    "Quiz/Test",
-                    "Reading Material",
-                    "Activity Guide",
-                    "Presentation",
-                    "Video/Audio",
-                    "Interactive Content",
+                    "Quiz",
+                    "Test",
+                    "Multiple Choice",
+                    "True/False",
+                    "Fill in the Blank",
+                    "Essay Questions",
+                    "Summary",
+                    "Reading Passage",
+                    "Exercise",
+                    "Activity",
+                    "Project",
+                    "Assessment",
+                    "Homework",
+                    "Study Guide",
                     "Reference Material",
-                    "Assessment Tool",
-                    "Other",
+                    "Presentation",
+                    "Interactive Content",
                   ],
                 },
                 description: "Types of materials that would be most effective",
@@ -512,20 +550,14 @@ Based on these reports and student context, identify the student's learning need
                 items: {
                   type: "string",
                   enum: [
-                    "Reading Comprehension",
-                    "Writing",
-                    "Math Problem Solving",
-                    "Critical Thinking",
-                    "Vocabulary",
-                    "Grammar",
-                    "Listening",
                     "Speaking",
-                    "Research Skills",
-                    "Creative Expression",
-                    "Scientific Method",
-                    "Analysis",
-                    "Memory",
-                    "Other",
+                    "Listening",
+                    "Reading",
+                    "Writing",
+                    "Grammar",
+                    "Vocabulary",
+                    "Pronunciation",
+                    "Intercultural Communication",
                   ],
                 },
                 description: "Skills this student needs to develop or practice",
@@ -551,6 +583,11 @@ Based on these reports and student context, identify the student's learning need
       function_call: { name: "analyze_student_needs" },
       temperature: 0.3,
     });
+
+    console.log(
+      "AI analyzeStudentNeeds completion:",
+      completion.choices[0]?.message
+    );
 
     const functionCall = completion.choices[0]?.message?.function_call;
     if (functionCall && functionCall.arguments) {
@@ -594,6 +631,7 @@ export async function generateRecommendationsFromFiltered(
     language?: string;
     preScore?: number;
     scoreRationale?: string;
+    aiSummary?: string | null;
   }>,
   crossLanguageGuidance?: CrossLanguageGuidance | null
 ): Promise<AIRecommendationResult[]> {
@@ -607,6 +645,12 @@ export async function generateRecommendationsFromFiltered(
         )}\nMitigation strategy: ${crossLanguageGuidance.mitigation}`
       : `\nStudent's preferred language: ${studentContext.language}`;
 
+    // Extract key insights from student needs reasoning
+    const needsHighlights = studentNeeds.reasoning
+      .split(".")
+      .slice(0, 3)
+      .join(". ");
+
     const prompt = `
 Based on the student's analyzed learning needs, recommend the most suitable materials from the filtered options.
 
@@ -614,10 +658,13 @@ Student Profile:
 - Name: ${studentContext.name}
 - Language: ${studentContext.language}
 - Grade: ${studentContext.grade || "Not specified"}
+- Age: ${studentContext.age || "Not specified"}
 - Learning Barriers: ${barriers}
 ${languageContext}
 
 Learning Needs Analysis: ${studentNeeds.reasoning}
+
+KEY PRIORITIES: ${needsHighlights}
 
 Recommended criteria:
 - Topics: ${studentNeeds.topic.join(", ")}
@@ -633,6 +680,7 @@ ${filteredMaterials
 ID: ${m.id}
 Title: ${m.title}
 Description: ${m.description || "No description"}
+AI Analysis: ${m.aiSummary || "Not available"}
 Topic: ${m.topic}
 Level: ${m.level}
 Type: ${m.type}
@@ -655,11 +703,13 @@ Please rank and recommend the most suitable materials for this student, focusing
 4. Pre-scoring context - Use the pre-scores as a starting point, but apply your expertise to refine recommendations
 5. Accessibility features - Favor materials that accommodate the student's learning barriers
 
+IMPORTANT: Recommend between 3-20 materials to give the teacher a good variety of options to choose from. Include materials at slightly different difficulty levels or approaching the topic from different angles.
+
 When recommending cross-language materials, provide specific adaptation strategies in your reasoning.
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-turbo-preview", // Upgraded for better matching and reasoning
       messages: [
         {
           role: "system",
@@ -730,5 +780,115 @@ When recommending cross-language materials, provide specific adaptation strategi
     throw new Error(
       "Failed to generate recommendations from filtered materials"
     );
+  }
+}
+
+/**
+ * Generate actual learning material content for a specific student
+ * based on their profile, reports, and identified needs
+ */
+export async function generateMaterialForStudent(
+  studentNeeds: StudentNeedsAnalysis,
+  studentProfile: {
+    name: string;
+    language: string;
+    grade?: string | null;
+    age?: number | null;
+    learningBarriers: string[];
+  },
+  recentReports: Array<{ title: string; excerpt: string }>
+): Promise<{
+  title: string;
+  content: string;
+  metadata: {
+    topic: string;
+    level: string;
+    skill: string;
+    language: string;
+    estimatedDuration: string;
+  };
+}> {
+  try {
+    const prompt = `
+You are an expert educational content creator. Generate a complete, ready-to-use learning material for a specific student.
+
+Student Profile:
+- Name: ${studentProfile.name}
+- Language: ${studentProfile.language}
+- Grade: ${studentProfile.grade || "Not specified"}
+- Age: ${studentProfile.age || "Not specified"}
+- Learning Barriers: ${studentProfile.learningBarriers.length > 0 ? studentProfile.learningBarriers.join(", ") : "None"}
+
+Recent Progress Reports Summary:
+${recentReports.map((r, i) => `${i + 1}. ${r.title}: ${r.excerpt}`).join("\n")}
+
+AI-Identified Learning Needs:
+- Topics: ${studentNeeds.topic.join(", ")}
+- Levels: ${studentNeeds.level.join(", ")}
+- Skills: ${studentNeeds.skill.join(", ")}
+- Material Types: ${studentNeeds.type.join(", ")}
+- Analysis: ${studentNeeds.reasoning}
+
+Please generate a complete learning material that:
+1. Is appropriate for the student's level and needs
+2. Addresses the identified learning gaps
+3. Is engaging and suitable for their age/grade
+4. Takes into account any learning barriers
+5. Is in ${studentProfile.language} language
+6. Includes clear instructions for both teacher and student
+7. Has exercises, activities, or content that can be completed
+
+Format the material as a structured document with:
+- A clear title
+- Learning objectives
+- Instructions
+- Main content/activities
+- Assessment or reflection questions (if applicable)
+
+Generate the complete material now:
+`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4-turbo-preview",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are an expert educational content creator specializing in personalized learning materials. Generate complete, ready-to-use materials that teachers can immediately use with their students. Be thorough, engaging, and pedagogically sound.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.8, // More creative for content generation
+      max_tokens: 3000, // Allow for longer content
+    });
+
+    const generatedContent = completion.choices[0]?.message?.content;
+
+    if (!generatedContent) {
+      throw new Error("No content generated from AI");
+    }
+
+    // Extract title from the generated content (first line typically)
+    const lines = generatedContent.split("\n");
+    const titleLine = lines.find((line) => line.trim().length > 0) || "Learning Material";
+    const title = titleLine.replace(/^#+\s*/, "").replace(/^\*\*/, "").replace(/\*\*$/, "").trim();
+
+    return {
+      title,
+      content: generatedContent,
+      metadata: {
+        topic: studentNeeds.topic[0] || "General",
+        level: studentNeeds.level[0] || "Mixed",
+        skill: studentNeeds.skill[0] || "Multiple Skills",
+        language: studentProfile.language,
+        estimatedDuration: "30-45 minutes",
+      },
+    };
+  } catch (error) {
+    console.error("Error generating material for student:", error);
+    throw new Error("Failed to generate learning material");
   }
 }

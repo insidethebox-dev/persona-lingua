@@ -6,6 +6,10 @@ import {
   analyzeStudentNeeds,
   generateRecommendationsFromFiltered,
 } from "@/lib/openai";
+import {
+  scoreEnhancedMaterialMatch,
+  extractKeyConceptsFromReports,
+} from "@/lib/recommendation-scoring";
 import { ApiResponse } from "@/types";
 
 export async function POST(request: NextRequest) {
@@ -130,7 +134,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Score materials based on deterministic criteria with language match weighted highest
+    // Extract key concepts from student reports for semantic matching
+    const studentReportsConcepts =
+      extractKeyConceptsFromReports(reportContents);
+
+    // Score materials using enhanced scoring with semantic matching
     interface ScoredMaterial {
       material: (typeof allMaterials)[0];
       score: number;
@@ -142,116 +150,45 @@ export async function POST(request: NextRequest) {
         skillMatch: number;
         tagMatch: number;
         accessibilityMatch: number;
+        semanticMatch: number;
       };
       rationale: string[];
     }
 
     const scoredMaterials: ScoredMaterial[] = allMaterials.map((material) => {
-      const breakdown = {
-        languageMatch: 0,
-        topicMatch: 0,
-        levelMatch: 0,
-        typeMatch: 0,
-        skillMatch: 0,
-        tagMatch: 0,
-        accessibilityMatch: 0,
-      };
-      const rationale: string[] = [];
-
-      // Language match - highest weight (40% of total score)
-      if (material.language === student.language) {
-        breakdown.languageMatch = 40;
-        rationale.push(`Perfect language match (${student.language})`);
-      } else if (material.language) {
-        // Slight penalty for different language
-        breakdown.languageMatch = -10;
-        rationale.push(
-          `Language mismatch (Material: ${material.language}, Student: ${student.language})`
-        );
-      }
-
-      // Topic match - 20% weight
-      if (material.topic && studentNeeds.topic.includes(material.topic)) {
-        breakdown.topicMatch = 20;
-        rationale.push(`Topic match: ${material.topic}`);
-      }
-
-      // Level match - 15% weight
-      if (studentNeeds.level.includes(material.level)) {
-        breakdown.levelMatch = 15;
-        rationale.push(`Level match: ${material.level}`);
-      }
-
-      // Type match - 10% weight
-      if (studentNeeds.type.includes(material.type)) {
-        breakdown.typeMatch = 10;
-        rationale.push(`Type match: ${material.type}`);
-      }
-
-      // Skill match - 10% weight
-      if (studentNeeds.skill.includes(material.skill)) {
-        breakdown.skillMatch = 10;
-        rationale.push(`Skill match: ${material.skill}`);
-      }
-
-      // Tag match - 5% weight (distributed across matching tags)
-      const matchingTags = studentNeeds.tags.filter((needTag) =>
-        material.tags.some(
-          (materialTag) =>
-            materialTag.toLowerCase().includes(needTag.toLowerCase()) ||
-            needTag.toLowerCase().includes(materialTag.toLowerCase())
-        )
-      );
-      if (matchingTags.length > 0) {
-        breakdown.tagMatch = Math.min(5, matchingTags.length * 2);
-        rationale.push(`Tag matches: ${matchingTags.join(", ")}`);
-      }
-
-      // Learning barrier accommodation check - bonus points
-      if (student.learningBarriers.length > 0) {
-        const accessibilityKeywords = [
-          "visual",
-          "audio",
-          "dyslexia",
-          "adhd",
-          "autism",
-          "hearing",
-          "mobility",
-          "cognitive",
-        ];
-        const materialText = `${material.title} ${
-          material.description || ""
-        } ${material.tags.join(" ")}`.toLowerCase();
-
-        const hasAccessibilityFeatures = accessibilityKeywords.some(
-          (keyword) =>
-            materialText.includes(keyword) ||
-            material.tags.some((tag) => tag.toLowerCase().includes(keyword))
-        );
-
-        if (hasAccessibilityFeatures) {
-          breakdown.accessibilityMatch = 10;
-          rationale.push("Contains accessibility accommodations");
-        }
-      }
-
-      const totalScore = Object.values(breakdown).reduce(
-        (sum, score) => sum + score,
-        0
-      );
+      const scoringResult = scoreEnhancedMaterialMatch({
+        material,
+        studentNeeds,
+        studentContext: {
+          language: student.language,
+          learningBarriers: student.learningBarriers,
+        },
+        studentReportsConcepts,
+      });
 
       return {
         material,
-        score: totalScore,
-        scoreBreakdown: breakdown,
-        rationale,
+        score: scoringResult.score,
+        scoreBreakdown: scoringResult.breakdown,
+        rationale: scoringResult.rationale,
       };
     });
 
     // Sort by score and take top materials (limit to reasonable number for AI analysis)
+    const MAX_MATERIALS_FOR_AI = 20;
     const topScoredMaterials = scoredMaterials
       .sort((a, b) => b.score - a.score)
-      .slice(0, 20); // Limit to top 20 materials for AI analysis
+      .slice(0, MAX_MATERIALS_FOR_AI);
+
+    // Count how many materials were filtered out due to language mismatch
+    const languageMismatchCount = scoredMaterials.filter(
+      (m) => m.score < 0
+    ).length;
+    console.log(
+      `Language filtering: ${languageMismatchCount} materials excluded (wrong language), ${
+        scoredMaterials.length - languageMismatchCount
+      } materials in ${student.language}`
+    );
 
     if (topScoredMaterials.length === 0) {
       return NextResponse.json(
@@ -299,14 +236,53 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Write scored materials to file for debugging
+    const fs = await import("fs");
+    const path = await import("path");
+    const debugDir = path.join(process.cwd(), "debug-logs");
+
+    // Create debug directory if it doesn't exist
+    if (!fs.existsSync(debugDir)) {
+      fs.mkdirSync(debugDir, { recursive: true });
+    }
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const debugFilePath = path.join(
+      debugDir,
+      `scored-materials-${timestamp}.json`
+    );
+
+    fs.writeFileSync(
+      debugFilePath,
+      JSON.stringify(
+        {
+          timestamp: new Date().toISOString(),
+          studentId,
+          studentName: student.name,
+          studentLanguage: student.language,
+          totalMaterials: allMaterials.length,
+          scoredMaterials: scoredMaterials,
+          topScoredMaterials: topScoredMaterials,
+        },
+        null,
+        2
+      )
+    );
+
+    console.log(`Scored materials written to: ${debugFilePath}`);
+
     // Step 3: Use AI to recommend the best materials from the filtered set
     // Prepare data for AI analysis with scoring context
     const materialsForAI = topScoredMaterials.map((scoredMaterial) => ({
       ...scoredMaterial.material,
-      description: scoredMaterial.material.description || undefined,
+      description:
+        scoredMaterial.material.description ||
+        scoredMaterial.material.aiSummary ||
+        undefined,
       topic: scoredMaterial.material.topic || "general", // Ensure topic is never null
       preScore: scoredMaterial.score,
       scoreRationale: scoredMaterial.rationale.join("; "),
+      aiSummary: scoredMaterial.material.aiSummary, // Include AI analysis for better context
     }));
 
     const aiRecommendations = await generateRecommendationsFromFiltered(
@@ -316,6 +292,13 @@ export async function POST(request: NextRequest) {
       crossLanguageGuidance
     );
 
+    // Limit to top N recommendations (AI returns them ordered by confidence)
+    const MAX_RECOMMENDATIONS = 20; // Change this number to control how many recommendations are shown
+    const limitedRecommendations = aiRecommendations.slice(
+      0,
+      MAX_RECOMMENDATIONS
+    );
+
     // Clear existing recommendations for this student
     await prisma.recommendation.deleteMany({
       where: { studentId },
@@ -323,7 +306,7 @@ export async function POST(request: NextRequest) {
 
     // Save new recommendations with pre-score data
     const recommendations = await Promise.all(
-      aiRecommendations.map((rec) => {
+      limitedRecommendations.map((rec) => {
         // Find the corresponding scored material to get pre-score data
         const scoredMaterial = topScoredMaterials.find(
           (scored) => scored.material.id === rec.materialId

@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useParams, redirect } from "next/navigation";
+import Link from "next/link";
 import DashboardLayout from "@/components/DashboardLayout";
 import Image from "next/image";
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from "docx";
 import {
   Plus,
   Users,
@@ -18,6 +20,9 @@ import {
   Mail,
   User,
   Download,
+  Sparkles,
+  Copy,
+  CheckCircle,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { ApiResponse, StudentWithReports } from "@/types";
@@ -26,7 +31,61 @@ import {
   Recommendation,
   LearningMaterial,
 } from "@prisma/client";
-import Link from "next/link";
+
+interface MaterialSuggestionsData {
+  studentId: string;
+  studentName: string;
+  assistantId?: string; // OpenAI Assistant ID
+  threadId?: string; // OpenAI Thread ID
+  generatedMaterial: {
+    title: string;
+    content: string;
+    metadata: {
+      topic: string;
+      level: string;
+      skill: string;
+      language: string;
+      estimatedDuration: string;
+    };
+  };
+  suggestions: {
+    studentProfile: {
+      name: string;
+      language: string;
+      grade: string;
+      age: string;
+      learningBarriers: string;
+    };
+    aiAnalysis: {
+      recommendedTopics: string[];
+      recommendedLevels: string[];
+      recommendedTypes: string[];
+      recommendedSkills: string[];
+      suggestedTags: string[];
+      reasoning: string;
+    };
+    recentReports: Array<{
+      title: string;
+      excerpt: string;
+      date: Date;
+    }>;
+  };
+  materialCriteria: {
+    language: string;
+    topic: string;
+    level: string;
+    type: string;
+    skill: string;
+    tags: string[];
+    description: string;
+  };
+  alternativeCriteria: {
+    topics: string[];
+    levels: string[];
+    types: string[];
+    skills: string[];
+  };
+}
 
 type RecommendationWithMaterial = Recommendation & {
   learningMaterial: LearningMaterial;
@@ -52,6 +111,13 @@ export default function StudentDetailPage() {
   });
   const [generatingRecommendations, setGeneratingRecommendations] =
     useState(false);
+  const [showMaterialSuggestions, setShowMaterialSuggestions] = useState(false);
+  const [materialSuggestions, setMaterialSuggestions] =
+    useState<MaterialSuggestionsData | null>(null);
+  const [generatingSuggestions, setGeneratingSuggestions] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [additionalInstructions, setAdditionalInstructions] = useState("");
+  const [regenerating, setRegenerating] = useState(false);
 
   // Only teachers (not school admins) can manage student reports
   const isTeacher = session?.user && !session.user.isSchoolAdmin;
@@ -247,6 +313,266 @@ export default function StudentDetailPage() {
       alert("Failed to generate recommendations");
     } finally {
       setGeneratingRecommendations(false);
+    }
+  };
+
+  const generateMaterialSuggestions = async () => {
+    setGeneratingSuggestions(true);
+    setAdditionalInstructions(""); // Reset instructions
+    try {
+      const response = await fetch(`/api/materials/generate-for-student`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ studentId }),
+      });
+
+      const data: ApiResponse = await response.json();
+
+      if (data.success) {
+        setMaterialSuggestions(data.data as MaterialSuggestionsData);
+        setShowMaterialSuggestions(true);
+        toast.success("Material generated successfully!");
+      } else {
+        toast.error(data.error || "Failed to generate material suggestions");
+      }
+    } catch (error) {
+      console.error("Error generating material suggestions:", error);
+      toast.error("Failed to generate material suggestions");
+    } finally {
+      setGeneratingSuggestions(false);
+    }
+  };
+
+  const regenerateMaterial = async () => {
+    if (!materialSuggestions || !additionalInstructions.trim()) {
+      toast.error("Please enter additional instructions");
+      return;
+    }
+
+    setRegenerating(true);
+    try {
+      const response = await fetch(`/api/materials/regenerate-for-student`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentId,
+          assistantId: materialSuggestions.assistantId,
+          threadId: materialSuggestions.threadId,
+          additionalInstructions: additionalInstructions.trim(),
+        }),
+      });
+
+      const data: ApiResponse = await response.json();
+
+      if (data.success) {
+        setMaterialSuggestions(data.data as MaterialSuggestionsData);
+        setAdditionalInstructions(""); // Clear instructions after success
+        toast.success("Material regenerated successfully!");
+      } else {
+        toast.error(data.error || "Failed to regenerate material");
+      }
+    } catch (error) {
+      console.error("Error regenerating material:", error);
+      toast.error("Failed to regenerate material");
+    } finally {
+      setRegenerating(false);
+    }
+  };
+
+  const copyToClipboard = (text: string, fieldName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(fieldName);
+    toast.success(`${fieldName} copied!`);
+    setTimeout(() => setCopiedField(null), 2000);
+  };
+
+  const downloadMaterial = async () => {
+    if (!materialSuggestions?.generatedMaterial) return;
+
+    const material = materialSuggestions.generatedMaterial;
+    
+    try {
+      // Parse the content and create structured paragraphs
+      const contentLines = material.content.split('\n');
+      const paragraphs = [];
+
+      // Add title
+      paragraphs.push(
+        new Paragraph({
+          text: material.title,
+          heading: HeadingLevel.HEADING_1,
+          spacing: { after: 200 },
+        })
+      );
+
+      // Add metadata section
+      paragraphs.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Student: ', bold: true }),
+            new TextRun(materialSuggestions.studentName),
+          ],
+          spacing: { after: 100 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Topic: ', bold: true }),
+            new TextRun(material.metadata.topic),
+          ],
+          spacing: { after: 100 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Level: ', bold: true }),
+            new TextRun(material.metadata.level),
+          ],
+          spacing: { after: 100 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Skill: ', bold: true }),
+            new TextRun(material.metadata.skill),
+          ],
+          spacing: { after: 100 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Language: ', bold: true }),
+            new TextRun(material.metadata.language),
+          ],
+          spacing: { after: 100 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Estimated Duration: ', bold: true }),
+            new TextRun(material.metadata.estimatedDuration),
+          ],
+          spacing: { after: 100 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({ text: 'Generated: ', bold: true }),
+            new TextRun(new Date().toLocaleDateString()),
+          ],
+          spacing: { after: 300 },
+        }),
+        new Paragraph({
+          text: '═'.repeat(50),
+          spacing: { after: 300 },
+        })
+      );
+
+      // Add content paragraphs
+      for (const line of contentLines) {
+        const trimmedLine = line.trim();
+        
+        if (trimmedLine.startsWith('# ')) {
+          // Main heading
+          paragraphs.push(
+            new Paragraph({
+              text: trimmedLine.replace('# ', ''),
+              heading: HeadingLevel.HEADING_1,
+              spacing: { before: 200, after: 200 },
+            })
+          );
+        } else if (trimmedLine.startsWith('## ')) {
+          // Sub heading
+          paragraphs.push(
+            new Paragraph({
+              text: trimmedLine.replace('## ', ''),
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 200, after: 150 },
+            })
+          );
+        } else if (trimmedLine.startsWith('### ')) {
+          // Sub sub heading
+          paragraphs.push(
+            new Paragraph({
+              text: trimmedLine.replace('### ', ''),
+              heading: HeadingLevel.HEADING_3,
+              spacing: { before: 150, after: 100 },
+            })
+          );
+        } else if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
+          // Bold text
+          paragraphs.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: trimmedLine.replace(/\*\*/g, ''),
+                  bold: true,
+                }),
+              ],
+              spacing: { after: 100 },
+            })
+          );
+        } else if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+          // Bullet point
+          paragraphs.push(
+            new Paragraph({
+              text: trimmedLine.substring(2),
+              bullet: { level: 0 },
+              spacing: { after: 100 },
+            })
+          );
+        } else if (trimmedLine) {
+          // Regular paragraph
+          paragraphs.push(
+            new Paragraph({
+              text: trimmedLine,
+              spacing: { after: 150 },
+            })
+          );
+        } else {
+          // Empty line for spacing
+          paragraphs.push(new Paragraph({ text: '' }));
+        }
+      }
+
+      // Add footer
+      paragraphs.push(
+        new Paragraph({
+          text: '═'.repeat(50),
+          spacing: { before: 300, after: 200 },
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `This material was generated by PersonaLingua AI for ${materialSuggestions.studentName}.`,
+              italics: true,
+              size: 20,
+            }),
+          ],
+          alignment: AlignmentType.CENTER,
+        })
+      );
+
+      // Create document
+      const doc = new Document({
+        sections: [{
+          properties: {},
+          children: paragraphs,
+        }],
+      });
+
+      // Generate and download
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${material.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${materialSuggestions.studentName.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.docx`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      toast.success('Learning material downloaded!');
+    } catch (error) {
+      console.error('Error generating docx:', error);
+      toast.error('Failed to download material');
     }
   };
 
@@ -465,16 +791,33 @@ export default function StudentDetailPage() {
                 AI Recommendations ({recommendations.length})
               </h2>
               {isTeacher && student.reports && student.reports.length > 0 && (
-                <button
-                  onClick={generateRecommendations}
-                  disabled={generatingRecommendations}
-                  className='bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
-                >
-                  <Lightbulb className='h-4 w-4' />
-                  {generatingRecommendations
-                    ? "Generating..."
-                    : "Generate Recommendations"}
-                </button>
+                <div className='flex gap-2'>
+                  <button
+                    onClick={generateMaterialSuggestions}
+                    disabled={generatingSuggestions}
+                    className='bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
+                  >
+                    <Sparkles className='h-4 w-4' />
+                    {generatingSuggestions ? (
+                      <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      Generating...
+                      </>
+                    ) : (
+                      "Suggest Materials"
+                    )}
+                  </button>
+                  <button
+                    onClick={generateRecommendations}
+                    disabled={generatingRecommendations}
+                    className='bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
+                  >
+                    <Lightbulb className='h-4 w-4' />
+                    {generatingRecommendations
+                      ? "Generating..."
+                      : "Generate Recommendations"}
+                  </button>
+                </div>
               )}
             </div>
 
@@ -560,6 +903,324 @@ export default function StudentDetailPage() {
             )}
           </div>
         </div>
+
+        {/* Material Suggestions Modal */}
+        {showMaterialSuggestions && materialSuggestions && isTeacher && (
+          <div className='fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto'>
+            <div className='bg-white rounded-lg shadow-lg max-w-4xl w-full my-8'>
+              <div className='flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10'>
+                <h2 className='text-lg font-medium text-gray-900 flex items-center gap-2'>
+                  <Sparkles className='h-5 w-5 text-purple-600' />
+                  AI Material Suggestions for {materialSuggestions.studentName}
+                </h2>
+                <button
+                  onClick={() => setShowMaterialSuggestions(false)}
+                  className='text-gray-400 hover:text-gray-600'
+                >
+                  <X className='h-6 w-6' />
+                </button>
+              </div>
+              <div className='p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto'>
+                {/* AI Analysis Summary */}
+                <div className='bg-purple-50 border border-purple-200 rounded-lg p-4'>
+                  <h3 className='font-medium text-purple-900 mb-2 flex items-center gap-2'>
+                    <Lightbulb className='h-4 w-4' />
+                    AI Analysis
+                  </h3>
+                  <p className='text-sm text-purple-800'>
+                    {materialSuggestions.suggestions.aiAnalysis.reasoning}
+                  </p>
+                </div>
+
+                {/* Suggested Material Criteria */}
+                <div className='bg-white border rounded-lg p-4'>
+                  <h3 className='font-medium text-gray-900 mb-4 flex items-center gap-2'>
+                    <FileText className='h-4 w-4' />
+                    Suggested Material Criteria
+                  </h3>
+                  <div className='grid grid-cols-2 gap-4'>
+                    <div>
+                      <label className='block text-sm font-medium text-gray-700 mb-1'>
+                        Language
+                      </label>
+                      <div className='flex items-center gap-2'>
+                        <div className='flex-1 bg-gray-50 border rounded px-3 py-2 text-sm text-gray-900'>
+                          {materialSuggestions.materialCriteria.language}
+                        </div>
+                        <button
+                          onClick={() =>
+                            copyToClipboard(
+                              materialSuggestions.materialCriteria.language,
+                              "Language"
+                            )
+                          }
+                          className='text-gray-600 hover:text-gray-800'
+                        >
+                          {copiedField === "Language" ? (
+                            <CheckCircle className='h-4 w-4 text-green-600' />
+                          ) : (
+                            <Copy className='h-4 w-4' />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className='block text-sm font-medium text-gray-700 mb-1'>
+                        Topic
+                      </label>
+                      <div className='flex items-center gap-2'>
+                        <div className='flex-1 bg-gray-50 border rounded px-3 py-2 text-sm text-gray-900'>
+                          {materialSuggestions.materialCriteria.topic}
+                        </div>
+                        <button
+                          onClick={() =>
+                            copyToClipboard(
+                              materialSuggestions.materialCriteria.topic,
+                              "Topic"
+                            )
+                          }
+                          className='text-gray-600 hover:text-gray-800'
+                        >
+                          {copiedField === "Topic" ? (
+                            <CheckCircle className='h-4 w-4 text-green-600' />
+                          ) : (
+                            <Copy className='h-4 w-4' />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className='block text-sm font-medium text-gray-700 mb-1'>
+                        Level
+                      </label>
+                      <div className='flex items-center gap-2'>
+                        <div className='flex-1 bg-gray-50 border rounded px-3 py-2 text-sm text-gray-900'>
+                          {materialSuggestions.materialCriteria.level}
+                        </div>
+                        <button
+                          onClick={() =>
+                            copyToClipboard(
+                              materialSuggestions.materialCriteria.level,
+                              "Level"
+                            )
+                          }
+                          className='text-gray-600 hover:text-gray-800'
+                        >
+                          {copiedField === "Level" ? (
+                            <CheckCircle className='h-4 w-4 text-green-600' />
+                          ) : (
+                            <Copy className='h-4 w-4' />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className='block text-sm font-medium text-gray-700 mb-1'>
+                        Skill
+                      </label>
+                      <div className='flex items-center gap-2'>
+                        <div className='flex-1 bg-gray-50 border rounded px-3 py-2 text-sm text-gray-900'>
+                          {materialSuggestions.materialCriteria.skill}
+                        </div>
+                        <button
+                          onClick={() =>
+                            copyToClipboard(
+                              materialSuggestions.materialCriteria.skill,
+                              "Skill"
+                            )
+                          }
+                          className='text-gray-600 hover:text-gray-800'
+                        >
+                          {copiedField === "Skill" ? (
+                            <CheckCircle className='h-4 w-4 text-green-600' />
+                          ) : (
+                            <Copy className='h-4 w-4' />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className='mt-4'>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                      Suggested Description
+                    </label>
+                    <div className='flex items-start gap-2'>
+                      <div className='flex-1 bg-gray-50 border rounded px-3 py-2 text-sm text-gray-900'>
+                        {materialSuggestions.materialCriteria.description}
+                      </div>
+                      <button
+                        onClick={() =>
+                          copyToClipboard(
+                            materialSuggestions.materialCriteria.description,
+                            "Description"
+                          )
+                        }
+                        className='text-gray-600 hover:text-gray-800 mt-1'
+                      >
+                        {copiedField === "Description" ? (
+                          <CheckCircle className='h-4 w-4 text-green-600' />
+                        ) : (
+                          <Copy className='h-4 w-4' />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className='mt-4'>
+                    <label className='block text-sm font-medium text-gray-700 mb-1'>
+                      Suggested Tags
+                    </label>
+                    <div className='flex flex-wrap gap-2'>
+                      {materialSuggestions.materialCriteria.tags.map(
+                        (tag: string, idx: number) => (
+                          <span
+                            key={idx}
+                            className='bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs'
+                          >
+                            {tag}
+                          </span>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Alternative Options */}
+                <div className='bg-gray-50 border rounded-lg p-4'>
+                  <h3 className='font-medium text-gray-900 mb-3'>
+                    Alternative Options
+                  </h3>
+                  <div className='grid grid-cols-2 gap-4 text-sm'>
+                    <div>
+                      <p className='font-medium text-gray-900 mb-1'>Topics:</p>
+                      <div className='flex flex-wrap gap-1'>
+                        {materialSuggestions.alternativeCriteria.topics.map(
+                          (t: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className='bg-white border px-2 py-1 rounded text-xs text-gray-900'
+                            >
+                              {t}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <p className='font-medium text-gray-900 mb-1'>Levels:</p>
+                      <div className='flex flex-wrap gap-1'>
+                        {materialSuggestions.alternativeCriteria.levels.map(
+                          (l: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className='bg-white border px-2 py-1 rounded text-xs text-gray-900'
+                            >
+                              {l}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <p className='font-medium text-gray-900 mb-1'>Types:</p>
+                      <div className='flex flex-wrap gap-1'>
+                        {materialSuggestions.alternativeCriteria.types.map(
+                          (t: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className='bg-white border px-2 py-1 rounded text-xs text-gray-900'
+                            >
+                              {t}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      <p className='font-medium text-gray-900 mb-1'>Skills:</p>
+                      <div className='flex flex-wrap gap-1'>
+                        {materialSuggestions.alternativeCriteria.skills.map(
+                          (s: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className='bg-white border px-2 py-1 rounded text-xs text-gray-900'
+                            >
+                              {s}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Re-generate Material Section */}
+                <div className='bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4'>
+                  <h3 className='font-medium text-gray-900 mb-2 flex items-center gap-2'>
+                    <Sparkles className='h-4 w-4 text-purple-600' />
+                    Refine Material with Additional Instructions
+                  </h3>
+                  <p className='text-sm text-gray-600 mb-3'>
+                    Not satisfied with the generated material? Provide additional instructions to refine it.
+                  </p>
+                  <div className='space-y-3'>
+                    <textarea
+                      value={additionalInstructions}
+                      onChange={(e) => setAdditionalInstructions(e.target.value)}
+                      placeholder='E.g., "Make it more interactive with fill-in-the-blank exercises" or "Add more visual examples" or "Simplify the language for beginners"'
+                      className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm text-gray-900 placeholder-gray-400'
+                      rows={3}
+                      disabled={regenerating}
+                    />
+                    <button
+                      onClick={regenerateMaterial}
+                      disabled={regenerating || !additionalInstructions.trim()}
+                      className='bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium transition-colors'
+                    >
+                      {regenerating ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                          Regenerating...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className='h-4 w-4' />
+                          Re-generate Material
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className='flex gap-3 pt-4 border-t'>
+                  <button
+                    onClick={downloadMaterial}
+                    className='bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 flex items-center gap-2 font-medium'
+                  >
+                    <Download className='h-5 w-5' />
+                    Download Material
+                  </button>
+                  <Link
+                    href='/upload'
+                    target='_blank'
+                    className='flex-1 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2 font-medium'
+                  >
+                    <Plus className='h-5 w-5' />
+                    Go to Materials & Upload
+                  </Link>
+                  <button
+                    onClick={() => setShowMaterialSuggestions(false)}
+                    className='px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700'
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Report Form Modal */}
         {showReportForm && isTeacher && (

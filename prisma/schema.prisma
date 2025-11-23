@@ -126,3 +126,21 @@ model Recommendation {
   @@unique([studentId, learningMaterialId])
   @@map("recommendations")
 }
+
+model TeacherAssistant {
+  id               String   @id @default(cuid())
+  assistantId      String   @unique // OpenAI Assistant ID
+  threadId         String?  // OpenAI Thread ID for conversation
+  studentId        String   // Student this assistant is for
+  teacherId        String   // Teacher who owns this assistant
+  sessionData      Json?    // Store session context (student profile, needs, etc.)
+  conversationLogs Json[]   @default([]) // Store conversation history
+  status           String   @default("active") // active, archived, deleted
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([teacherId])
+  @@index([assistantId])
+  @@map("teacher_assistants")
+}
