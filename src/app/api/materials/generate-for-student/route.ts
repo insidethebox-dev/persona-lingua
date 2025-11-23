@@ -104,31 +104,34 @@ export async function POST(request: NextRequest) {
       studentContext
     );
 
-    // Create an OpenAI Assistant for this student
-    const assistant = await openai.beta.assistants.create({
-      name: `Material Creator for ${student.name}`,
-      instructions: `You are an expert educational content creator specializing in personalized learning materials. Your task is to generate complete, ready-to-use learning materials that teachers can immediately use with their students.
+    // Get or create the teacher's assistant (one per teacher)
+    let teacherAssistant = await prisma.teacherAssistant.findFirst({
+      where: {
+        teacherId: teacher.id,
+        threadId: null, // New-style records have no threadId
+      },
+      orderBy: { createdAt: 'desc' },
+    });
 
-Student Profile:
-- Name: ${student.name}
-- Language: ${student.language}
-- Grade: ${student.grade || "Not specified"}
-- Age: ${student.age || "Not specified"}
-- Learning Barriers: ${student.learningBarriers.length > 0 ? student.learningBarriers.join(", ") : "None"}
+    let assistantId: string;
 
-AI-Identified Learning Needs:
-- Topics: ${studentNeeds.topic.join(", ")}
-- Levels: ${studentNeeds.level.join(", ")}
-- Skills: ${studentNeeds.skill.join(", ")}
-- Material Types: ${studentNeeds.type.join(", ")}
-- Analysis: ${studentNeeds.reasoning}
+    if (!teacherAssistant) {
+      // Create a new assistant for this teacher
+      const assistant = await openai.beta.assistants.create({
+        name: `Educational Material Creator for ${teacher.name}`,
+        instructions: `You are an expert educational content creator specializing in personalized learning materials. Your task is to generate complete, ready-to-use learning materials that teachers can immediately use with their students.
+
+For each request, you will receive:
+- Student profile (name, language, grade, age, learning barriers)
+- AI-identified learning needs
+- Recent progress reports
 
 Generate complete learning materials that:
 1. Are appropriate for the student's level and needs
 2. Address the identified learning gaps
 3. Are engaging and suitable for their age/grade
 4. Take into account any learning barriers
-5. Are in ${student.language} language
+5. Are in the specified language
 6. Include clear instructions for both teacher and student
 7. Have exercises, activities, or content that can be completed
 
@@ -140,41 +143,113 @@ Format materials as structured documents with:
 - Assessment or reflection questions (if applicable)
 
 Be thorough, engaging, and pedagogically sound.`,
-      model: "gpt-4-turbo-preview",
-    });
+        model: "gpt-4-turbo-preview",
+      });
 
-    console.log("Assistant created:", assistant.id);
+      console.log("Created new assistant for teacher:", assistant.id);
 
-    // Create a thread and generate initial material
-    const thread = await openai.beta.threads.create();
-    
-    console.log("Thread created:", thread.id);
+      // Store in database
+      teacherAssistant = await prisma.teacherAssistant.create({
+        data: {
+          assistantId: assistant.id,
+          teacherId: teacher.id,
+          status: "active",
+        },
+      });
 
-    if (!thread.id) {
-      throw new Error("Failed to create thread - no thread ID returned");
+      assistantId = assistant.id;
+    } else {
+      assistantId = teacherAssistant.assistantId;
+      console.log("Using existing assistant:", assistantId);
     }
 
-    // Add initial message
+    // Check if a thread already exists for this student
+    let studentThread = await prisma.studentThread.findFirst({
+      where: {
+        studentId: student.id,
+        teacherId: teacher.id,
+        status: "active",
+      },
+    });
+
+    let threadId: string;
+
+    if (!studentThread) {
+      // Create a new thread for this student
+      const thread = await openai.beta.threads.create();
+      console.log("Created new thread:", thread.id);
+
+      threadId = thread.id;
+
+      // Store in database
+      studentThread = await prisma.studentThread.create({
+        data: {
+          threadId: thread.id,
+          studentId: student.id,
+          teacherId: teacher.id,
+          assistantId: assistantId,
+          sessionData: JSON.parse(
+            JSON.stringify({
+              studentName: student.name,
+              language: student.language,
+              grade: student.grade,
+              age: student.age,
+              studentNeeds,
+            })
+          ),
+          status: "active",
+        },
+      });
+    } else {
+      threadId = studentThread.threadId;
+      console.log("Using existing thread:", threadId);
+    }
+
+    // Add initial message with student context
     const recentReportsText = student.reports
       .map((r, i) => `${i + 1}. ${r.title}: ${r.content.substring(0, 300)}...`)
       .join("\n\n");
 
-    await openai.beta.threads.messages.create(thread.id, {
+    const studentContextMessage = `Generate a complete learning material for the following student:
+
+Student Profile:
+- Name: ${student.name}
+- Language: ${student.language}
+- Grade: ${student.grade || "Not specified"}
+- Age: ${student.age || "Not specified"}
+- Learning Barriers: ${
+      student.learningBarriers.length > 0
+        ? student.learningBarriers.join(", ")
+        : "None"
+    }
+
+AI-Identified Learning Needs:
+- Topics: ${studentNeeds.topic.join(", ")}
+- Levels: ${studentNeeds.level.join(", ")}
+- Skills: ${studentNeeds.skill.join(", ")}
+- Material Types: ${studentNeeds.type.join(", ")}
+- Analysis: ${studentNeeds.reasoning}
+
+Recent Progress Reports:
+${recentReportsText}
+
+Generate the complete material now.`;
+
+    await openai.beta.threads.messages.create(threadId, {
       role: "user",
-      content: `Based on the student profile and recent progress reports below, please generate a complete learning material.\n\nRecent Progress Reports:\n${recentReportsText}\n\nGenerate the complete material now.`,
+      content: studentContextMessage,
     });
 
     console.log("Message added to thread");
 
     // Run the assistant
-    const run = await openai.beta.threads.runs.create(thread.id, {
-      assistant_id: assistant.id,
+    const run = await openai.beta.threads.runs.create(threadId, {
+      assistant_id: assistantId,
     });
 
     console.log("Run created:", run.id);
 
-    // Store thread ID in a variable to ensure it's preserved
-    const threadId = thread.id;
+    // Store run ID in a variable
     const runId = run.id;
 
     console.log("Using threadId:", threadId, "runId:", runId);
@@ -220,40 +295,43 @@ Be thorough, engaging, and pedagogically sound.`,
 
     // Parse title from content
     const lines = generatedContent.split("\n");
-    const titleLine = lines.find((line) => line.trim().length > 0) || "Learning Material";
+    const titleLine =
+      lines.find((line) => line.trim().length > 0) || "Learning Material";
     const title = titleLine
       .replace(/^#+\s*/, "")
       .replace(/^\*\*/, "")
       .replace(/\*\*$/, "")
       .trim();
 
-    console.log("Storing assistant in database...");
-    console.log("Assistant ID:", assistant.id);
+    console.log("Material generated successfully");
+    console.log("Assistant ID:", assistantId);
     console.log("Thread ID:", threadId);
-    console.log("Student ID:", student.id);
-    console.log("Teacher ID:", teacher.id);
 
-    // Store assistant info in database
+    // Update conversation logs in the student thread
     try {
-      const assistantRecord = await prisma.teacherAssistant.create({
+      await prisma.studentThread.update({
+        where: { id: studentThread.id },
         data: {
-          assistantId: assistant.id,
-          threadId: threadId,
-          studentId: student.id,
-          teacherId: teacher.id,
-          sessionData: JSON.parse(JSON.stringify({
-            studentName: student.name,
-            language: student.language,
-            grade: student.grade,
-            age: student.age,
-            studentNeeds,
-          })),
-          status: "active",
+          conversationLogs: {
+            push: JSON.parse(
+              JSON.stringify({
+                timestamp: new Date().toISOString(),
+                type: "generation",
+                studentContext: {
+                  name: student.name,
+                  language: student.language,
+                  grade: student.grade,
+                  age: student.age,
+                },
+                generatedTitle: title,
+              })
+            ),
+          },
         },
       });
-      console.log("Assistant record created:", assistantRecord.id);
+      console.log("Conversation log updated");
     } catch (dbError) {
-      console.error("Failed to save assistant to database:", dbError);
+      console.error("Failed to update conversation log:", dbError);
       // Continue anyway - the material is still generated
     }
 
@@ -289,7 +367,7 @@ Be thorough, engaging, and pedagogically sound.`,
       data: {
         studentId: student.id,
         studentName: student.name,
-        assistantId: assistant.id,
+        assistantId: assistantId,
         threadId: threadId,
         generatedMaterial: {
           title,

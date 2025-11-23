@@ -104,11 +104,34 @@ export async function POST(request: NextRequest) {
       studentContext
     );
 
+    // Get list of completed materials for this student
+    const completedMaterials = await prisma.studentMaterialProgress.findMany({
+      where: {
+        studentId,
+        isCompleted: true,
+      },
+      select: {
+        learningMaterialId: true,
+      },
+    });
+
+    const completedMaterialIds = completedMaterials.map(
+      (progress) => progress.learningMaterialId
+    );
+
+    console.log(
+      `Student ${studentId} has completed ${completedMaterialIds.length} materials`
+    );
+
     // Step 2: Filter materials based on AI-determined criteria
     // Only include materials from the same school as the teacher
+    // Exclude materials that have already been completed
     const allMaterials = await prisma.learningMaterial.findMany({
       where: {
         schoolId: teacher.schoolId, // Only materials from the same school
+        id: {
+          notIn: completedMaterialIds, // Exclude completed materials
+        },
       },
       select: {
         id: true,
@@ -324,6 +347,26 @@ export async function POST(request: NextRequest) {
           },
         });
       })
+    );
+
+    // Create progress records for newly recommended materials (if they don't exist)
+    await Promise.all(
+      limitedRecommendations.map((rec) =>
+        prisma.studentMaterialProgress.upsert({
+          where: {
+            studentId_learningMaterialId: {
+              studentId,
+              learningMaterialId: rec.materialId,
+            },
+          },
+          update: {}, // Don't change existing progress
+          create: {
+            studentId,
+            learningMaterialId: rec.materialId,
+            isCompleted: false,
+          },
+        })
+      )
     );
 
     const response: ApiResponse = {

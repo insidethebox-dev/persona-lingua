@@ -1,0 +1,2809 @@
+{
+  "timestamp": "2025-11-23T15:35:16.659Z",
+  "studentId": "cmh4ocq3900016mebv65jbo5o",
+  "studentName": "Student 3",
+  "studentLanguage": "Spanish",
+  "totalMaterials": 56,
+  "scoredMaterials": [
+    {
+      "material": {
+        "id": "cmh4p5sla00036pdkoanwepss",
+        "title": "Spanish verb tenses_ dyslexia adapted",
+        "description": "Practice material for learning Spanish verb tenses: pretérito indefinido and pretérito  imperfecto. This document is at A2.2 level and has been adapted for students with dyslexia and ADHD.",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Practice",
+          "Conjugation",
+          "past tenses",
+          "dyslexia",
+          "ADHD"
+        ],
+        "language": "Spanish",
+        "aiSummary": "An adapted math worksheet for practice and reinforcement."
+      },
+      "score": 90.03030303030303,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 8,
+        "semanticMatch": 10.03030303030303
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Grammar",
+        "Tag matches: ADHD, Dyslexia, Spanish, Past Tenses",
+        "Contains accessibility accommodations",
+        "Semantic match: 50.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4p19zw00016pdk627981up",
+        "title": "Spanish Verb Tenses: Indefinido e Imperfecto",
+        "description": "Practice material for learning Spanish verb tenses: preterito Indefinido and preterito imperfecto (imperfect). This document is at A2.2 level and has been adapted for students with dyslexia and ADHD.",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Practice",
+          "Conjugation",
+          "past tenses",
+          "dyslexia",
+          "ADHD"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice material for learning Spanish verb tenses: Indefinido (preterite) and Imperfecto (imperfect)"
+      },
+      "score": 88.65306122448979,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 8,
+        "semanticMatch": 8.653061224489795
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Grammar",
+        "Tag matches: ADHD, Dyslexia, Spanish, Past Tenses",
+        "Contains accessibility accommodations",
+        "Semantic match: 43.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4pgb4300076pdkk4drh0ks",
+        "title": "Written exercise on the difference between Spanish past tenses.",
+        "description": "Gap-fill activity to practise the difference between pretérito indefinido, pretérito perfecto, and pretérito imperfecto in Spanish.\r\nMaterial adapted for special educational needs, dyslexia, and ADHD.",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Writing",
+        "tags": [
+          "adapted material",
+          "special education",
+          "writing",
+          "past tenses",
+          "dyslexia",
+          "ADHD"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Math worksheet with adapted content for special needs students"
+      },
+      "score": 88.25531914893617,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 8,
+        "semanticMatch": 8.25531914893617
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Writing",
+        "Tag matches: ADHD, Dyslexia, Past Tenses",
+        "Contains accessibility accommodations",
+        "Semantic match: 41.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyyr1u00001zxfmdezri20j",
+        "title": "Escape Room Links (A1-B2)",
+        "description": "A collection of links to online escape room activities for interactive learning and problem-solving.\r\nIn this document, you will find a collection of links to escape rooms for practising your Spanish. They cover all levels, from A1 to C2.\r\nYou will be able to practise past tenses — pretérito perfecto, pretérito indefinido, and pretérito imperfecto — as well as regular and irregular present tense verbs, prepositions, and aspects of Hispanic culture through 21st-century literature.\r\n",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Interactive Content",
+        "skill": "Grammar",
+        "tags": [
+          "Interactive Learning",
+          "escape rooms",
+          "Online Activities",
+          "past tenses",
+          "prepositions",
+          "present tenses",
+          "literature"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A collection of links to online escape room activities for interactive learning and problem-solving."
+      },
+      "score": 81.11475409836065,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 10.114754098360654
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Grammar",
+        "Tag matches: Past Tenses",
+        "Semantic match: 50.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgz21xb500012tcp7p79zgg2",
+        "title": "Spanish Verb Tenses: Indefinido e Imperfecto",
+        "description": "Practice and explanation of Spanish past tense verb forms: pretérito indefinido and pretérito imperfecto. ",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Past Tense",
+          "Language Learning",
+          "indefinido",
+          "imperfecto"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice and explanation of Spanish past tense verb forms"
+      },
+      "score": 75.02873563218391,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 0,
+        "semanticMatch": 10.528735632183908
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish, Past Tenses, Pretérito Indefinido, Pretérito Imperfecto",
+        "Semantic match: 52.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4kisuq000301fr38v37h28",
+        "title": "Contrasting Past Tenses_preterito perfecto and preterito indefinido",
+        "description": "Educational material focusing on contrasting past tenses in Spanish. \r\nInfographic on the contrast of past tenses in Spanish: pretérito indefinido, pretérito perfecto, and pretérito imperfecto. It includes the conjugation of each tense and an explanation of their individual uses, as well as a comparison of all three.\r\nMaterial recommended for students who have difficulties using past tenses.",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Study Guide",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Past Tenses",
+          "Language Learning",
+          "Grammar Rules"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Educational material focusing on contrasting past tenses in Spanish"
+      },
+      "score": 74.05140186915888,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 0,
+        "semanticMatch": 9.551401869158877
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish, Past Tenses",
+        "Semantic match: 47.8% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4k1zvf000101frh3hcg8ni",
+        "title": "Fill gaps Spanish Preterito Perfecto activity ",
+        "description": "Practice exercises for learning and applying the Spanish preterito perfecto tense. This is a sentence exercise in which you have to fill in the gaps with the verb in the correct form of the pretérito perfecto in Spanish. The aim of this exercise is to review this verb tense.",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Language Practice",
+          "Grammar Exercises"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for learning and applying the Spanish preterito perfecto tense"
+      },
+      "score": 72.93434343434343,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 9.434343434343434
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 47.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4jn39z00010yfkg7bqf79j",
+        "title": "Spanish Verb Tenses: Indefinido vs. Perfecto",
+        "description": "A comparison and contrast of the Spanish verb tenses Indefinido (Past simple) and Perfecto (Present Perfect). It is a gap-fill exercise using the correct past tense to practise the contrast between the two verb tenses.",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Past simple",
+          "Present Perfect",
+          "preterito perfecto",
+          "preterito indefinido"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A comparison and contrast of the Spanish verb tenses Indefinido (Preterite) and Perfecto (Present Perfect)"
+      },
+      "score": 72.35714285714286,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 8.857142857142858
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 44.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhbts1rf00032mf23mt0t3pw",
+        "title": "Direct and Indirect Object in Spanish",
+        "description": "Explanation and practice exercises on direct and indirect objects in Spanish grammar. Level A2",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Grammar",
+          "Language Learning",
+          "Syntax",
+          "Practice Exercises",
+          "indirect object",
+          "direct object"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Explanation and practice exercises on direct and indirect objects in Spanish grammar"
+      },
+      "score": 68.03846153846153,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.538461538461539
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 22.7% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyz9t3x00011beeoozes560",
+        "title": "Infographic Por y Para (prepositions) B1",
+        "description": "This document is an educational explanatory infographic about the difference between the Spanish prepositions por and para.",
+        "topic": "Education",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Summary",
+        "skill": "Grammar",
+        "tags": [
+          "por y para",
+          "prepositions",
+          "difference por y para",
+          "spanish grammar",
+          "usage por y para"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Educational material on the usage of 'por' and 'para' in Spanish"
+      },
+      "score": 64.91414141414141,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.4141414141414141
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B1.1 (Intermediate Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 7.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbtj0c00072teb9dcpb92m",
+        "title": "Spanish Demonstratives",
+        "description": "An explanatory guide to Spanish demonstratives, with exercises to practise the grammar. Level A1.",
+        "topic": "Education",
+        "level": "A1.2 (Beginner High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "grammar",
+          "demonstrative",
+          "este",
+          "esta",
+          "estos",
+          "estas",
+          "level A1",
+          "Spanish"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for learning Spanish demonstrative pronouns and adjectives."
+      },
+      "score": 63.840425531914896,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 5.340425531914894
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.2 (Beginner High) (2 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 26.7% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4llopq000113ebrdzcgji2",
+        "title": "Spanish past tenses contrast game",
+        "description": "It is a game board with three parts: images, verbs, and time markers. By combining the three, the student creates sentences using the correct past tense according to the time marker. It is an oral or written exercise to practise the contrast of past tenses in Spanish.\r\n",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Activity",
+        "skill": "Speaking",
+        "tags": [
+          "Spanish",
+          "Past Tenses",
+          "game",
+          "create sentences"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Material comparing past tense forms and usage."
+      },
+      "score": 63.52252252252252,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 2,
+        "accessibilityMatch": 0,
+        "semanticMatch": 6.5225225225225225
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Tag matches: Spanish, Past Tenses",
+        "Semantic match: 32.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhbtq2pk00012mf2sli1hq47",
+        "title": "Indicativo vs Subjuntivo",
+        "description": "Gap-fill exercise on the contrast between the indicative and the subjunctive in Spanish. Level B1.",
+        "topic": "Education",
+        "level": "B1.2 (Intermediate High)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Language Learning",
+          "Grammar Rules",
+          "Verb Conjugation",
+          "subjunctive",
+          "level b1"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A material comparing the usage of Indicative and Subjunctive moods in Spanish."
+      },
+      "score": 61.39473684210526,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.8947368421052633
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B1.2 (Intermediate High) (2 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 14.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyzxpi900051beexjd1vy51",
+        "title": "Grammar: Presente de subjuntivo",
+        "description": "Educational document showing the conjugation of the present subjunctive in Spanish. It includes both regular and irregular verbs.",
+        "topic": "Education",
+        "level": "B1.2 (Intermediate High)",
+        "type": "Summary",
+        "skill": "Grammar",
+        "tags": [
+          "Verb Conjugation",
+          "temporal tenses",
+          "subjunctive mode",
+          "infinitive mode",
+          "indicative mode"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Educational material on the present subjunctive tense in Spanish"
+      },
+      "score": 60.92857142857143,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.428571428571429
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B1.2 (Intermediate High) (2 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 17.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyzlc5g00031beeh0d7f01q",
+        "title": "Oraciones temporales con subjuntivo (B2)",
+        "description": "It is a document with a grammatical explanation of how temporal sentence structures work in Spanish, using different connectors ranging from the most basic and common to the more complex ones.\r\nThis document includes several exercises for the student to practise the grammar explained above.",
+        "topic": "Education",
+        "level": "B2.2 (Upper-Intermediate High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Temporal tenses",
+          "subjuntivo",
+          "cuando",
+          "antes de que",
+          "después de que"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for constructing temporal sentences in Spanish"
+      },
+      "score": 58.2027027027027,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 5.7027027027027035
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B2.2 (Upper-Intermediate High) (4 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 28.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbh7iz00032teblrb2uqrp",
+        "title": "Spanish Interrogatives Practice",
+        "description": "Practice material for learning and using interrogative words in Spanish. Level A1",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "qué",
+          "cuál",
+          "dónde",
+          "cuántos. question words",
+          "Spanish",
+          "level A1"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice material for learning and using interrogative words in Spanish."
+      },
+      "score": 56.29775280898876,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.797752808988764
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 14.0% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbd0ip00012teb5k7kf4xa",
+        "title": "Question words in Spanish",
+        "description": "This is an exercise designed to help students practise question words in Spanish and learn how to form questions in a A1 level.",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "question words",
+          "interrogative words",
+          "qué",
+          "cuál",
+          "cuáles",
+          "dónde"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercise focusing on interrogative words and forming questions."
+      },
+      "score": 56.28217821782178,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.782178217821782
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 18.9% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgz03lsf00071beesai4jtvv",
+        "title": "Gender male / female exercises",
+        "description": "Practice exercises for identifying gender (masculine or feminine) in Spanish.",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Gender",
+          "Grammar",
+          "male and female grammar",
+          "nouns"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for identifying gender (masculine or feminine) in Spanish."
+      },
+      "score": 55.611111111111114,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.111111111111111
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 15.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbo57i00052tebw5xx2tt4",
+        "title": "Nationalities in Spanish",
+        "description": "This exercise is to help students practise matching masculine and feminine, and singular and plural forms in adjectives such as nationalities. Level A1",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Fill in the Blank",
+        "skill": "Vocabulary",
+        "tags": [
+          "Nationalities",
+          "female",
+          "male",
+          "singular",
+          "plural"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A material showcasing different nationalities and countries for cultural awareness and diversity education."
+      },
+      "score": 40.404761904761905,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.904761904761904
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Semantic match: 14.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgune9th0001zqea4fsm3zt5",
+        "title": "Song lyric: Nada Valgo Sin Tu Amor - Juanes",
+        "description": "Song lyrics, to fill in the missing gaps with the simple past tense, and an exercise on the vocabulary included in the song.",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Song lyric",
+          "Past simple tense",
+          "preterito indefinido",
+          "pasados"
+        ],
+        "language": "Spanish",
+        "aiSummary": "An educational analysis of the song lyrics focusing on present indicative tense"
+      },
+      "score": 38.3,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.800000000000001
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 24.0% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmguovyzc00031bc8wpk36exy",
+        "title": "Grammar: Ir a + Infinitive for Future Plans",
+        "description": "This material covers the use and conjugation of 'ir a + infinitive' for expressing future plans and intentions in Spanish grammar. It also includes some questions to practise speaking or writing. ",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Study Guide",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Grammar",
+          "plans and intentions in the future",
+          "Verb Conjugation",
+          "ir a + infinitive"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Material focusing on the use of 'ir a + infinitive' for expressing future plans and intentions in Spanish grammar."
+      },
+      "score": 37.83009708737864,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.330097087378641
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 21.7% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgunu2y40003zqea7zzxl2wr",
+        "title": "Song Lyrics: Vivir mi vida, Marc Anthony",
+        "description": "Fill in the blank using the structure \"ir a + infinitivo\" to talk about plans and intentions in the future. Lyrics of the song 'Vivir mi vida' by Marc Anthony for language comprehension and cultural understanding.",
+        "topic": "Music",
+        "level": "A1.2 (Beginner High)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Music",
+          "Song Lyrics",
+          "Language Comprehension",
+          "Cultural Understanding",
+          "grammar",
+          "plans and intentions"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Analyzing the lyrics of the song 'Vivir mi vida' by Marc Anthony for language comprehension and cultural understanding."
+      },
+      "score": 29.404761904761905,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.9047619047619047
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Level proximity: A1.2 (Beginner High) (2 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 9.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4lqslx000313ebumn5jqu6",
+        "title": "Question board_ present and past tenses",
+        "description": "Material comparing the present, present perfect, and past indefinite tenses.\r\nQuestion board to practise the present tense and the pretérito perfecto and pretérito indefinido in Spanish.\r\n",
+        "topic": "Travel",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Activity",
+        "skill": "Speaking",
+        "tags": [
+          "past tenses",
+          "present tenses",
+          "grammar",
+          "speaking",
+          "travel"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Material comparing the present, present perfect, and past indefinite tenses."
+      },
+      "score": 26.32608695652174,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 7.826086956521738
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Tag matches: Past Tenses",
+        "Semantic match: 39.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgumhuy800017vfl97ul76v6",
+        "title": "At a Restaurant Spanish Vocabulary",
+        "description": "Visual image depicting vocabulary related to questions that the customer and the waiter ask each other in order to order food and drink in a bar or restaurant in Spain.\r\n",
+        "topic": "Food & Drink",
+        "level": "A1.2 (Beginner High)",
+        "type": "Study Guide",
+        "skill": "Vocabulary",
+        "tags": [
+          "Spanish",
+          "Vocabulary",
+          "Visual Aid",
+          "Elementary",
+          "Infograph",
+          "dinner",
+          "eating"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Visual image depicting vocabulary related to dining in Spanish"
+      },
+      "score": 21.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 1,
+        "accessibilityMatch": 8,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Level proximity: A1.2 (Beginner High) (2 levels from A2.2 (Elementary High))",
+        "Tag matches: Spanish",
+        "Contains accessibility accommodations"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmguolb6e00011bc856gliogb",
+        "title": "Ir a + infinitivo - perifrasis verbal",
+        "description": "Writing or speaking activity to talk or write a short text about future plans and intentions using the verbal phrase \"ir a + infinitive.\" In this activity, the student has to imagine they have won the lottery and explain what they are going to do with the money.",
+        "topic": "Foreign Language",
+        "level": "A1.2 (Beginner High)",
+        "type": "Activity",
+        "skill": "Speaking",
+        "tags": [
+          "Spanish",
+          "perifrasis verbal",
+          "plans and intentions in the future",
+          "speaking",
+          "writing"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice using the Spanish verb 'ir a' + infinitive in the context of the lottery"
+      },
+      "score": 19,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 5.5
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Level proximity: A1.2 (Beginner High) (2 levels from A2.2 (Elementary High))",
+        "Tag matches: Spanish",
+        "Semantic match: 27.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjldxv5000v1he6x4ks7rii",
+        "title": "Spanish Vocabulary Practice",
+        "description": "A PDF document with exercises to practice Spanish vocabulary",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Spanish",
+          "Vocabulary",
+          "Practice",
+          "High School",
+          "PDF"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF document with exercises to practice Spanish vocabulary"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjle6yo000x1he6toops7lo",
+        "title": "Spanish Grammar Practice",
+        "description": "A PDF document with exercises for practicing Spanish grammar rules",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Grammar",
+          "Practice",
+          "High School",
+          "PDF"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF document with exercises for practicing Spanish grammar rules"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlegcn00111he6y5nuw8i3",
+        "title": "Math Problem Solving Practice",
+        "description": "Math exercises to enhance problem-solving skills through practice",
+        "topic": "Mathematics",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "math",
+          "problem solving",
+          "practice",
+          "elementary",
+          "math worksheet"
+        ],
+        "language": "English",
+        "aiSummary": "Math exercises to enhance problem-solving skills through practice"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjleqkp00131he6ikfr4pyh",
+        "title": "Spanish Vocabulary Practice",
+        "description": "A PDF document containing exercises for practicing Spanish vocabulary",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Spanish",
+          "Vocabulary",
+          "Practice",
+          "High School",
+          "PDF"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF document containing exercises for practicing Spanish vocabulary"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlg29p001f1he64nd4nukc",
+        "title": "Spanish Grammar Practice",
+        "description": "A PDF document containing exercises for practicing Spanish grammar skills.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Grammar",
+          "Practice",
+          "High School",
+          "PDF"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF document containing exercises for practicing Spanish grammar skills."
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlh1di001p1he6iybsi3yo",
+        "title": "Subjunctive Exercise B2.1",
+        "description": "Practice exercise focusing on the subjunctive mood in a historical context",
+        "topic": "Foreign Language",
+        "level": "A1.2 (Beginner High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Subjunctive Mood",
+          "Language Learning",
+          "Historical Context"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercise focusing on the subjunctive mood in a historical context"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlhaic001r1he69vddaioe",
+        "title": "Spanish Irregular Verbs Exercise",
+        "description": "Practice exercises for irregular verbs in Spanish language",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Irregular Verbs",
+          "Language Learning",
+          "Grammar Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for irregular verbs in Spanish language"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlhiri001v1he6b359dlhg",
+        "title": "Spanish Regular Verbs Exercise 2",
+        "description": "Practice exercises for Spanish regular verbs conjugation",
+        "topic": "Foreign Language",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verbs",
+          "Conjugation",
+          "Grammar",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for Spanish regular verbs conjugation"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlhvap001z1he6syowz370",
+        "title": "Spanish Regular Verbs Exercise",
+        "description": "Practice exercises for Spanish regular verbs conjugation",
+        "topic": "Foreign Language",
+        "level": "B2.1 (Upper-Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verbs",
+          "Conjugation",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for Spanish regular verbs conjugation"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjli5mw00231he6i2umypj6",
+        "title": "Subjunctive Exercises B1",
+        "description": "Grammar exercises focusing on the subjunctive mood at B1 level",
+        "topic": "Foreign Language",
+        "level": "B2.2 (Upper-Intermediate High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Grammar",
+          "Foreign Language",
+          "B1 Level",
+          "Subjunctive Mood",
+          "Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Grammar exercises focusing on the subjunctive mood at B1 level"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlig8600271he66xoxc7an",
+        "title": "Spanish Grammar Exercise: Gustar A1",
+        "description": "Practice exercises for learning the verb 'gustar' in Spanish at beginner level A1",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Gustar",
+          "Beginner Level",
+          "Language Learning",
+          "Grammar Practice"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for learning the verb 'gustar' in Spanish at beginner level A1"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjljyco002h1he6fvkob5m2",
+        "title": "Possessive Pronouns Exercise",
+        "description": "Practice exercise for possessive pronouns at beginner level",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Possessive Pronouns",
+          "Grammar Exercise",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercise for possessive pronouns at beginner level"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlk96c002j1he6yfz4krfh",
+        "title": "Indefinite and Imperfect Tense Exercise A2",
+        "description": "Practice exercises on indefinite and imperfect tenses at A2 level",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Language Learning",
+          "Verb Tenses",
+          "Grammar Practice",
+          "A2 Level"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises on indefinite and imperfect tenses at A2 level"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlkmox002n1he6qpffghy5",
+        "title": "Spanish Verb Conjugation Practice",
+        "description": "Practice exercises for irregular verbs in the Spanish past tense (indefinido)",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Conjugation",
+          "Irregular Verbs",
+          "Past Tense",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for irregular verbs in the Spanish past tense (indefinido)"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjll0u3002r1he6w26cmk6k",
+        "title": "Pronoun Exercise A2 Level",
+        "description": "Grammar exercise focusing on pronouns at A2 proficiency level",
+        "topic": "English Language Arts",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Pronouns",
+          "Grammar Exercise",
+          "A2 Level",
+          "English Language"
+        ],
+        "language": "English",
+        "aiSummary": "Grammar exercise focusing on pronouns at A2 proficiency level"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjllidp002v1he6okfubhtj",
+        "title": "Word Order Exercise A1_2",
+        "description": "Practice exercise for word order at A1 level",
+        "topic": "Foreign Language",
+        "level": "A1.2 (Beginner High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Language Learning",
+          "Grammar Practice",
+          "A1 Level",
+          "Word Order"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercise for word order at A1 level"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlqjy7003h1he6h76oglsb",
+        "title": "Sentence Translation Exercise A2",
+        "description": "Practice translating sentences from Dutch to English at A2 level proficiency",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Language Learning",
+          "Translation",
+          "A2 Level",
+          "Dutch",
+          "English"
+        ],
+        "language": "English",
+        "aiSummary": "Practice translating sentences from Dutch to English at A2 level proficiency"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlr0mx003l1he67pyyplq5",
+        "title": "Spanish Imperative Affirmative Practice",
+        "description": "Practice exercises for using the imperative affirmative in Spanish",
+        "topic": "Foreign Language",
+        "level": "A1.2 (Beginner High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Imperative Affirmative",
+          "Language Practice",
+          "Grammar Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for using the imperative affirmative in Spanish"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlrflo003p1he6v6ppthrc",
+        "title": "Understanding the Letter R",
+        "description": "Explanation and practice exercises for the letter R pronunciation",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Phonics",
+          "Pronunciation",
+          "Language Learning",
+          "Elementary Education"
+        ],
+        "language": "English",
+        "aiSummary": "Explanation and practice exercises for the letter R pronunciation"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlrqam003t1he69kvr22i0",
+        "title": "Grammar Explanation Worksheet A1_2",
+        "description": "A grammar explanation worksheet for level A1 learners",
+        "topic": "Language Arts",
+        "level": "A1.2 (Beginner High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Grammar",
+          "Language Arts",
+          "A1 Level",
+          "Worksheet"
+        ],
+        "language": "English",
+        "aiSummary": "A grammar explanation worksheet for level A1 learners"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlsx82003z1he65kfgw9pn",
+        "title": "Spanish Imperfect Tense Practice",
+        "description": "Practice exercises for using the Spanish imperfect tense verb conjugation",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Conjugation",
+          "Language Practice",
+          "Grammar Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for using the Spanish imperfect tense verb conjugation"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjltbpz00431he6vzsgun2d",
+        "title": "Detention of Pinochet",
+        "description": "Text discussing the detention of Pinochet, suitable for B1 level learners",
+        "topic": "History",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Pinochet",
+          "Detention",
+          "History",
+          "Reading Comprehension",
+          "B1 Level"
+        ],
+        "language": "English",
+        "aiSummary": "Text discussing the detention of Pinochet, suitable for B1 level learners"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjluvit004f1he6bmt1kwa1",
+        "title": "El mejor verano de mi vida",
+        "description": "Spanish text about a summer experience, suitable for B1 level learners",
+        "topic": "Foreign Language",
+        "level": "B1.2 (Intermediate High)",
+        "type": "Worksheet",
+        "skill": "Writing",
+        "tags": [
+          "Spanish",
+          "B1 Level",
+          "Summer Experience"
+        ],
+        "language": "English",
+        "aiSummary": "Spanish text about a summer experience, suitable for B1 level learners"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlvttu004j1he67lgq8z6r",
+        "title": "Daily Routines Listening Practice",
+        "description": "Listening practice for daily routines at beginner level",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Quiz",
+        "skill": "Listening",
+        "tags": [
+          "Beginner Level",
+          "Language Learning",
+          "Listening Practice",
+          "Daily Routines"
+        ],
+        "language": "English",
+        "aiSummary": "Listening practice for daily routines at beginner level"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlwabn004p1he6vr8bu6io",
+        "title": "Practice Exam Draft 1",
+        "description": "A practice exam draft for assessment and preparation purposes",
+        "topic": "Other",
+        "level": "A2.2 (Elementary High)",
+        "type": "Test",
+        "skill": "Reading",
+        "tags": [
+          "practice exam",
+          "assessment",
+          "draft",
+          "high school",
+          "critical thinking"
+        ],
+        "language": "English",
+        "aiSummary": "A practice exam draft for assessment and preparation purposes"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlwndv004t1he6vz4lr2ps",
+        "title": "Spanish Verbs SER and TENER",
+        "description": "Educational material focusing on the Spanish verbs SER and TENER",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verbs",
+          "Grammar",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material focusing on the Spanish verbs SER and TENER"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlxm4g00511he6af1iljsl",
+        "title": "Spanish Subjunctive Pictograms and Colors",
+        "description": "Material focusing on subjunctive mood with pictograms and colors",
+        "topic": "Foreign Language",
+        "level": "B2.1 (Upper-Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Subjunctive Mood",
+          "Pictograms",
+          "Colors",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Material focusing on subjunctive mood with pictograms and colors"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlxxl200551he6wwem4k5b",
+        "title": "Subjunctive Practice Drill",
+        "description": "A practice drill focusing on the subjunctive mood in Spanish grammar.",
+        "topic": "Foreign Language",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Grammar",
+          "Language Learning",
+          "Verb Conjugation"
+        ],
+        "language": "English",
+        "aiSummary": "A practice drill focusing on the subjunctive mood in Spanish grammar."
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjly7m300591he6q01ls5dd",
+        "title": "House Vocabulary Learning",
+        "description": "PDF document focusing on vocabulary related to houses",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Vocabulary",
+          "House",
+          "Foreign Language",
+          "Adult Education"
+        ],
+        "language": "English",
+        "aiSummary": "PDF document focusing on vocabulary related to houses"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm00ll005l1he6t7fwksi3",
+        "title": "Introduction to Government Structures",
+        "description": "Educational material introducing basic concepts of government structures and functions",
+        "topic": "Social Studies",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Intercultural Communication",
+        "tags": [
+          "Government",
+          "Structures",
+          "Functions",
+          "Politics"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material introducing basic concepts of government structures and functions"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlyksd005d1he6644d7u0i",
+        "title": "Introduction to Government Structures",
+        "description": "Educational material introducing basic concepts of government structures",
+        "topic": "Social Studies",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Government",
+          "Structures",
+          "Politics",
+          "Civics"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material introducing basic concepts of government structures"
+      },
+      "score": -1000,
+      "scoreBreakdown": {
+        "languageMatch": -1000,
+        "topicMatch": 0,
+        "levelMatch": 0,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "FILTERED OUT: Language mismatch (Material: English, Student: Spanish)"
+      ]
+    }
+  ],
+  "topScoredMaterials": [
+    {
+      "material": {
+        "id": "cmh4p5sla00036pdkoanwepss",
+        "title": "Spanish verb tenses_ dyslexia adapted",
+        "description": "Practice material for learning Spanish verb tenses: pretérito indefinido and pretérito  imperfecto. This document is at A2.2 level and has been adapted for students with dyslexia and ADHD.",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Practice",
+          "Conjugation",
+          "past tenses",
+          "dyslexia",
+          "ADHD"
+        ],
+        "language": "Spanish",
+        "aiSummary": "An adapted math worksheet for practice and reinforcement."
+      },
+      "score": 90.03030303030303,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 8,
+        "semanticMatch": 10.03030303030303
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Grammar",
+        "Tag matches: ADHD, Dyslexia, Spanish, Past Tenses",
+        "Contains accessibility accommodations",
+        "Semantic match: 50.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4p19zw00016pdk627981up",
+        "title": "Spanish Verb Tenses: Indefinido e Imperfecto",
+        "description": "Practice material for learning Spanish verb tenses: preterito Indefinido and preterito imperfecto (imperfect). This document is at A2.2 level and has been adapted for students with dyslexia and ADHD.",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Practice",
+          "Conjugation",
+          "past tenses",
+          "dyslexia",
+          "ADHD"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice material for learning Spanish verb tenses: Indefinido (preterite) and Imperfecto (imperfect)"
+      },
+      "score": 88.65306122448979,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 8,
+        "semanticMatch": 8.653061224489795
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Grammar",
+        "Tag matches: ADHD, Dyslexia, Spanish, Past Tenses",
+        "Contains accessibility accommodations",
+        "Semantic match: 43.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4pgb4300076pdkk4drh0ks",
+        "title": "Written exercise on the difference between Spanish past tenses.",
+        "description": "Gap-fill activity to practise the difference between pretérito indefinido, pretérito perfecto, and pretérito imperfecto in Spanish.\r\nMaterial adapted for special educational needs, dyslexia, and ADHD.",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Writing",
+        "tags": [
+          "adapted material",
+          "special education",
+          "writing",
+          "past tenses",
+          "dyslexia",
+          "ADHD"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Math worksheet with adapted content for special needs students"
+      },
+      "score": 88.25531914893617,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 8,
+        "semanticMatch": 8.25531914893617
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Writing",
+        "Tag matches: ADHD, Dyslexia, Past Tenses",
+        "Contains accessibility accommodations",
+        "Semantic match: 41.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyyr1u00001zxfmdezri20j",
+        "title": "Escape Room Links (A1-B2)",
+        "description": "A collection of links to online escape room activities for interactive learning and problem-solving.\r\nIn this document, you will find a collection of links to escape rooms for practising your Spanish. They cover all levels, from A1 to C2.\r\nYou will be able to practise past tenses — pretérito perfecto, pretérito indefinido, and pretérito imperfecto — as well as regular and irregular present tense verbs, prepositions, and aspects of Hispanic culture through 21st-century literature.\r\n",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Interactive Content",
+        "skill": "Grammar",
+        "tags": [
+          "Interactive Learning",
+          "escape rooms",
+          "Online Activities",
+          "past tenses",
+          "prepositions",
+          "present tenses",
+          "literature"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A collection of links to online escape room activities for interactive learning and problem-solving."
+      },
+      "score": 81.11475409836065,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 10.114754098360654
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Skill match: Grammar",
+        "Tag matches: Past Tenses",
+        "Semantic match: 50.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgz21xb500012tcp7p79zgg2",
+        "title": "Spanish Verb Tenses: Indefinido e Imperfecto",
+        "description": "Practice and explanation of Spanish past tense verb forms: pretérito indefinido and pretérito imperfecto. ",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Past Tense",
+          "Language Learning",
+          "indefinido",
+          "imperfecto"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice and explanation of Spanish past tense verb forms"
+      },
+      "score": 75.02873563218391,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 0,
+        "semanticMatch": 10.528735632183908
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish, Past Tenses, Pretérito Indefinido, Pretérito Imperfecto",
+        "Semantic match: 52.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4kisuq000301fr38v37h28",
+        "title": "Contrasting Past Tenses_preterito perfecto and preterito indefinido",
+        "description": "Educational material focusing on contrasting past tenses in Spanish. \r\nInfographic on the contrast of past tenses in Spanish: pretérito indefinido, pretérito perfecto, and pretérito imperfecto. It includes the conjugation of each tense and an explanation of their individual uses, as well as a comparison of all three.\r\nMaterial recommended for students who have difficulties using past tenses.",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Study Guide",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Past Tenses",
+          "Language Learning",
+          "Grammar Rules"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Educational material focusing on contrasting past tenses in Spanish"
+      },
+      "score": 74.05140186915888,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 2,
+        "accessibilityMatch": 0,
+        "semanticMatch": 9.551401869158877
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish, Past Tenses",
+        "Semantic match: 47.8% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4k1zvf000101frh3hcg8ni",
+        "title": "Fill gaps Spanish Preterito Perfecto activity ",
+        "description": "Practice exercises for learning and applying the Spanish preterito perfecto tense. This is a sentence exercise in which you have to fill in the gaps with the verb in the correct form of the pretérito perfecto in Spanish. The aim of this exercise is to review this verb tense.",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Language Practice",
+          "Grammar Exercises"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for learning and applying the Spanish preterito perfecto tense"
+      },
+      "score": 72.93434343434343,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 9.434343434343434
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 47.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4jn39z00010yfkg7bqf79j",
+        "title": "Spanish Verb Tenses: Indefinido vs. Perfecto",
+        "description": "A comparison and contrast of the Spanish verb tenses Indefinido (Past simple) and Perfecto (Present Perfect). It is a gap-fill exercise using the correct past tense to practise the contrast between the two verb tenses.",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Verb Tenses",
+          "Past simple",
+          "Present Perfect",
+          "preterito perfecto",
+          "preterito indefinido"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A comparison and contrast of the Spanish verb tenses Indefinido (Preterite) and Perfecto (Present Perfect)"
+      },
+      "score": 72.35714285714286,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 8.857142857142858
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 44.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhbts1rf00032mf23mt0t3pw",
+        "title": "Direct and Indirect Object in Spanish",
+        "description": "Explanation and practice exercises on direct and indirect objects in Spanish grammar. Level A2",
+        "topic": "Education",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Grammar",
+          "Language Learning",
+          "Syntax",
+          "Practice Exercises",
+          "indirect object",
+          "direct object"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Explanation and practice exercises on direct and indirect objects in Spanish grammar"
+      },
+      "score": 68.03846153846153,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.538461538461539
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 22.7% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyz9t3x00011beeoozes560",
+        "title": "Infographic Por y Para (prepositions) B1",
+        "description": "This document is an educational explanatory infographic about the difference between the Spanish prepositions por and para.",
+        "topic": "Education",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Summary",
+        "skill": "Grammar",
+        "tags": [
+          "por y para",
+          "prepositions",
+          "difference por y para",
+          "spanish grammar",
+          "usage por y para"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Educational material on the usage of 'por' and 'para' in Spanish"
+      },
+      "score": 64.91414141414141,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.4141414141414141
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B1.1 (Intermediate Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 7.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbtj0c00072teb9dcpb92m",
+        "title": "Spanish Demonstratives",
+        "description": "An explanatory guide to Spanish demonstratives, with exercises to practise the grammar. Level A1.",
+        "topic": "Education",
+        "level": "A1.2 (Beginner High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "grammar",
+          "demonstrative",
+          "este",
+          "esta",
+          "estos",
+          "estas",
+          "level A1",
+          "Spanish"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for learning Spanish demonstrative pronouns and adjectives."
+      },
+      "score": 63.840425531914896,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 5.340425531914894
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.2 (Beginner High) (2 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 26.7% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmh4llopq000113ebrdzcgji2",
+        "title": "Spanish past tenses contrast game",
+        "description": "It is a game board with three parts: images, verbs, and time markers. By combining the three, the student creates sentences using the correct past tense according to the time marker. It is an oral or written exercise to practise the contrast of past tenses in Spanish.\r\n",
+        "topic": "Education",
+        "level": "A2.2 (Elementary High)",
+        "type": "Activity",
+        "skill": "Speaking",
+        "tags": [
+          "Spanish",
+          "Past Tenses",
+          "game",
+          "create sentences"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Material comparing past tense forms and usage."
+      },
+      "score": 63.52252252252252,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 25,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 2,
+        "accessibilityMatch": 0,
+        "semanticMatch": 6.5225225225225225
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Perfect level match: A2.2 (Elementary High)",
+        "Tag matches: Spanish, Past Tenses",
+        "Semantic match: 32.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhbtq2pk00012mf2sli1hq47",
+        "title": "Indicativo vs Subjuntivo",
+        "description": "Gap-fill exercise on the contrast between the indicative and the subjunctive in Spanish. Level B1.",
+        "topic": "Education",
+        "level": "B1.2 (Intermediate High)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Language Learning",
+          "Grammar Rules",
+          "Verb Conjugation",
+          "subjunctive",
+          "level b1"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A material comparing the usage of Indicative and Subjunctive moods in Spanish."
+      },
+      "score": 61.39473684210526,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.8947368421052633
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B1.2 (Intermediate High) (2 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 14.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyzxpi900051beexjd1vy51",
+        "title": "Grammar: Presente de subjuntivo",
+        "description": "Educational document showing the conjugation of the present subjunctive in Spanish. It includes both regular and irregular verbs.",
+        "topic": "Education",
+        "level": "B1.2 (Intermediate High)",
+        "type": "Summary",
+        "skill": "Grammar",
+        "tags": [
+          "Verb Conjugation",
+          "temporal tenses",
+          "subjunctive mode",
+          "infinitive mode",
+          "indicative mode"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Educational material on the present subjunctive tense in Spanish"
+      },
+      "score": 60.92857142857143,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 12.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.428571428571429
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B1.2 (Intermediate High) (2 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 17.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgyzlc5g00031beeh0d7f01q",
+        "title": "Oraciones temporales con subjuntivo (B2)",
+        "description": "It is a document with a grammatical explanation of how temporal sentence structures work in Spanish, using different connectors ranging from the most basic and common to the more complex ones.\r\nThis document includes several exercises for the student to practise the grammar explained above.",
+        "topic": "Education",
+        "level": "B2.2 (Upper-Intermediate High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Temporal tenses",
+          "subjuntivo",
+          "cuando",
+          "antes de que",
+          "después de que"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for constructing temporal sentences in Spanish"
+      },
+      "score": 58.2027027027027,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 5.7027027027027035
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: B2.2 (Upper-Intermediate High) (4 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 28.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbh7iz00032teblrb2uqrp",
+        "title": "Spanish Interrogatives Practice",
+        "description": "Practice material for learning and using interrogative words in Spanish. Level A1",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "qué",
+          "cuál",
+          "dónde",
+          "cuántos. question words",
+          "Spanish",
+          "level A1"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice material for learning and using interrogative words in Spanish."
+      },
+      "score": 56.29775280898876,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.797752808988764
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 14.0% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbd0ip00012teb5k7kf4xa",
+        "title": "Question words in Spanish",
+        "description": "This is an exercise designed to help students practise question words in Spanish and learn how to form questions in a A1 level.",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "question words",
+          "interrogative words",
+          "qué",
+          "cuál",
+          "cuáles",
+          "dónde"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercise focusing on interrogative words and forming questions."
+      },
+      "score": 56.28217821782178,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.782178217821782
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 18.9% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgz03lsf00071beesai4jtvv",
+        "title": "Gender male / female exercises",
+        "description": "Practice exercises for identifying gender (masculine or feminine) in Spanish.",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Gender",
+          "Grammar",
+          "male and female grammar",
+          "nouns"
+        ],
+        "language": "Spanish",
+        "aiSummary": "Practice exercises for identifying gender (masculine or feminine) in Spanish."
+      },
+      "score": 55.611111111111114,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.111111111111111
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Semantic match: 15.6% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmhdbo57i00052tebw5xx2tt4",
+        "title": "Nationalities in Spanish",
+        "description": "This exercise is to help students practise matching masculine and feminine, and singular and plural forms in adjectives such as nationalities. Level A1",
+        "topic": "Education",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Fill in the Blank",
+        "skill": "Vocabulary",
+        "tags": [
+          "Nationalities",
+          "female",
+          "male",
+          "singular",
+          "plural"
+        ],
+        "language": "Spanish",
+        "aiSummary": "A material showcasing different nationalities and countries for cultural awareness and diversity education."
+      },
+      "score": 40.404761904761905,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 30,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.904761904761904
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Topic match: Education",
+        "Level proximity: A1.1 (Beginner Low) (3 levels from A2.2 (Elementary High))",
+        "Semantic match: 14.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgune9th0001zqea4fsm3zt5",
+        "title": "Song lyric: Nada Valgo Sin Tu Amor - Juanes",
+        "description": "Song lyrics, to fill in the missing gaps with the simple past tense, and an exercise on the vocabulary included in the song.",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Fill in the Blank",
+        "skill": "Grammar",
+        "tags": [
+          "Spanish",
+          "Song lyric",
+          "Past simple tense",
+          "preterito indefinido",
+          "pasados"
+        ],
+        "language": "Spanish",
+        "aiSummary": "An educational analysis of the song lyrics focusing on present indicative tense"
+      },
+      "score": 38.3,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 17.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.800000000000001
+      },
+      "rationale": [
+        "Language match: Spanish",
+        "Level proximity: A2.1 (Elementary Low) (1 level from A2.2 (Elementary High))",
+        "Skill match: Grammar",
+        "Tag matches: Spanish",
+        "Semantic match: 24.0% concept overlap"
+      ]
+    }
+  ]
+}

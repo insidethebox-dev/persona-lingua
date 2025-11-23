@@ -6,7 +6,14 @@ import { useParams, redirect } from "next/navigation";
 import Link from "next/link";
 import DashboardLayout from "@/components/DashboardLayout";
 import Image from "next/image";
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType } from "docx";
+import {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  HeadingLevel,
+  AlignmentType,
+} from "docx";
 import {
   Plus,
   Users,
@@ -118,6 +125,9 @@ export default function StudentDetailPage() {
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [additionalInstructions, setAdditionalInstructions] = useState("");
   const [regenerating, setRegenerating] = useState(false);
+  const [materialCompletion, setMaterialCompletion] = useState<
+    Record<string, boolean>
+  >({});
 
   // Only teachers (not school admins) can manage student reports
   const isTeacher = session?.user && !session.user.isSchoolAdmin;
@@ -148,6 +158,46 @@ export default function StudentDetailPage() {
       }
     }
   }, []);
+
+  const handleMaterialCompletion = async (
+    materialId: string,
+    isCompleted: boolean
+  ) => {
+    try {
+      const response = await fetch("/api/materials/complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentId,
+          materialId,
+          isCompleted,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Update local state
+        setMaterialCompletion((prev) => ({
+          ...prev,
+          [materialId]: isCompleted,
+        }));
+        toast.success(
+          isCompleted
+            ? "Material marked as completed!"
+            : "Material marked as incomplete",
+          { duration: 2000 }
+        );
+      } else {
+        toast.error("Failed to update completion status");
+      }
+    } catch (error) {
+      console.error("Error updating material completion:", error);
+      toast.error("Failed to update completion status");
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -199,6 +249,22 @@ export default function StudentDetailPage() {
 
       if (data.success && data.data) {
         setRecommendations(data.data);
+      }
+
+      // Fetch completion status for all materials
+      const progressResponse = await fetch(
+        `/api/materials/progress?studentId=${studentId}`
+      );
+      const progressData = await progressResponse.json();
+
+      if (progressData.success && progressData.data) {
+        const completionMap: Record<string, boolean> = {};
+        progressData.data.forEach(
+          (progress: { learningMaterialId: string; isCompleted: boolean }) => {
+            completionMap[progress.learningMaterialId] = progress.isCompleted;
+          }
+        );
+        setMaterialCompletion(completionMap);
       }
     } catch (error) {
       console.error("Error fetching recommendations:", error);
@@ -394,10 +460,10 @@ export default function StudentDetailPage() {
     if (!materialSuggestions?.generatedMaterial) return;
 
     const material = materialSuggestions.generatedMaterial;
-    
+
     try {
       // Parse the content and create structured paragraphs
-      const contentLines = material.content.split('\n');
+      const contentLines = material.content.split("\n");
       const paragraphs = [];
 
       // Add title
@@ -413,55 +479,55 @@ export default function StudentDetailPage() {
       paragraphs.push(
         new Paragraph({
           children: [
-            new TextRun({ text: 'Student: ', bold: true }),
+            new TextRun({ text: "Student: ", bold: true }),
             new TextRun(materialSuggestions.studentName),
           ],
           spacing: { after: 100 },
         }),
         new Paragraph({
           children: [
-            new TextRun({ text: 'Topic: ', bold: true }),
+            new TextRun({ text: "Topic: ", bold: true }),
             new TextRun(material.metadata.topic),
           ],
           spacing: { after: 100 },
         }),
         new Paragraph({
           children: [
-            new TextRun({ text: 'Level: ', bold: true }),
+            new TextRun({ text: "Level: ", bold: true }),
             new TextRun(material.metadata.level),
           ],
           spacing: { after: 100 },
         }),
         new Paragraph({
           children: [
-            new TextRun({ text: 'Skill: ', bold: true }),
+            new TextRun({ text: "Skill: ", bold: true }),
             new TextRun(material.metadata.skill),
           ],
           spacing: { after: 100 },
         }),
         new Paragraph({
           children: [
-            new TextRun({ text: 'Language: ', bold: true }),
+            new TextRun({ text: "Language: ", bold: true }),
             new TextRun(material.metadata.language),
           ],
           spacing: { after: 100 },
         }),
         new Paragraph({
           children: [
-            new TextRun({ text: 'Estimated Duration: ', bold: true }),
+            new TextRun({ text: "Estimated Duration: ", bold: true }),
             new TextRun(material.metadata.estimatedDuration),
           ],
           spacing: { after: 100 },
         }),
         new Paragraph({
           children: [
-            new TextRun({ text: 'Generated: ', bold: true }),
+            new TextRun({ text: "Generated: ", bold: true }),
             new TextRun(new Date().toLocaleDateString()),
           ],
           spacing: { after: 300 },
         }),
         new Paragraph({
-          text: '═'.repeat(50),
+          text: "═".repeat(50),
           spacing: { after: 300 },
         })
       );
@@ -469,48 +535,51 @@ export default function StudentDetailPage() {
       // Add content paragraphs
       for (const line of contentLines) {
         const trimmedLine = line.trim();
-        
-        if (trimmedLine.startsWith('# ')) {
+
+        if (trimmedLine.startsWith("# ")) {
           // Main heading
           paragraphs.push(
             new Paragraph({
-              text: trimmedLine.replace('# ', ''),
+              text: trimmedLine.replace("# ", ""),
               heading: HeadingLevel.HEADING_1,
               spacing: { before: 200, after: 200 },
             })
           );
-        } else if (trimmedLine.startsWith('## ')) {
+        } else if (trimmedLine.startsWith("## ")) {
           // Sub heading
           paragraphs.push(
             new Paragraph({
-              text: trimmedLine.replace('## ', ''),
+              text: trimmedLine.replace("## ", ""),
               heading: HeadingLevel.HEADING_2,
               spacing: { before: 200, after: 150 },
             })
           );
-        } else if (trimmedLine.startsWith('### ')) {
+        } else if (trimmedLine.startsWith("### ")) {
           // Sub sub heading
           paragraphs.push(
             new Paragraph({
-              text: trimmedLine.replace('### ', ''),
+              text: trimmedLine.replace("### ", ""),
               heading: HeadingLevel.HEADING_3,
               spacing: { before: 150, after: 100 },
             })
           );
-        } else if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
+        } else if (trimmedLine.startsWith("**") && trimmedLine.endsWith("**")) {
           // Bold text
           paragraphs.push(
             new Paragraph({
               children: [
                 new TextRun({
-                  text: trimmedLine.replace(/\*\*/g, ''),
+                  text: trimmedLine.replace(/\*\*/g, ""),
                   bold: true,
                 }),
               ],
               spacing: { after: 100 },
             })
           );
-        } else if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+        } else if (
+          trimmedLine.startsWith("- ") ||
+          trimmedLine.startsWith("* ")
+        ) {
           // Bullet point
           paragraphs.push(
             new Paragraph({
@@ -529,14 +598,14 @@ export default function StudentDetailPage() {
           );
         } else {
           // Empty line for spacing
-          paragraphs.push(new Paragraph({ text: '' }));
+          paragraphs.push(new Paragraph({ text: "" }));
         }
       }
 
       // Add footer
       paragraphs.push(
         new Paragraph({
-          text: '═'.repeat(50),
+          text: "═".repeat(50),
           spacing: { before: 300, after: 200 },
         }),
         new Paragraph({
@@ -553,26 +622,33 @@ export default function StudentDetailPage() {
 
       // Create document
       const doc = new Document({
-        sections: [{
-          properties: {},
-          children: paragraphs,
-        }],
+        sections: [
+          {
+            properties: {},
+            children: paragraphs,
+          },
+        ],
       });
 
       // Generate and download
       const blob = await Packer.toBlob(doc);
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = `${material.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-${materialSuggestions.studentName.replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.docx`;
+      link.download = `${material.title
+        .replace(/[^a-z0-9]/gi, "-")
+        .toLowerCase()}-${materialSuggestions.studentName.replace(
+        /\s+/g,
+        "-"
+      )}-${new Date().toISOString().split("T")[0]}.docx`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      toast.success('Learning material downloaded!');
+      toast.success("Learning material downloaded!");
     } catch (error) {
-      console.error('Error generating docx:', error);
-      toast.error('Failed to download material');
+      console.error("Error generating docx:", error);
+      toast.error("Failed to download material");
     }
   };
 
@@ -800,8 +876,8 @@ export default function StudentDetailPage() {
                     <Sparkles className='h-4 w-4' />
                     {generatingSuggestions ? (
                       <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      Generating...
+                        Generating...
+                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
                       </>
                     ) : (
                       "Suggest Materials"
@@ -813,9 +889,14 @@ export default function StudentDetailPage() {
                     className='bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
                   >
                     <Lightbulb className='h-4 w-4' />
-                    {generatingRecommendations
-                      ? "Generating..."
-                      : "Generate Recommendations"}
+                    {generatingRecommendations ? (
+                      <>
+                        Generating...
+                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
+                      </>
+                    ) : (
+                      "Generate Recommendations"
+                    )}
                   </button>
                 </div>
               )}
@@ -839,11 +920,46 @@ export default function StudentDetailPage() {
                       className='bg-white border rounded-lg p-6'
                     >
                       <div className='flex items-start justify-between mb-3'>
-                        <h3 className='font-medium text-gray-900'>
-                          {rec.learningMaterial.title}
-                        </h3>
-                        <div className='flex items-center gap-1 text-xs'>
-                          <div className='bg-green-100 text-green-800 px-2 py-1 rounded'>
+                        <div className='flex items-center gap-3 flex-1'>
+                          {isTeacher && (
+                            <input
+                              type='checkbox'
+                              checked={
+                                materialCompletion[rec.learningMaterialId] ||
+                                false
+                              }
+                              onChange={(e) =>
+                                handleMaterialCompletion(
+                                  rec.learningMaterialId,
+                                  e.target.checked
+                                )
+                              }
+                              className='w-5 h-5 text-green-600 rounded focus:ring-2 focus:ring-green-500 cursor-pointer'
+                              title={
+                                materialCompletion[rec.learningMaterialId]
+                                  ? "Mark as incomplete"
+                                  : "Mark as completed"
+                              }
+                            />
+                          )}
+                          <h3
+                            className={`font-medium ${
+                              materialCompletion[rec.learningMaterialId]
+                                ? "text-gray-500 line-through"
+                                : "text-gray-900"
+                            }`}
+                          >
+                            {rec.learningMaterial.title}
+                          </h3>
+                        </div>
+                        <div className='flex items-center gap-2 text-xs'>
+                          {materialCompletion[rec.learningMaterialId] && (
+                            <div className='bg-green-100 text-green-800 px-2 py-1 rounded flex items-center gap-1'>
+                              <CheckCircle className='h-3 w-3' />
+                              Completed
+                            </div>
+                          )}
+                          <div className='bg-blue-100 text-blue-800 px-2 py-1 rounded'>
                             {Math.round(rec.confidence * 100)}% match
                           </div>
                         </div>
@@ -1162,12 +1278,15 @@ export default function StudentDetailPage() {
                     Refine Material with Additional Instructions
                   </h3>
                   <p className='text-sm text-gray-600 mb-3'>
-                    Not satisfied with the generated material? Provide additional instructions to refine it.
+                    Not satisfied with the generated material? Provide
+                    additional instructions to refine it.
                   </p>
                   <div className='space-y-3'>
                     <textarea
                       value={additionalInstructions}
-                      onChange={(e) => setAdditionalInstructions(e.target.value)}
+                      onChange={(e) =>
+                        setAdditionalInstructions(e.target.value)
+                      }
                       placeholder='E.g., "Make it more interactive with fill-in-the-blank exercises" or "Add more visual examples" or "Simplify the language for beginners"'
                       className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm text-gray-900 placeholder-gray-400'
                       rows={3}
@@ -1180,7 +1299,7 @@ export default function StudentDetailPage() {
                     >
                       {regenerating ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                          <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
                           Regenerating...
                         </>
                       ) : (

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,58 +8,56 @@ datasource db {
 }
 
 model School {
-  id             String   @id @default(cuid())
-  name           String
-  address        String?
-  phone          String?
-  email          String?  @unique
-  password       String? // For school admin login - nullable for migration
-  profilePicture String? // Cloudinary URL for profile image
-  publicId       String? // Cloudinary public ID for profile management
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  teachers          Teacher[]
+  id                String             @id @default(cuid())
+  name              String
+  address           String?
+  phone             String?
+  email             String?            @unique
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  password          String?
+  profilePicture    String?
+  publicId          String?
   learningMaterials LearningMaterial[]
+  teachers          Teacher[]
 
   @@map("schools")
 }
 
 model Teacher {
-  id             String   @id @default(cuid())
-  email          String   @unique
-  name           String
-  password       String
-  schoolId       String? // Made nullable to support independent teachers
-  subject        String? // Teacher's subject/specialization
-  bio            String? // Teacher's biography
-  profilePicture String? // Cloudinary URL for profile image
-  publicId       String? // Cloudinary public ID for profile management
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  school            School?            @relation(fields: [schoolId], references: [id], onDelete: SetNull)
-  students          Student[]
+  id                String             @id @default(cuid())
+  email             String             @unique
+  name              String
+  password          String
+  schoolId          String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  bio               String?
+  profilePicture    String?
+  publicId          String?
+  subject           String?
   learningMaterials LearningMaterial[]
+  students          Student[]
+  school            School?            @relation(fields: [schoolId], references: [id])
 
   @@map("teachers")
 }
 
 model Student {
-  id               String   @id @default(cuid())
+  id               String                    @id @default(cuid())
   name             String
   age              Int?
   grade            String?
   notes            String?
-  learningBarriers String[] @default([]) // Learning barriers/accessibility needs
-  language         String // Student's native/primary language
   teacherId        String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  teacher         Teacher          @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  reports         StudentReport[]
-  recommendations Recommendation[]
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+  learningBarriers String[]                  @default([])
+  language         String
+  recommendations  Recommendation[]
+  materialProgress StudentMaterialProgress[]
+  reports          StudentReport[]
+  teacher          Teacher                   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 
   @@map("students")
 }
@@ -74,54 +69,52 @@ model StudentReport {
   studentId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@map("student_reports")
 }
 
 model LearningMaterial {
-  id           String   @id @default(cuid())
-  title        String
-  description  String?
-  aiSummary    String? // AI-generated summary of the material
-  filename     String
-  originalName String
-  mimeType     String
-  size         Int
-  fileUrl      String? // URL for cloud storage (Cloudinary)
-  publicId     String? // Cloudinary public ID for management
-  topic        String? // Subject topic (optional)
-  level        String // Grade level
-  type         String // Material type (question, multiple choice, summary)
-  skill        String // Skill targeted (grammar, vocabulary, listening)
-  language     String // Language of the material (e.g., "English", "Greek", "Spanish")
-  tags         String[] @default([]) // Additional custom tags
-  uploadedBy   String // Teacher ID who uploaded
-  schoolId     String? // School this material belongs to (null for independent teachers)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  school          School?          @relation(fields: [schoolId], references: [id], onDelete: SetNull)
-  teacher         Teacher          @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
-  recommendations Recommendation[]
+  id               String                    @id @default(cuid())
+  title            String
+  description      String?
+  filename         String
+  originalName     String
+  mimeType         String
+  size             Int
+  tags             String[]                  @default([])
+  uploadedBy       String
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+  aiSummary        String?
+  fileUrl          String?
+  level            String
+  publicId         String?
+  schoolId         String?
+  skill            String
+  topic            String?
+  type             String
+  language         String
+  school           School?                   @relation(fields: [schoolId], references: [id])
+  teacher          Teacher                   @relation(fields: [uploadedBy], references: [id], onDelete: Cascade)
+  recommendations  Recommendation[]
+  materialProgress StudentMaterialProgress[]
 
   @@map("learning_materials")
 }
 
 model Recommendation {
-  id                 String   @id @default(cuid())
+  id                 String           @id @default(cuid())
   studentId          String
   learningMaterialId String
   reason             String
-  confidence         Float    @default(0.0)
-  preScore           Float? // Deterministic pre-score (0-100)
-  scoreRationale     String? // Explanation of the pre-score
-  viewed             Boolean  @default(false)
-  createdAt          DateTime @default(now())
-
-  student          Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  learningMaterial LearningMaterial @relation(fields: [learningMaterialId], references: [id], onDelete: Cascade)
+  confidence         Float            @default(0.0)
+  viewed             Boolean          @default(false)
+  createdAt          DateTime         @default(now())
+  preScore           Float?
+  scoreRationale     String?
+  learningMaterial   LearningMaterial @relation(fields: [learningMaterialId], references: [id], onDelete: Cascade)
+  student            Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, learningMaterialId])
   @@map("recommendations")
@@ -129,13 +122,13 @@ model Recommendation {
 
 model TeacherAssistant {
   id               String   @id @default(cuid())
-  assistantId      String   @unique // OpenAI Assistant ID
-  threadId         String?  // OpenAI Thread ID for conversation
-  studentId        String   // Student this assistant is for
-  teacherId        String   // Teacher who owns this assistant
-  sessionData      Json?    // Store session context (student profile, needs, etc.)
-  conversationLogs Json[]   @default([]) // Store conversation history
-  status           String   @default("active") // active, archived, deleted
+  assistantId      String   @unique
+  teacherId        String
+  threadId         String?  // Optional - for backward compatibility with old records
+  studentId        String?  // Optional - for backward compatibility with old records
+  sessionData      Json?    // Optional - for backward compatibility with old records
+  conversationLogs Json[]   @default([]) // For backward compatibility with old records
+  status           String   @default("active")
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
@@ -143,4 +136,38 @@ model TeacherAssistant {
   @@index([teacherId])
   @@index([assistantId])
   @@map("teacher_assistants")
+}
+
+model StudentThread {
+  id               String   @id @default(cuid())
+  threadId         String   @unique
+  studentId        String
+  teacherId        String
+  assistantId      String
+  sessionData      Json?
+  conversationLogs Json[]   @default([])
+  status           String   @default("active")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([teacherId])
+  @@index([threadId])
+  @@map("student_threads")
+}
+
+model StudentMaterialProgress {
+  id                 String           @id @default(cuid())
+  studentId          String
+  learningMaterialId String
+  isCompleted        Boolean          @default(false)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  learningMaterial   LearningMaterial @relation(fields: [learningMaterialId], references: [id], onDelete: Cascade)
+  student            Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, learningMaterialId])
+  @@index([studentId])
+  @@index([learningMaterialId])
+  @@map("student_material_progress")
 }

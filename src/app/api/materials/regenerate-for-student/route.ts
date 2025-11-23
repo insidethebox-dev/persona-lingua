@@ -33,8 +33,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { studentId, assistantId, threadId, additionalInstructions } =
-      await request.json();
+    const { studentId, additionalInstructions } = await request.json();
 
     if (!studentId || !additionalInstructions) {
       return NextResponse.json(
@@ -67,25 +66,49 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let currentThreadId = threadId;
-    const currentAssistantId = assistantId;
+    // Get the teacher's assistant (should exist from initial generation)
+    const teacherAssistant = await prisma.teacherAssistant.findFirst({
+      where: {
+        teacherId: teacher.id,
+        threadId: null, // New-style records have no threadId
+      },
+      orderBy: { createdAt: 'desc' },
+    });
 
-    // Get or create assistant record
-    let assistantRecord = assistantId
-      ? await prisma.teacherAssistant.findUnique({
-          where: { assistantId },
-        })
-      : null;
+    if (!teacherAssistant) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "No assistant found. Please generate material first.",
+        },
+        { status: 400 }
+      );
+    }
 
-    // If no assistant exists, retrieve from initial generation
-    if (!assistantRecord && assistantId) {
-      // Create record for tracking
-      assistantRecord = await prisma.teacherAssistant.create({
+    const currentAssistantId = teacherAssistant.assistantId;
+
+    // Get or create the student's thread
+    let studentThread = await prisma.studentThread.findFirst({
+      where: {
+        studentId,
+        teacherId: teacher.id,
+        status: "active",
+      },
+    });
+
+    let currentThreadId: string;
+
+    if (!studentThread) {
+      // Create a new thread if none exists
+      const thread = await openai.beta.threads.create();
+      currentThreadId = thread.id;
+
+      studentThread = await prisma.studentThread.create({
         data: {
-          assistantId,
-          threadId: threadId || null,
+          threadId: currentThreadId,
           studentId,
           teacherId: teacher.id,
+          assistantId: currentAssistantId,
           sessionData: {
             studentName: student.name,
             language: student.language,
@@ -95,20 +118,8 @@ export async function POST(request: NextRequest) {
           status: "active",
         },
       });
-    }
-
-    if (!currentThreadId) {
-      // Create a new thread if none exists
-      const thread = await openai.beta.threads.create();
-      currentThreadId = thread.id;
-
-      // Update assistant record with thread ID
-      if (assistantRecord) {
-        await prisma.teacherAssistant.update({
-          where: { id: assistantRecord.id },
-          data: { threadId: currentThreadId },
-        });
-      }
+    } else {
+      currentThreadId = studentThread.threadId;
     }
 
     // Add the user's additional instructions to the thread
@@ -166,36 +177,36 @@ export async function POST(request: NextRequest) {
 
     // Parse the regenerated content
     const lines = regeneratedContent.split("\n");
-    const titleLine = lines.find((line) => line.trim().length > 0) || "Learning Material";
+    const titleLine =
+      lines.find((line) => line.trim().length > 0) || "Learning Material";
     const title = titleLine
       .replace(/^#+\s*/, "")
       .replace(/^\*\*/, "")
       .replace(/\*\*$/, "")
       .trim();
 
-    // Log the conversation
-    if (assistantRecord) {
-      const currentLogs = Array.isArray(assistantRecord.conversationLogs) 
-        ? assistantRecord.conversationLogs as Array<{instruction: string; timestamp: string}>
-        : [];
-      
-      await prisma.teacherAssistant.update({
-        where: { id: assistantRecord.id },
+    // Log the conversation in the student thread
+    if (studentThread) {
+      await prisma.studentThread.update({
+        where: { id: studentThread.id },
         data: {
-          conversationLogs: [
-            ...currentLogs,
-            {
-              instruction: additionalInstructions,
-              timestamp: new Date().toISOString(),
-            },
-          ],
+          conversationLogs: {
+            push: JSON.parse(
+              JSON.stringify({
+                instruction: additionalInstructions,
+                timestamp: new Date().toISOString(),
+                type: "regeneration",
+                generatedTitle: title,
+              })
+            ),
+          },
         },
       });
     }
 
     // Get the original analysis from student reports
     const reportContents = student.reports.map((report) => report.content);
-    
+
     // Re-analyze to get metadata (or retrieve from stored session data)
     const { analyzeStudentNeeds } = await import("@/lib/openai");
     const studentNeeds = await analyzeStudentNeeds(reportContents, {
