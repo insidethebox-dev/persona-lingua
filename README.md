@@ -4,10 +4,10 @@ An AI-powered learning material recommendation system built with Next.js, TypeSc
 
 ## Latest Fixes
 
-- Added language as an option for material and students
-- Fixed maximum file size limit and student age in form
-- Fixed file attachment being processed in the AI generation material
-- Fixed error with PATCH request on edit material page
+- Added Student-centric Material generation
+- Refined the Recommendations algorithm with weighted logic and 3 layers filtering
+- Added the mark as completed feature to recommended material
+- Created an assistant per teacher logic for AI generated materials and recommendations
 
 ## Features
 
