@@ -124,9 +124,9 @@ model TeacherAssistant {
   id               String   @id @default(cuid())
   assistantId      String   @unique
   teacherId        String
-  threadId         String?  // Optional - for backward compatibility with old records
-  studentId        String?  // Optional - for backward compatibility with old records
-  sessionData      Json?    // Optional - for backward compatibility with old records
+  threadId         String? // Optional - for backward compatibility with old records
+  studentId        String? // Optional - for backward compatibility with old records
+  sessionData      Json? // Optional - for backward compatibility with old records
   conversationLogs Json[]   @default([]) // For backward compatibility with old records
   status           String   @default("active")
   createdAt        DateTime @default(now())

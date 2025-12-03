@@ -777,8 +777,25 @@ When recommending cross-language materials, provide specific adaptation strategi
       "Error generating recommendations from filtered materials:",
       error
     );
+    
+    // Enhanced error logging
+    if (error instanceof Error) {
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        name: error.name,
+      });
+    }
+    
+    // Log OpenAI-specific errors
+    if (error?.error?.message) {
+      console.error("OpenAI API error:", error.error);
+    }
+    
     throw new Error(
-      "Failed to generate recommendations from filtered materials"
+      `Failed to generate recommendations from filtered materials: ${
+        error instanceof Error ? error.message : 'Unknown error'
+      }`
     );
   }
 }

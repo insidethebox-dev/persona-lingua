@@ -47,6 +47,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(`[Recommendations] Starting generation for student: ${studentId}, teacher: ${teacher.id}`);
+
     // Verify the student belongs to this teacher
     const student = await prisma.student.findFirst({
       where: {
@@ -82,6 +84,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(`[Recommendations] Found ${student.reports.length} reports for student ${student.name}`);
+
     // Step 1: Analyze student needs using AI - now with enhanced student data
     const reportContents = student.reports.map((report) => report.content);
     const reportMetadata = student.reports.map((report) => ({
@@ -99,10 +103,17 @@ export async function POST(request: NextRequest) {
       reportMetadata,
     };
 
+    console.log(`[Recommendations] Analyzing student needs with OpenAI...`);
     const studentNeeds = await analyzeStudentNeeds(
       reportContents,
       studentContext
     );
+    console.log(`[Recommendations] Student needs analyzed:`, {
+      topics: studentNeeds.topic,
+      levels: studentNeeds.level,
+      types: studentNeeds.type,
+      skills: studentNeeds.skill,
+    });
 
     // Get list of completed materials for this student
     const completedMaterials = await prisma.studentMaterialProgress.findMany({
@@ -126,6 +137,7 @@ export async function POST(request: NextRequest) {
     // Step 2: Filter materials based on AI-determined criteria
     // Only include materials from the same school as the teacher
     // Exclude materials that have already been completed
+    console.log(`[Recommendations] Fetching materials from school ${teacher.schoolId}...`);
     const allMaterials = await prisma.learningMaterial.findMany({
       where: {
         schoolId: teacher.schoolId, // Only materials from the same school
@@ -147,6 +159,8 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log(`[Recommendations] Found ${allMaterials.length} materials (after excluding ${completedMaterialIds.length} completed)`);
+
     if (allMaterials.length === 0) {
       return NextResponse.json(
         {
@@ -160,6 +174,8 @@ export async function POST(request: NextRequest) {
     // Extract key concepts from student reports for semantic matching
     const studentReportsConcepts =
       extractKeyConceptsFromReports(reportContents);
+
+    console.log(`[Recommendations] Scoring ${allMaterials.length} materials...`);
 
     // Score materials using enhanced scoring with semantic matching
     interface ScoredMaterial {
@@ -202,6 +218,11 @@ export async function POST(request: NextRequest) {
     const topScoredMaterials = scoredMaterials
       .sort((a, b) => b.score - a.score)
       .slice(0, MAX_MATERIALS_FOR_AI);
+
+    console.log(`[Recommendations] Top scored materials:`, {
+      count: topScoredMaterials.length,
+      topScores: topScoredMaterials.slice(0, 5).map(m => ({ title: m.material.title, score: m.score })),
+    });
 
     // Count how many materials were filtered out due to language mismatch
     const languageMismatchCount = scoredMaterials.filter(
@@ -259,40 +280,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Write scored materials to file for debugging
-    const fs = await import("fs");
-    const path = await import("path");
-    const debugDir = path.join(process.cwd(), "debug-logs");
+    // Write scored materials to file for debugging (only in development or if writable)
+    try {
+      const fs = await import("fs");
+      const path = await import("path");
+      const debugDir = path.join(process.cwd(), "debug-logs");
 
-    // Create debug directory if it doesn't exist
-    if (!fs.existsSync(debugDir)) {
-      fs.mkdirSync(debugDir, { recursive: true });
+      // Create debug directory if it doesn't exist
+      if (!fs.existsSync(debugDir)) {
+        fs.mkdirSync(debugDir, { recursive: true });
+      }
+
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const debugFilePath = path.join(
+        debugDir,
+        `scored-materials-${timestamp}.json`
+      );
+
+      fs.writeFileSync(
+        debugFilePath,
+        JSON.stringify(
+          {
+            timestamp: new Date().toISOString(),
+            studentId,
+            studentName: student.name,
+            studentLanguage: student.language,
+            totalMaterials: allMaterials.length,
+            scoredMaterials: scoredMaterials,
+            topScoredMaterials: topScoredMaterials,
+          },
+          null,
+          2
+        )
+      );
+
+      console.log(`Scored materials written to: ${debugFilePath}`);
+    } catch (fsError) {
+      // File system operations may fail in production (read-only file systems)
+      console.warn("Could not write debug file (this is normal in production):", fsError instanceof Error ? fsError.message : fsError);
     }
-
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    const debugFilePath = path.join(
-      debugDir,
-      `scored-materials-${timestamp}.json`
-    );
-
-    fs.writeFileSync(
-      debugFilePath,
-      JSON.stringify(
-        {
-          timestamp: new Date().toISOString(),
-          studentId,
-          studentName: student.name,
-          studentLanguage: student.language,
-          totalMaterials: allMaterials.length,
-          scoredMaterials: scoredMaterials,
-          topScoredMaterials: topScoredMaterials,
-        },
-        null,
-        2
-      )
-    );
-
-    console.log(`Scored materials written to: ${debugFilePath}`);
 
     // Step 3: Use AI to recommend the best materials from the filtered set
     // Prepare data for AI analysis with scoring context
@@ -308,12 +334,14 @@ export async function POST(request: NextRequest) {
       aiSummary: scoredMaterial.material.aiSummary, // Include AI analysis for better context
     }));
 
+    console.log(`[Recommendations] Calling OpenAI to generate final recommendations from ${materialsForAI.length} materials...`);
     const aiRecommendations = await generateRecommendationsFromFiltered(
       studentContext,
       studentNeeds,
       materialsForAI,
       crossLanguageGuidance
     );
+    console.log(`[Recommendations] OpenAI returned ${aiRecommendations.length} recommendations`);
 
     // Limit to top N recommendations (AI returns them ordered by confidence)
     const MAX_RECOMMENDATIONS = 20; // Change this number to control how many recommendations are shown
@@ -321,6 +349,8 @@ export async function POST(request: NextRequest) {
       0,
       MAX_RECOMMENDATIONS
     );
+
+    console.log(`[Recommendations] Saving ${limitedRecommendations.length} recommendations to database...`);
 
     // Clear existing recommendations for this student
     await prisma.recommendation.deleteMany({
@@ -349,6 +379,8 @@ export async function POST(request: NextRequest) {
       })
     );
 
+    console.log(`[Recommendations] Creating progress records for ${limitedRecommendations.length} materials...`);
+
     // Create progress records for newly recommended materials (if they don't exist)
     await Promise.all(
       limitedRecommendations.map((rec) =>
@@ -369,6 +401,8 @@ export async function POST(request: NextRequest) {
       )
     );
 
+    console.log(`[Recommendations] Successfully completed! Generated ${recommendations.length} recommendations.`);
+
     const response: ApiResponse = {
       success: true,
       data: recommendations,
@@ -386,8 +420,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     console.error("Error generating recommendations:", error);
+    
+    // Enhanced error logging for production debugging
+    const errorDetails = {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+      type: error?.constructor?.name,
+      timestamp: new Date().toISOString(),
+    };
+    
+    console.error("Detailed error information:", JSON.stringify(errorDetails, null, 2));
+    
     return NextResponse.json(
-      { success: false, error: "Failed to generate recommendations" },
+      { 
+        success: false, 
+        error: "Failed to generate recommendations",
+        details: process.env.NODE_ENV === 'development' ? errorDetails : undefined
+      },
       { status: 500 }
     );
   }
