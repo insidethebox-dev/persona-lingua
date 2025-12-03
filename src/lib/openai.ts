@@ -788,8 +788,8 @@ When recommending cross-language materials, provide specific adaptation strategi
     }
     
     // Log OpenAI-specific errors
-    if (error?.error?.message) {
-      console.error("OpenAI API error:", error.error);
+    if (typeof error === 'object' && error !== null && 'error' in error) {
+      console.error("OpenAI API error:", (error as any).error);
     }
     
     throw new Error(
