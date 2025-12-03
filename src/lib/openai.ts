@@ -789,7 +789,8 @@ When recommending cross-language materials, provide specific adaptation strategi
     
     // Log OpenAI-specific errors
     if (typeof error === 'object' && error !== null && 'error' in error) {
-      console.error("OpenAI API error:", (error as any).error);
+      const openaiError = error as { error: { message?: string; type?: string; code?: string } };
+      console.error("OpenAI API error:", openaiError.error);
     }
     
     throw new Error(
