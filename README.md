@@ -4,6 +4,7 @@ An AI-powered learning material recommendation system built with Next.js, TypeSc
 
 ## Latest Fixes
 
+- Improved student generation algorithm and recommendations algorithm
 - Added Student-centric Material generation
 - Refined the Recommendations algorithm with weighted logic and 3 layers filtering
 - Added the mark as completed feature to recommended material
