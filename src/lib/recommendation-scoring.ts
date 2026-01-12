@@ -46,11 +46,11 @@
 
 export const DEFAULT_WEIGHTS: ScoringWeights = {
   languageMatch: 0, // Language is now a FILTER (pass/fail), not scored
-  topicMatch: 30, // 30% - Core subject alignment
-  levelMatch: 25, // 25% - Age/grade appropriateness (SOFT MATCH - always scores)
-  semanticMatch: 20, // 20% - Content relevance
-  skillMatch: 15, // 15% - Skill targeting
-  accessibilityMatch: 8, // 8% - Learning barrier accommodations
+  topicMatch: 28, // 28% - Core subject alignment
+  levelMatch: 40, // 40% - Age/grade appropriateness (HIGHEST PRIORITY - never go above student level)
+  semanticMatch: 15, // 15% - Content relevance
+  skillMatch: 10, // 10% - Skill targeting
+  accessibilityMatch: 5, // 5% - Learning barrier accommodations (important but secondary to level)
   typeMatch: 0, // 0% - REMOVED (material format no longer scored)
   tagMatch: 2, // 2% - Keyword matching
   // Total: 100 points for perfect match (excluding language filter and type)
@@ -324,6 +324,7 @@ export function scoreEnhancedMaterialMatch(params: {
     // Calculate distance-based score for any other level
     let minDistance = Infinity;
     let closestLevel = "";
+    let closestLevelIndex = -1;
 
     // Use the appropriate level array based on what we found
     const activeLevelOrder = usingProficiencyLevels
@@ -337,24 +338,31 @@ export function scoreEnhancedMaterialMatch(params: {
         if (distance < minDistance) {
           minDistance = distance;
           closestLevel = level;
+          closestLevelIndex = needIndex;
         }
       }
     });
 
     if (minDistance !== Infinity) {
-      // Score decreases with distance: 1 level = 70%, 2 levels = 50%, 3+ levels = 30%
+      // CRITICAL: Penalize materials ABOVE student level more heavily than below
+      const isAboveLevel = materialLevelIndex > closestLevelIndex;
+      
+      // Score decreases with distance, with heavier penalty for above-level materials
       let scoreMultiplier = 0.3; // Default for 3+ levels away
       if (minDistance === 1) {
-        scoreMultiplier = 0.7; // Adjacent level
+        scoreMultiplier = isAboveLevel ? 0.4 : 0.7; // Below: 70%, Above: 40%
       } else if (minDistance === 2) {
-        scoreMultiplier = 0.5; // Two levels away
+        scoreMultiplier = isAboveLevel ? 0.2 : 0.5; // Below: 50%, Above: 20%
+      } else if (minDistance >= 3 && isAboveLevel) {
+        scoreMultiplier = 0.1; // Heavy penalty for materials 3+ levels too high
       }
 
       breakdown.levelMatch = finalWeights.levelMatch * scoreMultiplier;
+      const direction = isAboveLevel ? "above" : "below";
       rationale.push(
         `Level proximity: ${material.level} (${minDistance} level${
           minDistance > 1 ? "s" : ""
-        } from ${closestLevel})`
+        } ${direction} ${closestLevel}${isAboveLevel ? " - PENALTY" : ""})`
       );
     }
   } else if (material.level === "Mixed Levels") {
@@ -449,4 +457,67 @@ export function scoreEnhancedMaterialMatch(params: {
     breakdown,
     rationale,
   };
+}
+
+/**
+ * Helper function to determine if a material level is too far above student level
+ * Returns true if material should be filtered out (more than 1 level above)
+ */
+export function isMaterialTooAdvanced(
+  materialLevel: string,
+  studentLevels: string[]
+): boolean {
+  if (studentLevels.length === 0) return false;
+  if (materialLevel === "Mixed Levels") return false;
+
+  const levelOrder = [
+    "Preschool",
+    "Kindergarten",
+    "Elementary (1-3)",
+    "Elementary (4-5)",
+    "Middle School (6-8)",
+    "High School (9-12)",
+    "Adult Education",
+    "Mixed Levels",
+  ];
+
+  const proficiencyLevelOrder = [
+    "A1.1 (Beginner Low)",
+    "A1.2 (Beginner High)",
+    "A2.1 (Elementary Low)",
+    "A2.2 (Elementary High)",
+    "B1.1 (Intermediate Low)",
+    "B1.2 (Intermediate High)",
+    "B2.1 (Upper-Intermediate Low)",
+    "B2.2 (Upper-Intermediate High)",
+    "C1.1 (Advanced Low)",
+    "C1.2 (Advanced High)",
+    "C2 (Proficient/Mastery)",
+  ];
+
+  // Try to find material level in both systems
+  let materialLevelIndex = levelOrder.indexOf(materialLevel);
+  let activeLevelOrder = levelOrder;
+
+  if (materialLevelIndex === -1) {
+    materialLevelIndex = proficiencyLevelOrder.indexOf(materialLevel);
+    activeLevelOrder = proficiencyLevelOrder;
+  }
+
+  if (materialLevelIndex === -1) return false; // Unknown level, don't filter
+
+  // Find highest student level
+  let maxStudentLevelIndex = -1;
+  studentLevels.forEach((level) => {
+    const idx = activeLevelOrder.indexOf(level);
+    if (idx !== -1 && idx > maxStudentLevelIndex) {
+      maxStudentLevelIndex = idx;
+    }
+  });
+
+  if (maxStudentLevelIndex === -1) return false;
+
+  // Filter out materials more than 1 level above student's highest level
+  const levelsAbove = materialLevelIndex - maxStudentLevelIndex;
+  return levelsAbove > 1;
 }

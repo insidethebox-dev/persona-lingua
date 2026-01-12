@@ -695,15 +695,18 @@ Tags: ${m.tags.join(", ")}
 
 Please rank and recommend the most suitable materials for this student, focusing on:
 
-1. Language alignment - Prioritize materials in the student's preferred language (${
+1. **CRITICAL PRIORITY: Proficiency Level** - NEVER recommend materials above the student's current level (${
+      studentNeeds.level.join(", ")
+    }). Materials at or slightly below the student's level are ideal. Learning barriers should NOT justify recommending advanced materials.
+2. Language alignment - Prioritize materials in the student's preferred language (${
       studentContext.language
     })
-2. Learning barrier accommodations - Consider materials that address specific learning barriers: ${barriers}
-3. Cultural relevance - Consider if materials are culturally appropriate and engaging
-4. Pre-scoring context - Use the pre-scores as a starting point, but apply your expertise to refine recommendations
-5. Accessibility features - Favor materials that accommodate the student's learning barriers
+3. Topic and skill match - Materials that address the identified learning needs
+4. Learning barrier accommodations - Consider materials that address specific learning barriers: ${barriers}, but ONLY if they are at an appropriate level
+5. Pre-scoring context - Use the pre-scores as a starting point, but apply your expertise to refine recommendations
+6. Cultural relevance - Consider if materials are culturally appropriate and engaging
 
-IMPORTANT: Recommend between 3-20 materials to give the teacher a good variety of options to choose from. Include materials at slightly different difficulty levels or approaching the topic from different angles.
+IMPORTANT: Recommend between 3-20 materials to give the teacher a good variety of options to choose from. Include materials at slightly different difficulty levels WITHIN the appropriate range (at or below student level), or approaching the topic from different angles.
 
 When recommending cross-language materials, provide specific adaptation strategies in your reasoning.
 `;
@@ -721,6 +724,7 @@ When recommending cross-language materials, provide specific adaptation strategi
           content: prompt,
         },
       ],
+      temperature: 0.4, // Lower temperature for more consistent recommendations
       functions: [
         {
           name: "recommend_filtered_materials",

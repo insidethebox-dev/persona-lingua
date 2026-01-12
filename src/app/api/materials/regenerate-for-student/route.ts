@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { studentId, additionalInstructions } = await request.json();
+    const { studentId, additionalInstructions, isIndependentUse = false } = await request.json();
 
     if (!studentId || !additionalInstructions) {
       return NextResponse.json(
@@ -123,9 +123,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Add the user's additional instructions to the thread
+    const usageModeNote = isIndependentUse 
+      ? "Remember: This material is for INDEPENDENT STUDENT USE. Ensure instructions are clear and self-explanatory for students to use without teacher guidance."
+      : "Remember: This material is for TEACHER-GUIDED USE. Include teacher notes and facilitation guidance.";
+
     await openai.beta.threads.messages.create(currentThreadId, {
       role: "user",
-      content: `Please regenerate the learning material with the following additional instructions:\n\n${additionalInstructions}\n\nMaintain the same structure and format, but incorporate these changes.`,
+      content: `Please regenerate the learning material with the following additional instructions:\n\n${additionalInstructions}\n\n${usageModeNote}\n\nMaintain the same structure and format, but incorporate these changes.`,
     });
 
     // Run the assistant
@@ -173,6 +177,42 @@ export async function POST(request: NextRequest) {
 
     if (messageContent.type === "text") {
       regeneratedContent = messageContent.text.value;
+    }
+
+    // QUALITY CONTROL: Proofread the regenerated content for grammar and clarity
+    console.log("Proofreading regenerated content...");
+    try {
+      const proofreadCompletion = await openai.chat.completions.create({
+        model: "gpt-4-turbo-preview",
+        messages: [
+          {
+            role: "system",
+            content: `You are an expert proofreader and editor specializing in educational materials. Your task is to:
+1. Fix all grammatical errors, spelling mistakes, and punctuation issues
+2. Improve clarity and readability while maintaining the original meaning and structure
+3. Ensure the language is appropriate for the target audience (${student.language}, ${student.grade || "appropriate level"})
+4. Maintain the original formatting (markdown, headings, lists, etc.)
+5. Keep all the original content - DO NOT remove sections or change the structure
+6. Make the text natural and engaging
+
+Return ONLY the corrected text with no additional comments or explanations.`,
+          },
+          {
+            role: "user",
+            content: `Please proofread and correct the following educational material for grammatical errors and clarity:\n\n${regeneratedContent}`,
+          },
+        ],
+        temperature: 0.3, // Low temperature for consistent, accurate corrections
+      });
+
+      const proofreadContent = proofreadCompletion.choices[0]?.message?.content;
+      if (proofreadContent && proofreadContent.trim()) {
+        regeneratedContent = proofreadContent;
+        console.log("Content proofread successfully");
+      }
+    } catch (proofreadError) {
+      console.error("Proofreading failed, using original content:", proofreadError);
+      // Continue with original content if proofreading fails
     }
 
     // Parse the regenerated content

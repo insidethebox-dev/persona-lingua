@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { studentId } = await request.json();
+    const { studentId, isIndependentUse = false } = await request.json();
 
     if (!studentId) {
       return NextResponse.json(
@@ -117,14 +117,35 @@ export async function POST(request: NextRequest) {
 
     if (!teacherAssistant) {
       // Create a new assistant for this teacher
+      const baseInstructions = `You are an expert educational content creator specializing in personalized learning materials.`;
+      
+      const teacherGuidedInstructions = `Your materials are designed for teachers to use in guided instruction with their students. Include:
+1. Clear teacher notes and facilitation guidance
+2. Discussion prompts and questions for the teacher to ask
+3. Scaffolding suggestions for different learning levels
+4. Ideas for differentiation and extension activities
+5. Tips for checking understanding during the lesson
+6. Suggested pacing and timing for each section
+7. Guidance on how to support students with learning barriers`;
+
+      const independentUseInstructions = `Your materials are designed for students to use independently with minimal teacher supervision. Include:
+1. Clear, self-explanatory instructions that students can follow on their own
+2. Step-by-step guidance with examples
+3. Self-check questions and answer keys where appropriate
+4. Engaging activities that maintain student interest
+5. Built-in support for students who might struggle (hints, tips)
+6. Clear success criteria so students know when they've completed tasks correctly
+7. Reflection questions for self-assessment`;
+
       const assistant = await openai.beta.assistants.create({
         name: `Educational Material Creator for ${teacher.name}`,
-        instructions: `You are an expert educational content creator specializing in personalized learning materials. Your task is to generate complete, ready-to-use learning materials that teachers can immediately use with their students.
+        instructions: `${baseInstructions}
 
 For each request, you will receive:
 - Student profile (name, language, grade, age, learning barriers)
 - AI-identified learning needs
 - Recent progress reports
+- Material usage mode (teacher-guided or independent)
 
 Generate complete learning materials that:
 1. Are appropriate for the student's level and needs
@@ -132,13 +153,18 @@ Generate complete learning materials that:
 3. Are engaging and suitable for their age/grade
 4. Take into account any learning barriers
 5. Are in the specified language
-6. Include clear instructions for both teacher and student
-7. Have exercises, activities, or content that can be completed
+6. Match the intended usage mode (teacher-guided or independent)
+
+WHEN MATERIAL IS FOR TEACHER-GUIDED USE:
+${teacherGuidedInstructions}
+
+WHEN MATERIAL IS FOR INDEPENDENT STUDENT USE:
+${independentUseInstructions}
 
 Format materials as structured documents with:
 - A clear title
 - Learning objectives
-- Instructions
+- Instructions (tailored to the usage mode)
 - Main content/activities
 - Assessment or reflection questions (if applicable)
 
@@ -223,6 +249,11 @@ Student Profile:
         : "None"
     }
 
+Material Usage Mode: ${isIndependentUse ? "INDEPENDENT STUDENT USE" : "TEACHER-GUIDED USE"}
+${isIndependentUse 
+  ? "This material will be used by the student independently with minimal teacher supervision. Make sure instructions are clear and self-explanatory."
+  : "This material will be used by the teacher to guide instruction with the student. Include teacher notes and facilitation guidance."}
+
 AI-Identified Learning Needs:
 - Topics: ${studentNeeds.topic.join(", ")}
 - Levels: ${studentNeeds.level.join(", ")}
@@ -291,6 +322,42 @@ Generate the complete material now.`;
 
     if (messageContent.type === "text") {
       generatedContent = messageContent.text.value;
+    }
+
+    // QUALITY CONTROL: Proofread the generated content for grammar and clarity
+    console.log("Proofreading generated content...");
+    try {
+      const proofreadCompletion = await openai.chat.completions.create({
+        model: "gpt-4-turbo-preview",
+        messages: [
+          {
+            role: "system",
+            content: `You are an expert proofreader and editor specializing in educational materials. Your task is to:
+1. Fix all grammatical errors, spelling mistakes, and punctuation issues
+2. Improve clarity and readability while maintaining the original meaning and structure
+3. Ensure the language is appropriate for the target audience (${student.language}, ${student.grade || "appropriate level"})
+4. Maintain the original formatting (markdown, headings, lists, etc.)
+5. Keep all the original content - DO NOT remove sections or change the structure
+6. Make the text natural and engaging
+
+Return ONLY the corrected text with no additional comments or explanations.`,
+          },
+          {
+            role: "user",
+            content: `Please proofread and correct the following educational material for grammatical errors and clarity:\n\n${generatedContent}`,
+          },
+        ],
+        temperature: 0.3, // Low temperature for consistent, accurate corrections
+      });
+
+      const proofreadContent = proofreadCompletion.choices[0]?.message?.content;
+      if (proofreadContent && proofreadContent.trim()) {
+        generatedContent = proofreadContent;
+        console.log("Content proofread successfully");
+      }
+    } catch (proofreadError) {
+      console.error("Proofreading failed, using original content:", proofreadError);
+      // Continue with original content if proofreading fails
     }
 
     // Parse title from content

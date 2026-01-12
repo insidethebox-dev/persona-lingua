@@ -1,0 +1,4381 @@
+{
+  "timestamp": "2025-12-03T13:18:58.429Z",
+  "studentId": "cmh0jlur700011iecxp8hq7di",
+  "studentName": "Manuel ",
+  "studentLanguage": "English",
+  "totalMaterials": 103,
+  "scoredMaterials": [
+    {
+      "material": {
+        "id": "cmgjlfcmh00191he61cgufh8e",
+        "title": "Greek Verb Aorist Tense Practice",
+        "description": "Practice exercises for understanding and using the Greek verb aorist tense.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek",
+          "Verb Conjugation",
+          "Language Practice",
+          "Aorist Tense"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for understanding and using the Greek verb aorist tense."
+      },
+      "score": 28.20212765957447,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 5.702127659574469
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 28.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjli2qb00211he617g77jwu",
+        "title": "Antonym Exercises",
+        "description": "A document containing exercises focused on antonyms for vocabulary building and language skills practice.",
+        "topic": "English Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Antonyms",
+          "Language Skills",
+          "Vocabulary Building",
+          "Elementary Education"
+        ],
+        "language": "English",
+        "aiSummary": "A document containing exercises focused on antonyms for vocabulary building and language skills practice."
+      },
+      "score": 27.166666666666668,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.666666666666667
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 23.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlsjdx003x1he6zaj0x4vv",
+        "title": "Grammar Practice Page",
+        "description": "A grammar practice page focusing on specific language rules and exercises.",
+        "topic": "English Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Language Arts",
+          "Grammar",
+          "Elementary School",
+          "Practice"
+        ],
+        "language": "English",
+        "aiSummary": "A grammar practice page focusing on specific language rules and exercises."
+      },
+      "score": 26.98936170212766,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.48936170212766
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 22.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlvj9v004h1he693756e4m",
+        "title": "Greek Language Practice",
+        "description": "Practice exercises for Greek language comprehension and vocabulary building",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Comprehension",
+          "Vocabulary",
+          "Elementary"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for Greek language comprehension and vocabulary building"
+      },
+      "score": 26.77659574468085,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.276595744680851
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 21.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlj84a002b1he6idutq41a",
+        "title": "Greek Verb Tenses Exercises",
+        "description": "Exercises on the Aorist and Future Tenses in Greek verbs",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Language exercises",
+          "High school"
+        ],
+        "language": "English",
+        "aiSummary": "Exercises on the Aorist and Future Tenses in Greek verbs"
+      },
+      "score": 26.763157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.2631578947368425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 21.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlf1y000171he638zeg574",
+        "title": "Greek Verbs: Aorist Tense Antonyms",
+        "description": "Practice identifying antonyms in Greek verbs in the aorist tense.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Verbs",
+          "Aorist tense",
+          "Antonyms",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "Practice identifying antonyms in Greek verbs in the aorist tense."
+      },
+      "score": 26.55263157894737,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.052631578947369
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 20.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlt1w200411he6k2ns7881",
+        "title": "Greek Language - Verb Tenses",
+        "description": "Educational material on Greek verb tenses - present and past participle",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Present participle",
+          "Past participle"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on Greek verb tenses - present and past participle"
+      },
+      "score": 26.324742268041238,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.8247422680412373
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 19.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmcron007r1he6kc0sdxny",
+        "title": "Creating Sentences with Nouns",
+        "description": "Practice constructing sentences using nouns as the main focus",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Sentence Structure",
+          "Nouns",
+          "Grammar Practice",
+          "Elementary Language Arts"
+        ],
+        "language": "English",
+        "aiSummary": "Practice constructing sentences using nouns as the main focus"
+      },
+      "score": 26.11855670103093,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.618556701030928
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Tag matches: nouns",
+        "Semantic match: 13.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm66ze00671he6d6zrhn8u",
+        "title": "Greek Language Exercises with Texts",
+        "description": "Educational material containing Greek language exercises with texts for practice and comprehension.",
+        "topic": "Foreign Language",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Writing",
+        "tags": [
+          "Greek language",
+          "Language exercises",
+          "Text comprehension",
+          "Language practice"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material containing Greek language exercises with texts for practice and comprehension."
+      },
+      "score": 25.958333333333332,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.458333333333333
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Writing",
+        "Semantic match: 17.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjliswn00291he6oblsw4gg",
+        "title": "Greek Language Exercises",
+        "description": "Greek language exercises for practice and learning",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek",
+          "Language Learning",
+          "Exercises",
+          "Practice"
+        ],
+        "language": "English",
+        "aiSummary": "Greek language exercises for practice and learning"
+      },
+      "score": 25.804347826086957,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.304347826086956
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 16.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjluvfy004d1he651ti38dn",
+        "title": "Greek Language Exercises",
+        "description": "Greek language exercises for practice and skill development",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Language exercises",
+          "Vocabulary practice"
+        ],
+        "language": "English",
+        "aiSummary": "Greek language exercises for practice and skill development"
+      },
+      "score": 25.79032258064516,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.2903225806451615
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 16.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlifnf00251he6o83z4wwf",
+        "title": "Exercises on Adjectives Ending in -polys, -polli, -poly",
+        "description": "Practice exercises on adjectives with the endings -polys, -polli, -poly",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Adjectives",
+          "Grammar",
+          "Foreign Language",
+          "Middle School",
+          "Practice Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises on adjectives with the endings -polys, -polli, -poly"
+      },
+      "score": 25.763157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.2631578947368425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 16.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm8bq2006r1he6th0zy0yl",
+        "title": "Greek Language Exercises",
+        "description": "A document containing Greek language exercises for practice and learning purposes.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Language exercises",
+          "Practice",
+          "Learning"
+        ],
+        "language": "English",
+        "aiSummary": "A document containing Greek language exercises for practice and learning purposes."
+      },
+      "score": 25.763157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.2631578947368425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 16.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlhsiw001x1he6ix6fmb14",
+        "title": "Exercises in Proportion - Unit 5",
+        "description": "Practice exercises related to proportions in mathematics",
+        "topic": "Mathematics",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Proportions",
+          "Mathematics",
+          "High School",
+          "Practice Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises related to proportions in mathematics"
+      },
+      "score": 25.5752688172043,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.0752688172043015
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 15.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlvu79004l1he6iyo4y6z2",
+        "title": "Greek Language Practice",
+        "description": "Language practice exercises for Greek language learners in units 1-3",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Language practice",
+          "Elementary level",
+          "Reading comprehension"
+        ],
+        "language": "English",
+        "aiSummary": "Language practice exercises for Greek language learners in units 1-3"
+      },
+      "score": 25.56382978723404,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.0638297872340425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 15.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmcbx0007l1he6vmix6pni",
+        "title": "Greek Verb Conjugation and Exercises",
+        "description": "Material focusing on verb conjugation in Greek (present and aorist tenses)",
+        "topic": "Foreign Language",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek",
+          "Verb Conjugation",
+          "Present Tense",
+          "Aorist Tense",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Material focusing on verb conjugation in Greek (present and aorist tenses)"
+      },
+      "score": 25.530927835051546,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.0309278350515467
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 15.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm7ptb006l1he64zuziz6u",
+        "title": "Prostaktiki Table",
+        "description": "A mathematical table for practice and calculation exercises",
+        "topic": "Mathematics",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Math",
+          "Practice Exercises",
+          "Calculation",
+          "Middle School"
+        ],
+        "language": "English",
+        "aiSummary": "A mathematical table for practice and calculation exercises"
+      },
+      "score": 25.351063829787236,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.8510638297872344
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.1 (Elementary Low) (6 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 14.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlq8uz003f1he6z1iygstd",
+        "title": "Greek Language Vocabulary Exercise",
+        "description": "A vocabulary exercise for Greek language learners at A1 level",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Vocabulary exercise",
+          "Language learning",
+          "A1 level"
+        ],
+        "language": "English",
+        "aiSummary": "A vocabulary exercise for Greek language learners at A1 level"
+      },
+      "score": 25.333333333333332,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.833333333333333
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 14.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmc0cq007j1he63kcirah5",
+        "title": "Greek Verb Tenses",
+        "description": "Educational material on the Greek verb tenses 'Paratatikos' and 'Aoristos'",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Language learning",
+          "Grammar rules"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on the Greek verb tenses 'Paratatikos' and 'Aoristos'"
+      },
+      "score": 25.324742268041238,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.824742268041237
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 14.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm8wot006x1he6zgl4ppc8",
+        "title": "Greek Text Transformation in Past and Aorist Tenses",
+        "description": "Educational material on transforming text in Greek past and aorist tenses",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Language transformation",
+          "Grammar rules"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on transforming text in Greek past and aorist tenses"
+      },
+      "score": 25.316326530612244,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.816326530612245
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 14.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmch1v007n1he6j4mktjtg",
+        "title": "Greek Verb Tenses: Present - Imperfect - Aorist",
+        "description": "Educational material on Greek verb tenses focusing on Present, Imperfect, and Aorist tenses.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek",
+          "Verb Tenses",
+          "Language Learning",
+          "Grammar"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on Greek verb tenses focusing on Present, Imperfect, and Aorist tenses."
+      },
+      "score": 25.316326530612244,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.816326530612245
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 14.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjljkp0002d1he6cvnz9w9d",
+        "title": "Exercises on Prepositions (E.F - P.F)",
+        "description": "A set of exercises focusing on prepositions for English as a Foreign Language and Portuguese as a Foreign Language learners.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Prepositions",
+          "Language Learning",
+          "Grammar Exercises",
+          "Foreign Language"
+        ],
+        "language": "English",
+        "aiSummary": "A set of exercises focusing on prepositions for English as a Foreign Language and Portuguese as a Foreign Language learners."
+      },
+      "score": 25.149484536082475,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.649484536082474
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 13.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlgr2m001l1he65u2jmxts",
+        "title": "Greek Language Exercises - Blanks",
+        "description": "Greek language exercises focusing on filling in the blanks",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Language exercises",
+          "Fill in the blanks"
+        ],
+        "language": "English",
+        "aiSummary": "Greek language exercises focusing on filling in the blanks"
+      },
+      "score": 24.77659574468085,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.276595744680851
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 11.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlwuo3004v1he6fu21cu4e",
+        "title": "Reading Comprehension Questions",
+        "description": "A set of questions related to a text for comprehension practice",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Comprehension",
+          "Questions",
+          "Text Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "A set of questions related to a text for comprehension practice"
+      },
+      "score": 24.77659574468085,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.276595744680851
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 11.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlyhfq005b1he63nn7gbzb",
+        "title": "Reading Comprehension Questions",
+        "description": "A set of questions related to a text for comprehension practice",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "comprehension",
+          "questions",
+          "text analysis"
+        ],
+        "language": "English",
+        "aiSummary": "A set of questions related to a text for comprehension practice"
+      },
+      "score": 24.77659574468085,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.276595744680851
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 11.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlz9dh005h1he6bobzvppb",
+        "title": "Reading Comprehension Questions",
+        "description": "A set of questions related to a text for comprehension practice",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Comprehension",
+          "Questions",
+          "Text Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "A set of questions related to a text for comprehension practice"
+      },
+      "score": 24.77659574468085,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.276595744680851
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 11.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm5ns600611he6z8l761h7",
+        "title": "Greek Language Vocabulary Worksheet",
+        "description": "A vocabulary worksheet in Greek language for learning and practicing words",
+        "topic": "Foreign Language",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek Language",
+          "Vocabulary",
+          "Language Learning",
+          "Worksheet"
+        ],
+        "language": "English",
+        "aiSummary": "A vocabulary worksheet in Greek language for learning and practicing words"
+      },
+      "score": 24.763157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.263157894736842
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 11.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlywld005f1he6ql6go0nz",
+        "title": "Reading Comprehension Questions",
+        "description": "Questions related to a text for comprehension practice",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Comprehension",
+          "Questions",
+          "Text Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "Questions related to a text for comprehension practice"
+      },
+      "score": 24.5752688172043,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.075268817204301
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 10.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlzl8p005j1he62zbyh627",
+        "title": "Reading Comprehension Questions",
+        "description": "Questions related to a text for comprehension practice",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Comprehension",
+          "Questions",
+          "Text Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "Questions related to a text for comprehension practice"
+      },
+      "score": 24.5752688172043,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.075268817204301
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 10.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlg575001h1he6gqq14dfm",
+        "title": "Greek Language Rhyme Exercises",
+        "description": "Exercises for practicing rhymes in the Greek language",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Rhymes",
+          "Language exercises",
+          "Elementary education"
+        ],
+        "language": "English",
+        "aiSummary": "Exercises for practicing rhymes in the Greek language"
+      },
+      "score": 24.56382978723404,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0638297872340425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 10.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlfn0m001b1he6tyjfgh46",
+        "title": "Adjectives Exercises 1",
+        "description": "A set of exercises focusing on adjectives usage and identification.",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "adjectives",
+          "language arts",
+          "elementary school",
+          "grammar",
+          "exercises"
+        ],
+        "language": "English",
+        "aiSummary": "A set of exercises focusing on adjectives usage and identification."
+      },
+      "score": 24.55263157894737,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0526315789473686
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 10.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjljxw8002f1he6mbvebshb",
+        "title": "Math Exercises in Probability",
+        "description": "A set of exercises focusing on probability concepts and calculations",
+        "topic": "Mathematics",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Probability",
+          "Mathematics",
+          "High School",
+          "Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "A set of exercises focusing on probability concepts and calculations"
+      },
+      "score": 24.55263157894737,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0526315789473686
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 10.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlqo80003j1he6we75mc2e",
+        "title": "Enotita 2 - KLIK A1",
+        "description": "Practice questions and answers for Unit 2 at A1 level",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek Language",
+          "Language Learning",
+          "A1 Level",
+          "Practice Questions"
+        ],
+        "language": "English",
+        "aiSummary": "Practice questions and answers for Unit 2 at A1 level"
+      },
+      "score": 24.55263157894737,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0526315789473686
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 10.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmdup800811he6ulkk4zhj",
+        "title": "Subordinate Clauses Exercises",
+        "description": "A set of exercises focusing on subordinate clauses in sentences",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "subordinate clauses",
+          "sentence structure",
+          "grammar exercises"
+        ],
+        "language": "English",
+        "aiSummary": "A set of exercises focusing on subordinate clauses in sentences"
+      },
+      "score": 24.55263157894737,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0526315789473686
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 10.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm8lhi006v1he611mlxd8w",
+        "title": "Restaurant Menu French Vocabulary",
+        "description": "A restaurant menu in French for learning vocabulary and food items.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "French",
+          "Menu",
+          "Vocabulary",
+          "Food Items",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "A restaurant menu in French for learning vocabulary and food items."
+      },
+      "score": 24.541666666666668,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0416666666666665
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 10.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlfvre001d1he6xslgm94t",
+        "title": "Adjectives Exercise 2",
+        "description": "A worksheet with exercises focusing on adjectives usage",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "adjectives",
+          "grammar",
+          "language arts",
+          "elementary school"
+        ],
+        "language": "English",
+        "aiSummary": "A worksheet with exercises focusing on adjectives usage"
+      },
+      "score": 24.351063829787233,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.851063829787234
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 9.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm7ap6006h1he6z6gfjtkk",
+        "title": "Greek Vocabulary in a Hotel",
+        "description": "Learning Greek vocabulary related to hotel accommodations.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Vocabulary",
+          "Hotel accommodations",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "Learning Greek vocabulary related to hotel accommodations."
+      },
+      "score": 24.351063829787233,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.851063829787234
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 9.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm8jds006t1he6qtvceh3p",
+        "title": "Greek Language Exercise 4",
+        "description": "Transcript for exercise 4 in Greek language learning",
+        "topic": "Foreign Language",
+        "level": "A2.2 (Elementary High)",
+        "type": "Exercise",
+        "skill": "Writing",
+        "tags": [
+          "Greek language",
+          "Exercise",
+          "Transcript",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "Transcript for exercise 4 in Greek language learning"
+      },
+      "score": 24.351063829787233,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.851063829787234
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Writing",
+        "Semantic match: 9.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlx77a004x1he61qwvyfmv",
+        "title": "Reading Comprehension Questions Page 68",
+        "description": "Reading comprehension questions for text on page 68",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek Language",
+          "Comprehension Questions",
+          "Text Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "Reading comprehension questions for text on page 68"
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlxlk5004z1he6zwyl25e9",
+        "title": "Reading Comprehension Questions - Page 154",
+        "description": "Reading comprehension questions for text on page 154",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Reading",
+          "Comprehension",
+          "High School",
+          "Worksheet"
+        ],
+        "language": "English",
+        "aiSummary": "Reading comprehension questions for text on page 154"
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlxwn000531he64en5rbyy",
+        "title": "Reading Comprehension Questions",
+        "description": "Reading comprehension questions for text on page 309",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Literature",
+          "Comprehension Questions",
+          "High School",
+          "Text Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "Reading comprehension questions for text on page 309"
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjly6yx00571he6iun5k2o9",
+        "title": "Reading Comprehension Questions",
+        "description": "A set of reading comprehension questions for a specific text",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Reading",
+          "Comprehension",
+          "Questions",
+          "Text Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "A set of reading comprehension questions for a specific text"
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm083i005n1he6j1jwfrjn",
+        "title": "Greek Language Basics",
+        "description": "Introduction to basic Greek language vocabulary and phrases",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Language learning",
+          "Vocabulary",
+          "Phrases"
+        ],
+        "language": "English",
+        "aiSummary": "Introduction to basic Greek language vocabulary and phrases"
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm0jbh005p1he6ln6va8ys",
+        "title": "Logical and Critical Reasoning Exercises",
+        "description": "Exercises focused on logical and critical reasoning skills",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Logic",
+          "Reasoning",
+          "Exercises",
+          "High School",
+          "Critical Thinking"
+        ],
+        "language": "English",
+        "aiSummary": "Exercises focused on logical and critical reasoning skills"
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm15hj005t1he6wm1zcata",
+        "title": "Greek Language Vocabulary Practice",
+        "description": "A document for practicing Greek language vocabulary and comprehension.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Vocabulary practice",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "A document for practicing Greek language vocabulary and comprehension."
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmb3vl007d1he6l864oluw",
+        "title": "Greek Language Vocabulary Practice",
+        "description": "A document for practicing Greek language vocabulary and comprehension.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek",
+          "Language Learning",
+          "Vocabulary Practice",
+          "Comprehension"
+        ],
+        "language": "English",
+        "aiSummary": "A document for practicing Greek language vocabulary and comprehension."
+      },
+      "score": 24.342105263157894,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjln7nu00331he6dpkl90ch",
+        "title": "Diadiktyakes Askiseis",
+        "description": "Educational exercises for online learning",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Online Learning",
+          "Exercises",
+          "Critical Thinking"
+        ],
+        "language": "English",
+        "aiSummary": "Educational exercises for online learning"
+      },
+      "score": 24.14516129032258,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.6451612903225807
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 8.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjluk0r004b1he6cu4go6sn",
+        "title": "Greek Language Exercises A1 Units 1-9",
+        "description": "Greek language exercises for beginners covering units 1-9",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Beginner level",
+          "Language exercises",
+          "Vocabulary building"
+        ],
+        "language": "English",
+        "aiSummary": "Greek language exercises for beginners covering units 1-9"
+      },
+      "score": 24.13157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.6315789473684212
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 8.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmcyyy007t1he6861t08qr",
+        "title": "Greek Language Vocabulary Practice",
+        "description": "A PDF document for practicing Greek language vocabulary",
+        "topic": "Foreign Language",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek",
+          "Language Learning",
+          "Vocabulary Practice",
+          "PDF Resource"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF document for practicing Greek language vocabulary"
+      },
+      "score": 24.13157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.6315789473684212
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.1 (Elementary Low) (6 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 8.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjls5b0003v1he6uiqu99a0",
+        "title": "Greek Words Ending in -ao and -o",
+        "description": "Practice and identify Greek words ending in -ao and -o.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Word endings",
+          "Language practice",
+          "Elementary"
+        ],
+        "language": "English",
+        "aiSummary": "Practice and identify Greek words ending in -ao and -o."
+      },
+      "score": 24.125,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.625
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 8.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm822s006p1he63hnyqpxs",
+        "title": "Unusual Rhymes Worksheet",
+        "description": "A worksheet containing exercises on unusual rhymes in poetry",
+        "topic": "Language Arts",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Poetry",
+          "Rhymes",
+          "Language Arts",
+          "Middle School",
+          "Worksheet"
+        ],
+        "language": "English",
+        "aiSummary": "A worksheet containing exercises on unusual rhymes in poetry"
+      },
+      "score": 24.125,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.625
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: B1.1 (Intermediate Low) (4 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 8.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlkeac002l1he6qmyu8eyq",
+        "title": "Vazo to sosto meros",
+        "description": "Greek language reading material about identifying the correct part",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek Language",
+          "Reading",
+          "Identification"
+        ],
+        "language": "English",
+        "aiSummary": "Greek language reading material about identifying the correct part"
+      },
+      "score": 24.11855670103093,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.6185567010309279
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 8.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjme92p00851he614j8d6c2",
+        "title": "Local Landmarks Exercise with Images",
+        "description": "An exercise involving identifying and learning about local landmarks using images",
+        "topic": "Social Studies",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Landmarks",
+          "Geography",
+          "Visual Learning",
+          "Local Community"
+        ],
+        "language": "English",
+        "aiSummary": "An exercise involving identifying and learning about local landmarks using images"
+      },
+      "score": 23.9,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.4000000000000001
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 7.0% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjltuua00471he66wq8zb0v",
+        "title": "Greek Language Conjunctions and Sentence Building",
+        "description": "A document focusing on conjunctions and sentence construction in the Greek language.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Conjunctions",
+          "Sentence construction",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "A document focusing on conjunctions and sentence construction in the Greek language."
+      },
+      "score": 23.75,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.25
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 6.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm6ita00691he6t1j3vbtf",
+        "title": "Greek Text Page 104 Questions",
+        "description": "A PDF document containing questions related to the text on page 104",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Text comprehension",
+          "Questionnaire",
+          "High school"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF document containing questions related to the text on page 104"
+      },
+      "score": 23.530927835051546,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.0309278350515463
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 5.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm6v4f006d1he6qqbg1akl",
+        "title": "Greek Text Page 104 Questions",
+        "description": "A PDF document containing questions related to the text on page 104",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Text comprehension",
+          "High school",
+          "Questions"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF document containing questions related to the text on page 104"
+      },
+      "score": 23.530927835051546,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.0309278350515463
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 5.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm907d006z1he6bsmk4eg7",
+        "title": "At the Pharmacy",
+        "description": "Educational material related to pharmacy and medicine",
+        "topic": "Science",
+        "level": "A2.2 (Elementary High)",
+        "type": "Multiple Choice",
+        "skill": "Writing",
+        "tags": [
+          "Pharmacy",
+          "Medicine",
+          "Health",
+          "Science Education"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material related to pharmacy and medicine"
+      },
+      "score": 23.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Writing",
+        "Tag matches: medicine"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlermv00151he6il1m8db0",
+        "title": "Greek Syllables: Anisosyllabic Words",
+        "description": "Educational material on anisosyllabic words in Greek language",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Fill in the Blank",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Syllables",
+          "Language learning",
+          "Word structure"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on anisosyllabic words in Greek language"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm6ucd006b1he6pww433hv",
+        "title": "Greek Mythology Quiz",
+        "description": "A quiz testing knowledge of Greek mythological figures and stories.",
+        "topic": "History",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek Mythology",
+          "Quiz",
+          "History",
+          "Mythological Figures"
+        ],
+        "language": "English",
+        "aiSummary": "A quiz testing knowledge of Greek mythological figures and stories."
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlkuz3002p1he6i9spsdhq",
+        "title": "Electrical Circuits Worksheet",
+        "description": "A worksheet on electrical circuits and components",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Electrical Circuits",
+          "Components",
+          "High School",
+          "Science",
+          "Worksheet"
+        ],
+        "language": "English",
+        "aiSummary": "A worksheet on electrical circuits and components"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlohc200391he6j4pf1u2i",
+        "title": "Greek Numerical System",
+        "description": "Educational material explaining the Greek numerical system and its usage.",
+        "topic": "Mathematics",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek Numerical System",
+          "Math History",
+          "Number Systems",
+          "Mathematics Education"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material explaining the Greek numerical system and its usage."
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlp1df003b1he6yibeehfs",
+        "title": "Enotita 2 - Theoria",
+        "description": "Theory on location and residence",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek",
+          "Theory",
+          "Location",
+          "Residence"
+        ],
+        "language": "English",
+        "aiSummary": "Theory on location and residence"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlr0q7003n1he62udjx4dg",
+        "title": "Greek Language Unit 2 - KLIK A1 (Rhymes)",
+        "description": "Educational material for learning Greek language through rhymes",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek Language",
+          "Rhymes",
+          "Language Learning",
+          "Adult Education"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material for learning Greek language through rhymes"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlroa1003r1he6paj5wfvn",
+        "title": "Ethnicity and Immigration - Unit 3",
+        "description": "Educational material focusing on ethnicity and immigration in Unit 3",
+        "topic": "Social Studies",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Ethnicity",
+          "Immigration",
+          "Social Studies",
+          "Unit 3",
+          "Adult Education"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material focusing on ethnicity and immigration in Unit 3"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlw7h7004n1he6r3kfpq2a",
+        "title": "Text Analysis - Inference Texts",
+        "description": "Texts for practicing inference skills and comprehension",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Inference",
+          "Comprehension",
+          "Text Analysis",
+          "Middle School"
+        ],
+        "language": "English",
+        "aiSummary": "Texts for practicing inference skills and comprehension"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm0ur6005r1he6gr3badxf",
+        "title": "Ancient and Modern Logic",
+        "description": "A document comparing ancient and modern logic principles",
+        "topic": "Philosophy",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Logic",
+          "Philosophy",
+          "Ancient",
+          "Modern",
+          "Comparison"
+        ],
+        "language": "English",
+        "aiSummary": "A document comparing ancient and modern logic principles"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm5kun005z1he6a9knwm9o",
+        "title": "Specialized Extraction PDF",
+        "description": "PDF file requiring manual description for AI analysis",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Reference Material",
+        "skill": "Vocabulary",
+        "tags": [
+          "PDF",
+          "Specialized Extraction",
+          "AI Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "PDF file requiring manual description for AI analysis"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm5vxy00631he6qopl09bv",
+        "title": "Greek Mythology Puzzle",
+        "description": "An image puzzle featuring characters from Greek mythology",
+        "topic": "History",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Interactive Content",
+        "skill": "Grammar",
+        "tags": [
+          "Greek Mythology",
+          "Puzzle",
+          "Mythological Characters",
+          "Interactive"
+        ],
+        "language": "English",
+        "aiSummary": "An image puzzle featuring characters from Greek mythology"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm65v600651he6cbb3vvey",
+        "title": "Greek Daily Routine Worksheet",
+        "description": "A worksheet on Greek daily routines and activities",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Daily routines",
+          "Elementary education",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "A worksheet on Greek daily routines and activities"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm7nqf006j1he66e9xiqy3",
+        "title": "Unknown Quiz",
+        "description": "Specialized extraction required to determine content and educational purpose.",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Quiz",
+        "skill": "Vocabulary",
+        "tags": [
+          "Unknown",
+          "Specialized Extraction",
+          "Quiz"
+        ],
+        "language": "English",
+        "aiSummary": "Specialized extraction required to determine content and educational purpose."
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm7z90006n1he6fbgblxvi",
+        "title": "Fruit and Vegetable Identification",
+        "description": "An image-based activity for identifying various fruits and vegetables",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Interactive Content",
+        "skill": "Grammar",
+        "tags": [
+          "Fruits",
+          "Vegetables",
+          "Identification",
+          "Science",
+          "Elementary"
+        ],
+        "language": "English",
+        "aiSummary": "An image-based activity for identifying various fruits and vegetables"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm99vt00711he6lzx9eqce",
+        "title": "Mia filanthropiki synavlia",
+        "description": "Educational material in Greek language for philanthropic event",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek",
+          "Philanthropy",
+          "Event",
+          "Reading"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material in Greek language for philanthropic event"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm9pw900751he63recu71z",
+        "title": "Aesop's Fables",
+        "description": "A collection of moral stories attributed to Aesop",
+        "topic": "Literature",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Fables",
+          "Moral Stories",
+          "Literature",
+          "Aesop",
+          "Reading Comprehension"
+        ],
+        "language": "English",
+        "aiSummary": "A collection of moral stories attributed to Aesop"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjma36100771he6sy1dczw1",
+        "title": "Greek Canadians in Canada",
+        "description": "Exploring the history and contributions of Greek Canadians in Canada.",
+        "topic": "History",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek Canadians",
+          "History",
+          "Immigration",
+          "Cultural Contributions"
+        ],
+        "language": "English",
+        "aiSummary": "Exploring the history and contributions of Greek Canadians in Canada."
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmahj300791he64jamh8gz",
+        "title": "Oi Epoxes kai o Kairos",
+        "description": "Educational material discussing historical eras and time periods.",
+        "topic": "History",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Historical Eras",
+          "Time Periods",
+          "Greek History",
+          "Critical Analysis"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material discussing historical eras and time periods."
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmar69007b1he6s9p2nuvz",
+        "title": "Family Relationships - Opposite Adjectives",
+        "description": "A worksheet focusing on antonyms related to family relationships",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "antonyms",
+          "family relationships",
+          "language arts",
+          "elementary school"
+        ],
+        "language": "English",
+        "aiSummary": "A worksheet focusing on antonyms related to family relationships"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmbdxf007f1he6ba9bltz2",
+        "title": "Greek Adjective Games",
+        "description": "Educational material on Greek adjectives and their forms through games",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Adjectives",
+          "Games",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on Greek adjectives and their forms through games"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmbq6c007h1he6b6num3s2",
+        "title": "Greek Cinema Exploration",
+        "description": "An educational exploration of Greek cinema and its cultural significance",
+        "topic": "Social Studies",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek culture",
+          "Cinema history",
+          "Cultural studies"
+        ],
+        "language": "English",
+        "aiSummary": "An educational exploration of Greek cinema and its cultural significance"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmcnc0007p1he6w9647mcw",
+        "title": "Geometric Shapes Worksheet",
+        "description": "A worksheet on geometric shapes and their properties",
+        "topic": "Mathematics",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "geometry",
+          "shapes",
+          "properties",
+          "elementary math"
+        ],
+        "language": "English",
+        "aiSummary": "A worksheet on geometric shapes and their properties"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.1 (Elementary Low) (6 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmd4mr007v1he6lsm30984",
+        "title": "Fruit Identification Activity",
+        "description": "An image-based activity for identifying different fruits",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Interactive Content",
+        "skill": "Vocabulary",
+        "tags": [
+          "Fruits",
+          "Identification",
+          "Visual Learning",
+          "Elementary Science"
+        ],
+        "language": "English",
+        "aiSummary": "An image-based activity for identifying different fruits"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmdg74007x1he6k6vng48l",
+        "title": "Fruit and Vegetable Sorting Activity",
+        "description": "An interactive activity for sorting fruits and vegetables",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Interactive Content",
+        "skill": "Vocabulary",
+        "tags": [
+          "Fruits",
+          "Vegetables",
+          "Sorting",
+          "Interactive Activity"
+        ],
+        "language": "English",
+        "aiSummary": "An interactive activity for sorting fruits and vegetables"
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmdha2007z1he6o4snm34f",
+        "title": "Ti Kaneis Ston Elevthero Xrono Sou",
+        "description": "An educational material focusing on time management and productivity skills.",
+        "topic": "Life Skills",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Worksheet",
+        "skill": "Writing",
+        "tags": [
+          "Productivity",
+          "Self-Improvement",
+          "Time Management Skills"
+        ],
+        "language": "English",
+        "aiSummary": "An educational material focusing on time management and productivity skills."
+      },
+      "score": 22.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: B1.1 (Intermediate Low) (4 levels from C1.1 (Advanced Low))",
+        "Skill match: Writing"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlu7v800491he64b5rnkbm",
+        "title": "Greek Language Production Exercise",
+        "description": "A practice exercise focusing on Greek language production skills.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Greek language",
+          "Language practice",
+          "Speaking skills",
+          "Language exercise"
+        ],
+        "language": "English",
+        "aiSummary": "A practice exercise focusing on Greek language production skills."
+      },
+      "score": 10.563829787234042,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.0638297872340425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Semantic match: 15.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlgfra001j1he6swqvsdcw",
+        "title": "Exercises in General and Causal Relationships",
+        "description": "Exercises focusing on general and causal relationships for critical thinking development.",
+        "topic": "Critical Thinking",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Relationships",
+          "Critical Thinking",
+          "High School",
+          "Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Exercises focusing on general and causal relationships for critical thinking development."
+      },
+      "score": 9.75,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.25
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Semantic match: 11.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlh1di001n1he6b2wdobs8",
+        "title": "Exercises in Cause and Effect with Texts",
+        "description": "A PDF file containing exercises related to cause and effect relationships in texts.",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Cause and Effect",
+          "Text Analysis",
+          "Reading Comprehension",
+          "High School"
+        ],
+        "language": "English",
+        "aiSummary": "A PDF file containing exercises related to cause and effect relationships in texts."
+      },
+      "score": 9.737113402061855,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.2371134020618557
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Semantic match: 11.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlwhl1004r1he6a3uuyoz9",
+        "title": "Listening Comprehension Questions",
+        "description": "A set of listening comprehension questions for practice and assessment",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Listening",
+        "tags": [
+          "Comprehension",
+          "Language Learning",
+          "Listening Skills",
+          "Assessment"
+        ],
+        "language": "English",
+        "aiSummary": "A set of listening comprehension questions for practice and assessment"
+      },
+      "score": 9.552631578947368,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0526315789473686
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Semantic match: 10.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmdxxn00831he65uxdch4e",
+        "title": "Ti na kano?",
+        "description": "Interactive language learning activity for beginners to practice basic phrases.",
+        "topic": "Foreign Language",
+        "level": "B1.1 (Intermediate Low)",
+        "type": "Interactive Content",
+        "skill": "Speaking",
+        "tags": [
+          "Language Learning",
+          "Beginner",
+          "Interactive Activity",
+          "Basic Phrases"
+        ],
+        "language": "English",
+        "aiSummary": "Interactive language learning activity for beginners to practice basic phrases."
+      },
+      "score": 9.541666666666666,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.0416666666666665
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: B1.1 (Intermediate Low) (4 levels from C1.1 (Advanced Low))",
+        "Semantic match: 10.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlhel3001t1he615zzu0d4",
+        "title": "Exercises in Energy and Vocal Sound",
+        "description": "Exercises related to energy and vocal sound concepts",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Energy",
+          "Vocal Sound",
+          "Exercises",
+          "High School",
+          "Science"
+        ],
+        "language": "English",
+        "aiSummary": "Exercises related to energy and vocal sound concepts"
+      },
+      "score": 9.342105263157896,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.842105263157895
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Semantic match: 9.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm7anv006f1he6bj2yh2tj",
+        "title": "Where Are You Going in Your Free Time?",
+        "description": "An interactive activity to practice expressing locations and activities in Greek",
+        "topic": "Foreign Language",
+        "level": "A2.2 (Elementary High)",
+        "type": "Interactive Content",
+        "skill": "Speaking",
+        "tags": [
+          "Greek language",
+          "Interactive activity",
+          "Locations",
+          "Activities"
+        ],
+        "language": "English",
+        "aiSummary": "An interactive activity to practice expressing locations and activities in Greek"
+      },
+      "score": 9.316326530612244,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.816326530612245
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Semantic match: 9.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlpibb003d1he6pc2docmp",
+        "title": "Gender in Enotita 2",
+        "description": "Educational material focusing on gender-related topics in Enotita 2",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Gender",
+          "Enotita 2",
+          "Language Learning",
+          "Cultural Awareness"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material focusing on gender-related topics in Enotita 2"
+      },
+      "score": 8.552631578947368,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 1.0526315789473684
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Semantic match: 5.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjldwcv000t1he67wrunmvm",
+        "title": "Intermediate and Advanced Object",
+        "description": "Educational material focusing on intermediate and advanced objects",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Fill in the Blank",
+        "skill": "Speaking",
+        "tags": [
+          "Objects",
+          "Intermediate Level",
+          "Advanced Level",
+          "Science Education"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material focusing on intermediate and advanced objects"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjledbi000z1he6owh5b3sg",
+        "title": "Rotao I Ask Poster",
+        "description": "A poster containing information or questions related to Rotao I Ask",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Reference Material",
+        "skill": "Speaking",
+        "tags": [
+          "poster",
+          "questions",
+          "information",
+          "Rotao I Ask"
+        ],
+        "language": "English",
+        "aiSummary": "A poster containing information or questions related to Rotao I Ask"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjllc4l002t1he6udfag6ch",
+        "title": "General Chemistry Concepts",
+        "description": "Educational material covering fundamental concepts in chemistry",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Chemistry",
+          "Fundamental Concepts",
+          "High School",
+          "Science Education"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material covering fundamental concepts in chemistry"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjllq82002x1he63vebhg1w",
+        "title": "Greek Desserts Matching Activity",
+        "description": "An image-based matching activity featuring traditional Greek desserts",
+        "topic": "Social Studies",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Reading",
+        "tags": [
+          "Greek culture",
+          "Matching activity",
+          "Food",
+          "Cultural traditions"
+        ],
+        "language": "English",
+        "aiSummary": "An image-based matching activity featuring traditional Greek desserts"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlm4u0002z1he68vf87lo4",
+        "title": "Exploring My Interests",
+        "description": "An educational document for exploring personal interests and preferences.",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Personal Development",
+          "Interests",
+          "Preferences",
+          "Self-Discovery"
+        ],
+        "language": "English",
+        "aiSummary": "An educational document for exploring personal interests and preferences."
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlmtt200311he6gsf3qszt",
+        "title": "Work from Home Tips",
+        "description": "Tips and advice for working from home efficiently",
+        "topic": "Life Skills",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "work from home",
+          "efficiency",
+          "tips",
+          "advice"
+        ],
+        "language": "English",
+        "aiSummary": "Tips and advice for working from home efficiently"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlnker00351he67gn2hp5x",
+        "title": "Greek Dialogues in Movies",
+        "description": "A document discussing the authenticity of dialogues in Greek movies",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Greek language",
+          "Movies",
+          "Dialogue analysis"
+        ],
+        "language": "English",
+        "aiSummary": "A document discussing the authenticity of dialogues in Greek movies"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlo11300371he6gtiz0obd",
+        "title": "Dialogoi Introduction",
+        "description": "An introductory material on dialogues and conversations",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Reading",
+        "tags": [
+          "Conversations",
+          "Dialogues",
+          "Language Learning",
+          "Communication Skills"
+        ],
+        "language": "English",
+        "aiSummary": "An introductory material on dialogues and conversations"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjltf6k00451he6530zotmv",
+        "title": "Rimata Pigaino - Pao - I Ora",
+        "description": "Educational material focusing on rhyming words and telling time",
+        "topic": "Other",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "Rhyming Words",
+          "Telling Time",
+          "Language Arts",
+          "Elementary School"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material focusing on rhyming words and telling time"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm1q6e005v1he6gygdrrcu",
+        "title": "Celebrating Pentecost - Level A",
+        "description": "Educational material about the celebration of Pentecost at a basic level",
+        "topic": "Social Studies",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Reading",
+        "tags": [
+          "Pentecost",
+          "Celebration",
+          "Culture",
+          "Traditions"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material about the celebration of Pentecost at a basic level"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm54ug005x1he6s1rqkzjr",
+        "title": "Music Impact on Animals and Plants",
+        "description": "Exploring the effects of music on animals and plants",
+        "topic": "Science",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Speaking",
+        "tags": [
+          "music",
+          "animals",
+          "plants",
+          "effects",
+          "research"
+        ],
+        "language": "English",
+        "aiSummary": "Exploring the effects of music on animals and plants"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm9hts00731he6d9kx2gh6",
+        "title": "Chocolate Chip Cookies Recipe",
+        "description": "A recipe for making chocolate chip cookies with step-by-step instructions.",
+        "topic": "Life Skills",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Activity",
+        "skill": "Intercultural Communication",
+        "tags": [
+          "recipe",
+          "cooking",
+          "baking",
+          "dessert",
+          "instructions"
+        ],
+        "language": "English",
+        "aiSummary": "A recipe for making chocolate chip cookies with step-by-step instructions."
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.1 (Elementary Low) (6 levels from C1.1 (Advanced Low))"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmek7100871he6z53548n9",
+        "title": "To programma tou Vaggeli",
+        "description": "Educational material in Greek language, content unknown..",
+        "topic": "Other",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Reading",
+        "tags": [
+          "Greek",
+          "Language",
+          "Unknown Content"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material in Greek language, content unknown"
+      },
+      "score": 7.5,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 0,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 0
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))"
+      ]
+    }
+  ],
+  "topScoredMaterials": [
+    {
+      "material": {
+        "id": "cmgjlfcmh00191he61cgufh8e",
+        "title": "Greek Verb Aorist Tense Practice",
+        "description": "Practice exercises for understanding and using the Greek verb aorist tense.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek",
+          "Verb Conjugation",
+          "Language Practice",
+          "Aorist Tense"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for understanding and using the Greek verb aorist tense."
+      },
+      "score": 28.20212765957447,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 5.702127659574469
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 28.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjli2qb00211he617g77jwu",
+        "title": "Antonym Exercises",
+        "description": "A document containing exercises focused on antonyms for vocabulary building and language skills practice.",
+        "topic": "English Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Antonyms",
+          "Language Skills",
+          "Vocabulary Building",
+          "Elementary Education"
+        ],
+        "language": "English",
+        "aiSummary": "A document containing exercises focused on antonyms for vocabulary building and language skills practice."
+      },
+      "score": 27.166666666666668,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.666666666666667
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 23.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlsjdx003x1he6zaj0x4vv",
+        "title": "Grammar Practice Page",
+        "description": "A grammar practice page focusing on specific language rules and exercises.",
+        "topic": "English Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Language Arts",
+          "Grammar",
+          "Elementary School",
+          "Practice"
+        ],
+        "language": "English",
+        "aiSummary": "A grammar practice page focusing on specific language rules and exercises."
+      },
+      "score": 26.98936170212766,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.48936170212766
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 22.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlvj9v004h1he693756e4m",
+        "title": "Greek Language Practice",
+        "description": "Practice exercises for Greek language comprehension and vocabulary building",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Comprehension",
+          "Vocabulary",
+          "Elementary"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises for Greek language comprehension and vocabulary building"
+      },
+      "score": 26.77659574468085,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.276595744680851
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 21.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlj84a002b1he6idutq41a",
+        "title": "Greek Verb Tenses Exercises",
+        "description": "Exercises on the Aorist and Future Tenses in Greek verbs",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Language exercises",
+          "High school"
+        ],
+        "language": "English",
+        "aiSummary": "Exercises on the Aorist and Future Tenses in Greek verbs"
+      },
+      "score": 26.763157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.2631578947368425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 21.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlf1y000171he638zeg574",
+        "title": "Greek Verbs: Aorist Tense Antonyms",
+        "description": "Practice identifying antonyms in Greek verbs in the aorist tense.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Verbs",
+          "Aorist tense",
+          "Antonyms",
+          "Language learning"
+        ],
+        "language": "English",
+        "aiSummary": "Practice identifying antonyms in Greek verbs in the aorist tense."
+      },
+      "score": 26.55263157894737,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 4.052631578947369
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 20.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlt1w200411he6k2ns7881",
+        "title": "Greek Language - Verb Tenses",
+        "description": "Educational material on Greek verb tenses - present and past participle",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Present participle",
+          "Past participle"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on Greek verb tenses - present and past participle"
+      },
+      "score": 26.324742268041238,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.8247422680412373
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 19.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmcron007r1he6kc0sdxny",
+        "title": "Creating Sentences with Nouns",
+        "description": "Practice constructing sentences using nouns as the main focus",
+        "topic": "Language Arts",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Sentence Structure",
+          "Nouns",
+          "Grammar Practice",
+          "Elementary Language Arts"
+        ],
+        "language": "English",
+        "aiSummary": "Practice constructing sentences using nouns as the main focus"
+      },
+      "score": 26.11855670103093,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 1,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.618556701030928
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Tag matches: nouns",
+        "Semantic match: 13.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm66ze00671he6d6zrhn8u",
+        "title": "Greek Language Exercises with Texts",
+        "description": "Educational material containing Greek language exercises with texts for practice and comprehension.",
+        "topic": "Foreign Language",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Writing",
+        "tags": [
+          "Greek language",
+          "Language exercises",
+          "Text comprehension",
+          "Language practice"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material containing Greek language exercises with texts for practice and comprehension."
+      },
+      "score": 25.958333333333332,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.458333333333333
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Writing",
+        "Semantic match: 17.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjliswn00291he6oblsw4gg",
+        "title": "Greek Language Exercises",
+        "description": "Greek language exercises for practice and learning",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek",
+          "Language Learning",
+          "Exercises",
+          "Practice"
+        ],
+        "language": "English",
+        "aiSummary": "Greek language exercises for practice and learning"
+      },
+      "score": 25.804347826086957,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.304347826086956
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 16.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjluvfy004d1he651ti38dn",
+        "title": "Greek Language Exercises",
+        "description": "Greek language exercises for practice and skill development",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Language exercises",
+          "Vocabulary practice"
+        ],
+        "language": "English",
+        "aiSummary": "Greek language exercises for practice and skill development"
+      },
+      "score": 25.79032258064516,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.2903225806451615
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 16.5% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlifnf00251he6o83z4wwf",
+        "title": "Exercises on Adjectives Ending in -polys, -polli, -poly",
+        "description": "Practice exercises on adjectives with the endings -polys, -polli, -poly",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Adjectives",
+          "Grammar",
+          "Foreign Language",
+          "Middle School",
+          "Practice Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises on adjectives with the endings -polys, -polli, -poly"
+      },
+      "score": 25.763157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.2631578947368425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 16.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm8bq2006r1he6th0zy0yl",
+        "title": "Greek Language Exercises",
+        "description": "A document containing Greek language exercises for practice and learning purposes.",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Language exercises",
+          "Practice",
+          "Learning"
+        ],
+        "language": "English",
+        "aiSummary": "A document containing Greek language exercises for practice and learning purposes."
+      },
+      "score": 25.763157894736842,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.2631578947368425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 16.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlhsiw001x1he6ix6fmb14",
+        "title": "Exercises in Proportion - Unit 5",
+        "description": "Practice exercises related to proportions in mathematics",
+        "topic": "Mathematics",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Proportions",
+          "Mathematics",
+          "High School",
+          "Practice Exercises"
+        ],
+        "language": "English",
+        "aiSummary": "Practice exercises related to proportions in mathematics"
+      },
+      "score": 25.5752688172043,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.0752688172043015
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 15.4% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlvu79004l1he6iyo4y6z2",
+        "title": "Greek Language Practice",
+        "description": "Language practice exercises for Greek language learners in units 1-3",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Language practice",
+          "Elementary level",
+          "Reading comprehension"
+        ],
+        "language": "English",
+        "aiSummary": "Language practice exercises for Greek language learners in units 1-3"
+      },
+      "score": 25.56382978723404,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.0638297872340425
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 15.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmcbx0007l1he6vmix6pni",
+        "title": "Greek Verb Conjugation and Exercises",
+        "description": "Material focusing on verb conjugation in Greek (present and aorist tenses)",
+        "topic": "Foreign Language",
+        "level": "A2.2 (Elementary High)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek",
+          "Verb Conjugation",
+          "Present Tense",
+          "Aorist Tense",
+          "Language Learning"
+        ],
+        "language": "English",
+        "aiSummary": "Material focusing on verb conjugation in Greek (present and aorist tenses)"
+      },
+      "score": 25.530927835051546,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 3.0309278350515467
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.2 (Elementary High) (5 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 15.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm7ptb006l1he64zuziz6u",
+        "title": "Prostaktiki Table",
+        "description": "A mathematical table for practice and calculation exercises",
+        "topic": "Mathematics",
+        "level": "A2.1 (Elementary Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Math",
+          "Practice Exercises",
+          "Calculation",
+          "Middle School"
+        ],
+        "language": "English",
+        "aiSummary": "A mathematical table for practice and calculation exercises"
+      },
+      "score": 25.351063829787236,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.8510638297872344
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A2.1 (Elementary Low) (6 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 14.3% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjlq8uz003f1he6z1iygstd",
+        "title": "Greek Language Vocabulary Exercise",
+        "description": "A vocabulary exercise for Greek language learners at A1 level",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Vocabulary",
+        "tags": [
+          "Greek language",
+          "Vocabulary exercise",
+          "Language learning",
+          "A1 level"
+        ],
+        "language": "English",
+        "aiSummary": "A vocabulary exercise for Greek language learners at A1 level"
+      },
+      "score": 25.333333333333332,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.833333333333333
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Vocabulary",
+        "Semantic match: 14.2% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjmc0cq007j1he63kcirah5",
+        "title": "Greek Verb Tenses",
+        "description": "Educational material on the Greek verb tenses 'Paratatikos' and 'Aoristos'",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Language learning",
+          "Grammar rules"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on the Greek verb tenses 'Paratatikos' and 'Aoristos'"
+      },
+      "score": 25.324742268041238,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.824742268041237
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 14.1% concept overlap"
+      ]
+    },
+    {
+      "material": {
+        "id": "cmgjm8wot006x1he6zgl4ppc8",
+        "title": "Greek Text Transformation in Past and Aorist Tenses",
+        "description": "Educational material on transforming text in Greek past and aorist tenses",
+        "topic": "Foreign Language",
+        "level": "A1.1 (Beginner Low)",
+        "type": "Worksheet",
+        "skill": "Grammar",
+        "tags": [
+          "Greek language",
+          "Verb tenses",
+          "Language transformation",
+          "Grammar rules"
+        ],
+        "language": "English",
+        "aiSummary": "Educational material on transforming text in Greek past and aorist tenses"
+      },
+      "score": 25.316326530612244,
+      "scoreBreakdown": {
+        "languageMatch": 0,
+        "topicMatch": 0,
+        "levelMatch": 7.5,
+        "typeMatch": 0,
+        "skillMatch": 15,
+        "tagMatch": 0,
+        "accessibilityMatch": 0,
+        "semanticMatch": 2.816326530612245
+      },
+      "rationale": [
+        "Language match: English",
+        "Level proximity: A1.1 (Beginner Low) (8 levels from C1.1 (Advanced Low))",
+        "Skill match: Grammar",
+        "Semantic match: 14.1% concept overlap"
+      ]
+    }
+  ]
+}

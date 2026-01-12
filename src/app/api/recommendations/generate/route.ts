@@ -9,6 +9,7 @@ import {
 import {
   scoreEnhancedMaterialMatch,
   extractKeyConceptsFromReports,
+  isMaterialTooAdvanced,
 } from "@/lib/recommendation-scoring";
 import { ApiResponse } from "@/types";
 
@@ -213,9 +214,28 @@ export async function POST(request: NextRequest) {
       };
     });
 
+    // CRITICAL FILTER: Remove materials that are too far above student's level
+    const levelFilteredMaterials = scoredMaterials.filter((scored) => {
+      if (scored.score < 0) return false; // Already filtered (language mismatch)
+      const isTooAdvanced = isMaterialTooAdvanced(
+        scored.material.level,
+        studentNeeds.level
+      );
+      if (isTooAdvanced) {
+        console.log(
+          `[Level Filter] Excluding "${scored.material.title}" - level ${scored.material.level} is too advanced for student levels: ${studentNeeds.level.join(", ")}`
+        );
+      }
+      return !isTooAdvanced;
+    });
+
+    console.log(
+      `[Recommendations] Level filtering: ${scoredMaterials.length - levelFilteredMaterials.length} materials excluded (too advanced)`
+    );
+
     // Sort by score and take top materials (limit to reasonable number for AI analysis)
     const MAX_MATERIALS_FOR_AI = 20;
-    const topScoredMaterials = scoredMaterials
+    const topScoredMaterials = levelFilteredMaterials
       .sort((a, b) => b.score - a.score)
       .slice(0, MAX_MATERIALS_FOR_AI);
 

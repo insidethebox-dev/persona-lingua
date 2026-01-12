@@ -128,6 +128,7 @@ export default function StudentDetailPage() {
   const [materialCompletion, setMaterialCompletion] = useState<
     Record<string, boolean>
   >({});
+  const [isIndependentUse, setIsIndependentUse] = useState(false);
 
   // Only teachers (not school admins) can manage student reports
   const isTeacher = session?.user && !session.user.isSchoolAdmin;
@@ -391,7 +392,7 @@ export default function StudentDetailPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ studentId }),
+        body: JSON.stringify({ studentId, isIndependentUse }),
       });
 
       const data: ApiResponse = await response.json();
@@ -429,6 +430,7 @@ export default function StudentDetailPage() {
           assistantId: materialSuggestions.assistantId,
           threadId: materialSuggestions.threadId,
           additionalInstructions: additionalInstructions.trim(),
+          isIndependentUse,
         }),
       });
 
@@ -867,7 +869,34 @@ export default function StudentDetailPage() {
                 AI Recommendations ({recommendations.length})
               </h2>
               {isTeacher && student.reports && student.reports.length > 0 && (
-                <div className='flex gap-2'>
+                <div className='flex gap-2 items-center'>
+                  <div className='flex items-center gap-2 mr-2'>
+                    <label className='text-sm text-gray-700 font-medium'>
+                      Material for:
+                    </label>
+                    <button
+                      onClick={() => setIsIndependentUse(false)}
+                      disabled={generatingSuggestions}
+                      className={`px-3 py-1.5 rounded-l-lg text-sm font-medium transition-colors ${
+                        !isIndependentUse
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      } disabled:opacity-50`}
+                    >
+                      Teacher-Guided
+                    </button>
+                    <button
+                      onClick={() => setIsIndependentUse(true)}
+                      disabled={generatingSuggestions}
+                      className={`px-3 py-1.5 rounded-r-lg text-sm font-medium transition-colors ${
+                        isIndependentUse
+                          ? 'bg-purple-600 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      } disabled:opacity-50`}
+                    >
+                      Independent
+                    </button>
+                  </div>
                   <button
                     onClick={generateMaterialSuggestions}
                     disabled={generatingSuggestions}
