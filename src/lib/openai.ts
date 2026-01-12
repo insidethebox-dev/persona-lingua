@@ -766,7 +766,6 @@ When recommending cross-language materials, provide specific adaptation strategi
         },
       ],
       function_call: { name: "recommend_filtered_materials" },
-      temperature: 0.4,
     });
 
     const functionCall = completion.choices[0]?.message?.function_call;
