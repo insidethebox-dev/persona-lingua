@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -30,14 +30,14 @@ export async function POST(request: NextRequest) {
     if (!name) {
       return NextResponse.json(
         { success: false, error: "Student name is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!language) {
       return NextResponse.json(
         { success: false, error: "Language is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     console.error("Error creating student:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -85,14 +85,22 @@ export async function GET() {
     if (!session?.user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const students = await prisma.student.findMany({
-      where: {
-        teacherId: session.user.id,
-      },
+      where: session.user.isSchoolAdmin
+        ? {
+            // School admins see all students from teachers in their school
+            teacher: {
+              schoolId: session.user.id,
+            },
+          }
+        : {
+            // Teachers see only their own students
+            teacherId: session.user.id,
+          },
       include: {
         teacher: {
           select: {
@@ -130,7 +138,7 @@ export async function GET() {
     console.error("Error fetching students:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -141,7 +149,7 @@ export async function DELETE(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -151,7 +159,7 @@ export async function DELETE(request: NextRequest) {
     if (!studentId) {
       return NextResponse.json(
         { success: false, error: "Student ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -171,7 +179,7 @@ export async function DELETE(request: NextRequest) {
     if (!student) {
       return NextResponse.json(
         { success: false, error: "Student not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -182,7 +190,7 @@ export async function DELETE(request: NextRequest) {
           success: false,
           error: "Unauthorized - You can only delete your own students",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -198,7 +206,7 @@ export async function DELETE(request: NextRequest) {
     ) {
       return NextResponse.json(
         { success: false, error: "Unauthorized - Cross-school access denied" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -215,7 +223,7 @@ export async function DELETE(request: NextRequest) {
     console.error("Error deleting student:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

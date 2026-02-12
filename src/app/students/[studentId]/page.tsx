@@ -30,6 +30,7 @@ import {
   Sparkles,
   Copy,
   CheckCircle,
+  Save,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { ApiResponse, StudentWithReports } from "@/types";
@@ -110,7 +111,7 @@ export default function StudentDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showReportForm, setShowReportForm] = useState(false);
   const [editingReport, setEditingReport] = useState<StudentReport | null>(
-    null
+    null,
   );
   const [reportFormData, setReportFormData] = useState({
     title: "",
@@ -128,7 +129,10 @@ export default function StudentDetailPage() {
   const [materialCompletion, setMaterialCompletion] = useState<
     Record<string, boolean>
   >({});
-  const [isIndependentUse, setIsIndependentUse] = useState(false);
+  const [isIndependentUse] = useState(false);
+  const [editingNotes, setEditingNotes] = useState(false);
+  const [notesDraft, setNotesDraft] = useState("");
+  const [savingNotes, setSavingNotes] = useState(false);
 
   // Only teachers (not school admins) can manage student reports
   const isTeacher = session?.user && !session.user.isSchoolAdmin;
@@ -162,7 +166,7 @@ export default function StudentDetailPage() {
 
   const handleMaterialCompletion = async (
     materialId: string,
-    isCompleted: boolean
+    isCompleted: boolean,
   ) => {
     try {
       const response = await fetch("/api/materials/complete", {
@@ -189,7 +193,7 @@ export default function StudentDetailPage() {
           isCompleted
             ? "Material marked as completed!"
             : "Material marked as incomplete",
-          { duration: 2000 }
+          { duration: 2000 },
         );
       } else {
         toast.error("Failed to update completion status");
@@ -243,7 +247,7 @@ export default function StudentDetailPage() {
   const fetchRecommendations = async () => {
     try {
       const response = await fetch(
-        `/api/recommendations?studentId=${studentId}`
+        `/api/recommendations?studentId=${studentId}`,
       );
       const data: ApiResponse<RecommendationWithMaterial[]> =
         await response.json();
@@ -254,7 +258,7 @@ export default function StudentDetailPage() {
 
       // Fetch completion status for all materials
       const progressResponse = await fetch(
-        `/api/materials/progress?studentId=${studentId}`
+        `/api/materials/progress?studentId=${studentId}`,
       );
       const progressData = await progressResponse.json();
 
@@ -263,7 +267,7 @@ export default function StudentDetailPage() {
         progressData.data.forEach(
           (progress: { learningMaterialId: string; isCompleted: boolean }) => {
             completionMap[progress.learningMaterialId] = progress.isCompleted;
-          }
+          },
         );
         setMaterialCompletion(completionMap);
       }
@@ -406,7 +410,9 @@ export default function StudentDetailPage() {
       }
     } catch (error) {
       console.error("Error generating material suggestions:", error);
-      toast.error("Failed to generate material suggestions");
+      toast.error(
+        "Unable to reach the server. Please check your internet connection and try again.",
+      );
     } finally {
       setGeneratingSuggestions(false);
     }
@@ -474,7 +480,7 @@ export default function StudentDetailPage() {
           text: material.title,
           heading: HeadingLevel.HEADING_1,
           spacing: { after: 200 },
-        })
+        }),
       );
 
       // Add metadata section
@@ -531,7 +537,7 @@ export default function StudentDetailPage() {
         new Paragraph({
           text: "═".repeat(50),
           spacing: { after: 300 },
-        })
+        }),
       );
 
       // Add content paragraphs
@@ -545,7 +551,7 @@ export default function StudentDetailPage() {
               text: trimmedLine.replace("# ", ""),
               heading: HeadingLevel.HEADING_1,
               spacing: { before: 200, after: 200 },
-            })
+            }),
           );
         } else if (trimmedLine.startsWith("## ")) {
           // Sub heading
@@ -554,7 +560,7 @@ export default function StudentDetailPage() {
               text: trimmedLine.replace("## ", ""),
               heading: HeadingLevel.HEADING_2,
               spacing: { before: 200, after: 150 },
-            })
+            }),
           );
         } else if (trimmedLine.startsWith("### ")) {
           // Sub sub heading
@@ -563,7 +569,7 @@ export default function StudentDetailPage() {
               text: trimmedLine.replace("### ", ""),
               heading: HeadingLevel.HEADING_3,
               spacing: { before: 150, after: 100 },
-            })
+            }),
           );
         } else if (trimmedLine.startsWith("**") && trimmedLine.endsWith("**")) {
           // Bold text
@@ -576,7 +582,7 @@ export default function StudentDetailPage() {
                 }),
               ],
               spacing: { after: 100 },
-            })
+            }),
           );
         } else if (
           trimmedLine.startsWith("- ") ||
@@ -588,7 +594,7 @@ export default function StudentDetailPage() {
               text: trimmedLine.substring(2),
               bullet: { level: 0 },
               spacing: { after: 100 },
-            })
+            }),
           );
         } else if (trimmedLine) {
           // Regular paragraph
@@ -596,7 +602,7 @@ export default function StudentDetailPage() {
             new Paragraph({
               text: trimmedLine,
               spacing: { after: 150 },
-            })
+            }),
           );
         } else {
           // Empty line for spacing
@@ -619,7 +625,7 @@ export default function StudentDetailPage() {
             }),
           ],
           alignment: AlignmentType.CENTER,
-        })
+        }),
       );
 
       // Create document
@@ -641,7 +647,7 @@ export default function StudentDetailPage() {
         .replace(/[^a-z0-9]/gi, "-")
         .toLowerCase()}-${materialSuggestions.studentName.replace(
         /\s+/g,
-        "-"
+        "-",
       )}-${new Date().toISOString().split("T")[0]}.docx`;
       document.body.appendChild(link);
       link.click();
@@ -728,14 +734,87 @@ export default function StudentDetailPage() {
 
         {/* Notes */}
         <div className='mb-8'>
-          <h2 className='text-lg font-medium text-gray-900 mb-3'>Notes</h2>
-          {student.notes ? (
+          <div className='flex items-center justify-between mb-3'>
+            <h2 className='text-lg font-medium text-gray-900'>Notes</h2>
+            {isTeacher && !editingNotes && (
+              <button
+                onClick={() => {
+                  setNotesDraft(student.notes || "");
+                  setEditingNotes(true);
+                }}
+                className='text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1'
+              >
+                <Edit className='h-4 w-4' />
+                Edit
+              </button>
+            )}
+          </div>
+          {editingNotes ? (
             <div className='bg-gray-50 rounded-lg p-4'>
-              <p className='text-gray-700'>{student.notes}</p>
+              <textarea
+                value={notesDraft}
+                onChange={(e) => setNotesDraft(e.target.value)}
+                className='w-full min-h-[120px] p-3 border border-gray-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y'
+                placeholder='Add notes about this student...'
+                disabled={savingNotes}
+              />
+              <div className='flex justify-end gap-2 mt-3'>
+                <button
+                  onClick={() => setEditingNotes(false)}
+                  disabled={savingNotes}
+                  className='px-3 py-1.5 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors'
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={async () => {
+                    setSavingNotes(true);
+                    try {
+                      const response = await fetch(
+                        `/api/students/${studentId}`,
+                        {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            notes: notesDraft.trim() || null,
+                          }),
+                        },
+                      );
+                      const data = await response.json();
+                      if (data.success) {
+                        setStudent(data.data);
+                        setEditingNotes(false);
+                        toast.success("Notes saved successfully");
+                      } else {
+                        toast.error(data.error || "Failed to save notes");
+                      }
+                    } catch {
+                      toast.error("Unable to save notes. Please try again.");
+                    } finally {
+                      setSavingNotes(false);
+                    }
+                  }}
+                  disabled={savingNotes}
+                  className='px-3 py-1.5 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-1 transition-colors disabled:opacity-50'
+                >
+                  {savingNotes ? (
+                    <span className='h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin' />
+                  ) : (
+                    <Save className='h-4 w-4' />
+                  )}
+                  {savingNotes ? "Saving..." : "Save"}
+                </button>
+              </div>
             </div>
           ) : (
             <div className='bg-gray-50 rounded-lg p-4'>
-              <p className='text-gray-500 italic'>No notes available</p>
+              {student.notes ? (
+                <p className='text-gray-700 whitespace-pre-wrap'>
+                  {student.notes}
+                </p>
+              ) : (
+                <p className='text-gray-500 italic'>No notes available</p>
+              )}
             </div>
           )}
         </div>
@@ -870,48 +949,6 @@ export default function StudentDetailPage() {
               </h2>
               {isTeacher && student.reports && student.reports.length > 0 && (
                 <div className='flex gap-2 items-center'>
-                  <div className='flex items-center gap-2 mr-2'>
-                    <label className='text-sm text-gray-700 font-medium'>
-                      Material for:
-                    </label>
-                    <button
-                      onClick={() => setIsIndependentUse(false)}
-                      disabled={generatingSuggestions}
-                      className={`px-3 py-1.5 rounded-l-lg text-sm font-medium transition-colors ${
-                        !isIndependentUse
-                          ? 'bg-purple-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      } disabled:opacity-50`}
-                    >
-                      Teacher-Guided
-                    </button>
-                    <button
-                      onClick={() => setIsIndependentUse(true)}
-                      disabled={generatingSuggestions}
-                      className={`px-3 py-1.5 rounded-r-lg text-sm font-medium transition-colors ${
-                        isIndependentUse
-                          ? 'bg-purple-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      } disabled:opacity-50`}
-                    >
-                      Independent
-                    </button>
-                  </div>
-                  <button
-                    onClick={generateMaterialSuggestions}
-                    disabled={generatingSuggestions}
-                    className='bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
-                  >
-                    <Sparkles className='h-4 w-4' />
-                    {generatingSuggestions ? (
-                      <>
-                        Generating...
-                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
-                      </>
-                    ) : (
-                      "Suggest Materials"
-                    )}
-                  </button>
                   <button
                     onClick={generateRecommendations}
                     disabled={generatingRecommendations}
@@ -925,6 +962,21 @@ export default function StudentDetailPage() {
                       </>
                     ) : (
                       "Generate Recommendations"
+                    )}
+                  </button>
+                  <button
+                    onClick={generateMaterialSuggestions}
+                    disabled={generatingSuggestions}
+                    className='bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
+                  >
+                    <Sparkles className='h-4 w-4' />
+                    {generatingSuggestions ? (
+                      <>
+                        Generating...
+                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
+                      </>
+                    ) : (
+                      "Suggest Materials"
                     )}
                   </button>
                 </div>
@@ -960,7 +1012,7 @@ export default function StudentDetailPage() {
                               onChange={(e) =>
                                 handleMaterialCompletion(
                                   rec.learningMaterialId,
-                                  e.target.checked
+                                  e.target.checked,
                                 )
                               }
                               className='w-5 h-5 text-green-600 rounded focus:ring-2 focus:ring-green-500 cursor-pointer'
@@ -1096,7 +1148,7 @@ export default function StudentDetailPage() {
                           onClick={() =>
                             copyToClipboard(
                               materialSuggestions.materialCriteria.language,
-                              "Language"
+                              "Language",
                             )
                           }
                           className='text-gray-600 hover:text-gray-800'
@@ -1121,7 +1173,7 @@ export default function StudentDetailPage() {
                           onClick={() =>
                             copyToClipboard(
                               materialSuggestions.materialCriteria.topic,
-                              "Topic"
+                              "Topic",
                             )
                           }
                           className='text-gray-600 hover:text-gray-800'
@@ -1146,7 +1198,7 @@ export default function StudentDetailPage() {
                           onClick={() =>
                             copyToClipboard(
                               materialSuggestions.materialCriteria.level,
-                              "Level"
+                              "Level",
                             )
                           }
                           className='text-gray-600 hover:text-gray-800'
@@ -1171,7 +1223,7 @@ export default function StudentDetailPage() {
                           onClick={() =>
                             copyToClipboard(
                               materialSuggestions.materialCriteria.skill,
-                              "Skill"
+                              "Skill",
                             )
                           }
                           className='text-gray-600 hover:text-gray-800'
@@ -1198,7 +1250,7 @@ export default function StudentDetailPage() {
                         onClick={() =>
                           copyToClipboard(
                             materialSuggestions.materialCriteria.description,
-                            "Description"
+                            "Description",
                           )
                         }
                         className='text-gray-600 hover:text-gray-800 mt-1'
@@ -1225,7 +1277,7 @@ export default function StudentDetailPage() {
                           >
                             {tag}
                           </span>
-                        )
+                        ),
                       )}
                     </div>
                   </div>
@@ -1248,7 +1300,7 @@ export default function StudentDetailPage() {
                             >
                               {t}
                             </span>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -1263,7 +1315,7 @@ export default function StudentDetailPage() {
                             >
                               {l}
                             </span>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -1278,7 +1330,7 @@ export default function StudentDetailPage() {
                             >
                               {t}
                             </span>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -1293,7 +1345,7 @@ export default function StudentDetailPage() {
                             >
                               {s}
                             </span>
-                          )
+                          ),
                         )}
                       </div>
                     </div>

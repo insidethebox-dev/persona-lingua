@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     if (!session?.user?.email) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     if (!teacher) {
       return NextResponse.json(
         { success: false, error: "Teacher not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     if (!studentId) {
       return NextResponse.json(
         { success: false, error: "Student ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
     if (!student) {
       return NextResponse.json(
         { success: false, error: "Student not found or access denied" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
           error:
             "No reports found for this student. Please create a progress report first to generate material suggestions.",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     // Analyze student needs using AI (same as recommendations)
     const studentNeeds = await analyzeStudentNeeds(
       reportContents,
-      studentContext
+      studentContext,
     );
 
     // Get or create the teacher's assistant (one per teacher)
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
         teacherId: teacher.id,
         threadId: null, // New-style records have no threadId
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     let assistantId: string;
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
     if (!teacherAssistant) {
       // Create a new assistant for this teacher
       const baseInstructions = `You are an expert educational content creator specializing in personalized learning materials.`;
-      
+
       const teacherGuidedInstructions = `Your materials are designed for teachers to use in guided instruction with their students. Include:
 1. Clear teacher notes and facilitation guidance
 2. Discussion prompts and questions for the teacher to ask
@@ -221,7 +221,7 @@ Be thorough, engaging, and pedagogically sound.`,
               grade: student.grade,
               age: student.age,
               studentNeeds,
-            })
+            }),
           ),
           status: "active",
         },
@@ -250,9 +250,11 @@ Student Profile:
     }
 
 Material Usage Mode: ${isIndependentUse ? "INDEPENDENT STUDENT USE" : "TEACHER-GUIDED USE"}
-${isIndependentUse 
-  ? "This material will be used by the student independently with minimal teacher supervision. Make sure instructions are clear and self-explanatory."
-  : "This material will be used by the teacher to guide instruction with the student. Include teacher notes and facilitation guidance."}
+${
+  isIndependentUse
+    ? "This material will be used by the student independently with minimal teacher supervision. Make sure instructions are clear and self-explanatory."
+    : "This material will be used by the teacher to guide instruction with the student. Include teacher notes and facilitation guidance."
+}
 
 AI-Identified Learning Needs:
 - Topics: ${studentNeeds.topic.join(", ")}
@@ -293,8 +295,14 @@ Generate the complete material now.`;
     const maxAttempts = 30;
 
     while (runStatus.status !== "completed" && attempts < maxAttempts) {
-      if (runStatus.status === "failed" || runStatus.status === "cancelled") {
-        throw new Error(`Assistant run ${runStatus.status}`);
+      if (runStatus.status === "failed") {
+        const failReason = runStatus.last_error?.message || "Unknown error";
+        throw new Error(
+          `The AI engine failed to generate material: ${failReason}. Please try again or contact support if the issue persists.`,
+        );
+      }
+      if (runStatus.status === "cancelled") {
+        throw new Error("Material generation was cancelled. Please try again.");
       }
       await new Promise((resolve) => setTimeout(resolve, 1000));
       runStatus = await openai.beta.threads.runs.retrieve(runId, {
@@ -304,7 +312,9 @@ Generate the complete material now.`;
     }
 
     if (runStatus.status !== "completed") {
-      throw new Error("Assistant run timed out");
+      throw new Error(
+        "Material generation timed out. The AI is taking longer than expected — this can happen with complex student profiles. Please try again in a few minutes.",
+      );
     }
 
     console.log("Run completed successfully");
@@ -314,7 +324,9 @@ Generate the complete material now.`;
     const lastMessage = messages.data[0];
 
     if (lastMessage.role !== "assistant") {
-      throw new Error("No assistant response found");
+      throw new Error(
+        "The AI did not return a response. This is an unexpected error — please try again. If the problem continues, try adding more detail to the student's progress reports.",
+      );
     }
 
     const messageContent = lastMessage.content[0];
@@ -356,7 +368,10 @@ Return ONLY the corrected text with no additional comments or explanations.`,
         console.log("Content proofread successfully");
       }
     } catch (proofreadError) {
-      console.error("Proofreading failed, using original content:", proofreadError);
+      console.error(
+        "Proofreading failed, using original content:",
+        proofreadError,
+      );
       // Continue with original content if proofreading fails
     }
 
@@ -391,7 +406,7 @@ Return ONLY the corrected text with no additional comments or explanations.`,
                   age: student.age,
                 },
                 generatedTitle: title,
-              })
+              }),
             ),
           },
         },
@@ -472,12 +487,19 @@ Return ONLY the corrected text with no additional comments or explanations.`,
     });
   } catch (error) {
     console.error("Error generating material suggestions for student:", error);
+
+    // Forward descriptive error messages from known failure modes
+    const errorMessage =
+      error instanceof Error && error.message
+        ? error.message
+        : "An unexpected error occurred while generating material suggestions. Please check your internet connection and try again.";
+
     return NextResponse.json(
       {
         success: false,
-        error: "Failed to generate material suggestions",
+        error: errorMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
