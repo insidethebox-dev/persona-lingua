@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { analyzeStudentNeeds } from "@/lib/openai";
+import { analyzeStudentNeeds, OPENAI_MODEL_RECOMMENDATION } from "@/lib/openai";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -169,7 +169,7 @@ Format materials as structured documents with:
 - Assessment or reflection questions (if applicable)
 
 Be thorough, engaging, and pedagogically sound.`,
-        model: "gpt-4-turbo-preview",
+        model: OPENAI_MODEL_RECOMMENDATION,
       });
 
       console.log("Created new assistant for teacher:", assistant.id);
@@ -340,7 +340,7 @@ Generate the complete material now.`;
     console.log("Proofreading generated content...");
     try {
       const proofreadCompletion = await openai.chat.completions.create({
-        model: "gpt-4-turbo-preview",
+        model: OPENAI_MODEL_RECOMMENDATION,
         messages: [
           {
             role: "system",

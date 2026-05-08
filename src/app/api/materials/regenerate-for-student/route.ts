@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { OPENAI_MODEL_RECOMMENDATION } from "@/lib/openai";
 import OpenAI from "openai";
 
 const openai = new OpenAI({
@@ -183,7 +184,7 @@ export async function POST(request: NextRequest) {
     console.log("Proofreading regenerated content...");
     try {
       const proofreadCompletion = await openai.chat.completions.create({
-        model: "gpt-4-turbo-preview",
+        model: OPENAI_MODEL_RECOMMENDATION,
         messages: [
           {
             role: "system",

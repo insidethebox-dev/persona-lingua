@@ -4,6 +4,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+export const OPENAI_MODEL_RECOMMENDATION = "gpt-4o";
+
 export interface GeneratedMaterial {
   title: string;
   content: string;
@@ -454,7 +456,7 @@ Based on these reports and student context, identify the student's learning need
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4-turbo-preview", // Upgraded for better educational reasoning
+      model: OPENAI_MODEL_RECOMMENDATION,
       messages: [
         {
           role: "system",
@@ -712,7 +714,7 @@ When recommending cross-language materials, provide specific adaptation strategi
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4-turbo-preview", // Upgraded for better matching and reasoning
+      model: OPENAI_MODEL_RECOMMENDATION,
       messages: [
         {
           role: "system",
@@ -870,7 +872,7 @@ Generate the complete material now:
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4-turbo-preview",
+      model: OPENAI_MODEL_RECOMMENDATION,
       messages: [
         {
           role: "system",
