@@ -11,7 +11,7 @@ An AI-powered learning material recommendation system built with Next.js, TypeSc
 - Created an assistant per teacher logic for AI generated materials and recommendations
 - Added debug logs and linting too
 - Made gpt modle a global variable and changed it to the latest usable version
-- Fixed gpt model incompatibility
+- Fixed gpt model incompatibility and added favicon
 
 ## Features
 
