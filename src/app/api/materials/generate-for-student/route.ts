@@ -278,6 +278,7 @@ Generate the complete material now.`;
     // Run the assistant
     const run = await openai.beta.threads.runs.create(threadId, {
       assistant_id: assistantId,
+      model: OPENAI_MODEL_RECOMMENDATION,
     });
 
     console.log("Run created:", run.id);

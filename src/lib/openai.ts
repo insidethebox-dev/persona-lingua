@@ -5,6 +5,7 @@ const openai = new OpenAI({
 });
 
 export const OPENAI_MODEL_RECOMMENDATION = "gpt-4o";
+export const OPENAI_MODEL_ANALYSIS = "gpt-4o-mini";
 
 export interface GeneratedMaterial {
   title: string;
@@ -56,7 +57,7 @@ Please analyze the content and provide the following information:
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: OPENAI_MODEL_ANALYSIS,
       messages: [
         {
           role: "system",
@@ -330,7 +331,7 @@ Please recommend the most suitable materials for this student based on their pro
 `;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: OPENAI_MODEL_ANALYSIS,
       messages: [
         {
           role: "system",

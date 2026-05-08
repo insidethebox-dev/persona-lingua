@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import OpenAI from "openai";
 import { Document, Packer, Paragraph, HeadingLevel, TextRun } from "docx";
-import { extractTextFromFile } from "@/lib/openai";
+import { extractTextFromFile, OPENAI_MODEL_RECOMMENDATION } from "@/lib/openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -126,7 +126,7 @@ IMPORTANT: Generate the entire content in ${outputLanguage}. All text, headings,
     console.log("AI Generation Prompt:", prompt);
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: OPENAI_MODEL_RECOMMENDATION,
       messages: [
         {
           role: "system",

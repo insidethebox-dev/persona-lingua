@@ -136,6 +136,7 @@ export async function POST(request: NextRequest) {
     // Run the assistant
     const run = await openai.beta.threads.runs.create(currentThreadId, {
       assistant_id: currentAssistantId,
+      model: OPENAI_MODEL_RECOMMENDATION,
     });
 
     // Store IDs in variables to avoid scope issues
