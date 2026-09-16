@@ -1,149 +1,47 @@
-# PersonaLingua 1.0
+<div align="center">
+  <img src="public/persona-lingua-logo-blue.svg" alt="PersonaLingua" width="420">
 
-An AI-powered learning material recommendation system built with Next.js, TypeScript, and Tailwind CSS. The application helps teachers manage student records and discover relevant learning materials through AI-powered suggestions..
+  <p><strong>Personalised language learning support for every student.</strong></p>
 
-## Latest Fixes
+  <p><a href="https://persona-lingua.eu">Visit the PersonaLingua website</a></p>
+</div>
 
-- Improved student generation algorithm and recommendations algorithm
-- Added Student-centric Material generation
-- Refined the Recommendations algorithm with weighted logic and 3 layers filtering
-- Added the mark as completed feature to recommended material
-- Created an assistant per teacher logic for AI generated materials and recommendations
-- Added debug logs and linting too
-- Made gpt modle a global variable and changed it to the latest usable version
-- Fixed gpt model incompatibility and added favicon
+## Welcome to PersonaLingua
 
-## Features
+PersonaLingua is a digital platform designed to help language teachers provide more personalised learning experiences. It brings student progress, teaching resources and tailored recommendations together in one easy-to-use space.
 
-### ✅ Core Features
+By helping teachers understand each learner's needs and find suitable material, PersonaLingua supports inclusive, engaging and effective language education.
 
-- **School Management**: Schools can manage their teacher accounts
-- **Teacher Authentication**: Secure login system for teachers
-- **Student Records**: Teachers can create and manage student profiles with progress reports
-- **File Management**: Upload and tag learning materials for AI-powered discovery
-- **AI Recommendations**: Intelligent suggestions based on student needs and available materials
+## What PersonaLingua offers
 
-### 🆕 Recent Updates
+- **Student profiles** that help teachers keep track of individual learning needs and progress.
+- **Learning material management** for organising and finding useful teaching resources.
+- **Personalised recommendations** that connect learners with material suited to their level, skills and goals.
+- **Tailored learning content** to support individual students and their learning journey.
+- **School and teacher collaboration** within a shared educational environment.
 
-- **AI-Powered Content Analysis**: Automatic file content analysis and summary generation using OpenAI
-- **Enhanced Student Reports**: Complete CRUD operations for student progress reports with modal editing
-- **Improved UI/UX**: Fixed input placeholder colors and enhanced form interactions
-- **Asynchronous Processing**: AI summary generation runs in background during file upload
+## A quick guide for users
 
-## Tech Stack
+1. **Sign in** with your school or teacher account.
+2. **Create or select a student profile** and add the information needed to understand the learner's progress and goals.
+3. **Browse or upload learning materials** and organise them by topic, level, language, skill and type.
+4. **View personalised suggestions** for the selected student.
+5. **Use and review the recommended content**, then mark completed material to keep the student's learning journey up to date.
 
-- **Frontend**: Next.js 15, TypeScript, Tailwind CSS
-- **Backend**: Next.js API routes
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: NextAuth.js
-- **AI Integration**: OpenAI API (configurable)
+## Who is it for?
 
-## Getting Started
+PersonaLingua is made for language teachers and educational organisations that want to support learners with materials and activities that reflect their individual needs.
 
-### Prerequisites
+## Project partners
 
-- Node.js 18+
-- PostgreSQL database
+PersonaLingua was co-created by:
 
-### Installation
+- **Molinos de Viento**
+- **Elite Tutors**
+- **IPHIGENIA Centre for Hellenic Studies**
 
-1. Clone the repository
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Set up your environment variables in `.env`:
-
-   ```env
-   DATABASE_URL="your-postgresql-connection-string"
-   NEXTAUTH_SECRET="your-secret-key"
-   NEXTAUTH_URL="http://localhost:3000"
-
-   # Cloudinary (for file storage)
-   CLOUDINARY_CLOUD_NAME="your-cloudinary-cloud-name"
-   CLOUDINARY_API_KEY="your-cloudinary-api-key"
-   CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
-   CLOUDINARY_FOLDER="personalingua" # Optional folder name
-
-   # OpenAI (for AI content analysis)
-   OPENAI_API_KEY="your-openai-api-key"
-   ```
-
-4. Generate Prisma client:
-
-   ```bash
-   npm run db:generate
-   ```
-
-5. Push the database schema:
-
-   ```bash
-   npm run db:push
-   ```
-
-6. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-7. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## Database Setup
-
-The application uses PostgreSQL with Prisma. To set up your database:
-
-1. Create a PostgreSQL database
-2. Update the `DATABASE_URL` in your `.env` file
-3. Run the database migration:
-   ```bash
-   npm run db:migrate
-   ```
-
-## Project Structure
-
-```
-src/
-├── app/                    # Next.js app router pages
-│   ├── api/               # API routes
-│   ├── auth/              # Authentication pages
-│   ├── dashboard/         # Dashboard page
-│   └── students/          # Student management pages
-├── components/            # Reusable React components
-├── lib/                   # Utility functions and configurations
-├── types/                 # TypeScript type definitions
-└── prisma/               # Database schema and migrations
-```
-
-## API Endpoints
-
-- `POST /api/schools` - Create a new school with admin teacher
-- `GET /api/teachers` - Get teachers for the current school
-- `POST /api/teachers` - Create a new teacher (admin only)
-- `GET /api/students` - Get students for the current teacher
-- `POST /api/students` - Create a new student
-
-## Development Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run db:generate` - Generate Prisma client
-- `npm run db:push` - Push schema changes to database
-- `npm run db:migrate` - Create and run migrations
-- `npm run db:studio` - Open Prisma Studio
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and linting
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License.
+<div align="center">
+  <a href="https://persona-lingua.eu"><strong>Discover PersonaLingua</strong></a>
+  <br><br>
+  <img src="public/eu-banner.png" alt="European Union project acknowledgement" width="900">
+</div>
