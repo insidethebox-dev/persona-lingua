@@ -5,7 +5,13 @@ import { POST } from "@/app/api/schools/route";
 
 const prisma = new PrismaClient();
 
-describe("/api/schools signup endpoint", () => {
+// These tests create and delete real rows. They only run when TEST_DATABASE_URL
+// is set (validated in jest.setup.js); otherwise they are skipped.
+const describeWithDatabase = process.env.TEST_DATABASE_URL
+  ? describe
+  : describe.skip;
+
+describeWithDatabase("/api/schools signup endpoint", () => {
   beforeAll(async () => {
     // Clean up any existing test data
     await prisma.teacher.deleteMany();

@@ -10,6 +10,7 @@ import {
   scoreEnhancedMaterialMatch,
   extractKeyConceptsFromReports,
   isMaterialTooAdvanced,
+  evaluateTopicCoverage,
 } from "@/lib/recommendation-scoring";
 import { ApiResponse } from "@/types";
 
@@ -162,11 +163,34 @@ export async function POST(request: NextRequest) {
 
     console.log(`[Recommendations] Found ${allMaterials.length} materials (after excluding ${completedMaterialIds.length} completed)`);
 
+    // Step 2b: Check whether the library covers the recommended topics at all.
+    // Persisted on the student so the page can warn the teacher to upload
+    // materials on the missing topics, even after a reload.
+    const topicCoverage = evaluateTopicCoverage({
+      recommendedTopics: studentNeeds.topic,
+      materials: allMaterials,
+      studentLanguage: student.language,
+    });
+    console.log(`[Recommendations] Topic coverage:`, {
+      recommended: topicCoverage.recommendedTopics,
+      uncovered: topicCoverage.uncoveredTopics,
+      candidates: topicCoverage.candidateCount,
+    });
+    try {
+      await prisma.student.update({
+        where: { id: studentId },
+        data: { recommendationCoverage: JSON.parse(JSON.stringify(topicCoverage)) },
+      });
+    } catch (coverageError) {
+      console.error("Failed to store topic coverage:", coverageError);
+    }
+
     if (allMaterials.length === 0) {
       return NextResponse.json(
         {
           success: false,
           error: "No learning materials available for recommendations",
+          metadata: { topicCoverage },
         },
         { status: 400 }
       );
@@ -259,6 +283,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: "No materials scored above threshold",
+          metadata: { topicCoverage },
         },
         { status: 400 }
       );
@@ -295,6 +320,7 @@ export async function POST(request: NextRequest) {
           success: false,
           error: "No materials match the student's learning needs",
           crossLanguageGuidance,
+          metadata: { topicCoverage },
         },
         { status: 400 }
       );
@@ -429,6 +455,7 @@ export async function POST(request: NextRequest) {
       message: `Generated ${recommendations.length} recommendations from ${filteredMaterials.length} filtered materials (${allMaterials.length} total available)`,
       metadata: {
         crossLanguageGuidance,
+        topicCoverage,
         languageStats: {
           studentLanguage: student.language,
           sameLanguageCount: sameLanguageMaterials.length,

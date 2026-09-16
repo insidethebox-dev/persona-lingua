@@ -2,15 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { OPENAI_MODEL_RECOMMENDATION } from "@/lib/openai";
+import { analyzeStudentNeeds } from "@/lib/openai";
+import {
+  extractTitle,
+  generateMaterialInConversation,
+  getOrCreateStudentConversation,
+} from "@/lib/material-generation";
 import OpenAI from "openai";
+
+export const maxDuration = 300;
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+  timeout: 240_000,
 });
 
 /**
- * Regenerate learning material with additional instructions using OpenAI Assistants API
+ * Regenerate learning material with additional instructions, inside the
+ * student's persistent Conversation (Responses API).
  */
 export async function POST(request: NextRequest) {
   try {
@@ -34,7 +43,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { studentId, additionalInstructions, isIndependentUse = false } = await request.json();
+    const {
+      studentId,
+      additionalInstructions,
+      isIndependentUse = false,
+      currentMaterial,
+    } = await request.json();
 
     if (!studentId || !additionalInstructions) {
       return NextResponse.json(
@@ -67,190 +81,63 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get the teacher's assistant (should exist from initial generation)
-    const teacherAssistant = await prisma.teacherAssistant.findFirst({
-      where: {
-        teacherId: teacher.id,
-        threadId: null, // New-style records have no threadId
-      },
-      orderBy: { createdAt: 'desc' },
-    });
-
-    if (!teacherAssistant) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "No assistant found. Please generate material first.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const currentAssistantId = teacherAssistant.assistantId;
-
-    // Get or create the student's thread
-    let studentThread = await prisma.studentThread.findFirst({
-      where: {
+    // Get or create the student's conversation
+    const { studentThread, isNew } = await getOrCreateStudentConversation(
+      openai,
+      {
         studentId,
         teacherId: teacher.id,
-        status: "active",
-      },
-    });
-
-    let currentThreadId: string;
-
-    if (!studentThread) {
-      // Create a new thread if none exists
-      const thread = await openai.beta.threads.create();
-      currentThreadId = thread.id;
-
-      studentThread = await prisma.studentThread.create({
-        data: {
-          threadId: currentThreadId,
-          studentId,
-          teacherId: teacher.id,
-          assistantId: currentAssistantId,
-          sessionData: {
-            studentName: student.name,
-            language: student.language,
-            grade: student.grade,
-            age: student.age,
-          },
-          status: "active",
+        sessionData: {
+          studentName: student.name,
+          language: student.language,
+          grade: student.grade,
+          age: student.age,
         },
-      });
-    } else {
-      currentThreadId = studentThread.threadId;
-    }
+      }
+    );
+    const conversationId = studentThread.threadId;
 
-    // Add the user's additional instructions to the thread
-    const usageModeNote = isIndependentUse 
+    const usageModeNote = isIndependentUse
       ? "Remember: This material is for INDEPENDENT STUDENT USE. Ensure instructions are clear and self-explanatory for students to use without teacher guidance."
       : "Remember: This material is for TEACHER-GUIDED USE. Include teacher notes and facilitation guidance.";
 
-    await openai.beta.threads.messages.create(currentThreadId, {
-      role: "user",
-      content: `Please regenerate the learning material with the following additional instructions:\n\n${additionalInstructions}\n\n${usageModeNote}\n\nMaintain the same structure and format, but incorporate these changes.`,
+    // A brand-new conversation has no memory of the earlier material, so
+    // include it verbatim when the client sent it along.
+    const previousMaterialBlock =
+      typeof currentMaterial === "string" && currentMaterial.trim() && isNew
+        ? `\n\nHere is the current version of the material to revise:\n\n${currentMaterial}`
+        : "";
+
+    const message = `Please regenerate the learning material with the following additional instructions:\n\n${additionalInstructions}\n\n${usageModeNote}\n\nMaintain the same structure and format, but incorporate these changes.${previousMaterialBlock}`;
+
+    const regeneratedContent = await generateMaterialInConversation(openai, {
+      conversationId,
+      message,
+      language: student.language,
+      grade: student.grade,
     });
 
-    // Run the assistant
-    const run = await openai.beta.threads.runs.create(currentThreadId, {
-      assistant_id: currentAssistantId,
-      model: OPENAI_MODEL_RECOMMENDATION,
-    });
-
-    // Store IDs in variables to avoid scope issues
-    const retrieveThreadId = currentThreadId;
-    const retrieveRunId = run.id;
-
-    // Poll for completion
-    let runStatus = await openai.beta.threads.runs.retrieve(retrieveRunId, {
-      thread_id: retrieveThreadId,
-    });
-
-    let attempts = 0;
-    const maxAttempts = 30; // 30 seconds timeout
-
-    while (runStatus.status !== "completed" && attempts < maxAttempts) {
-      if (runStatus.status === "failed" || runStatus.status === "cancelled") {
-        throw new Error(`Assistant run ${runStatus.status}`);
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      runStatus = await openai.beta.threads.runs.retrieve(retrieveRunId, {
-        thread_id: retrieveThreadId,
-      });
-      attempts++;
-    }
-
-    if (runStatus.status !== "completed") {
-      throw new Error("Assistant run timed out");
-    }
-
-    // Retrieve the assistant's response
-    const messages = await openai.beta.threads.messages.list(retrieveThreadId);
-    const lastMessage = messages.data[0];
-
-    if (lastMessage.role !== "assistant") {
-      throw new Error("No assistant response found");
-    }
-
-    const messageContent = lastMessage.content[0];
-    let regeneratedContent = "";
-
-    if (messageContent.type === "text") {
-      regeneratedContent = messageContent.text.value;
-    }
-
-    // QUALITY CONTROL: Proofread the regenerated content for grammar and clarity
-    console.log("Proofreading regenerated content...");
-    try {
-      const proofreadCompletion = await openai.chat.completions.create({
-        model: OPENAI_MODEL_RECOMMENDATION,
-        messages: [
-          {
-            role: "system",
-            content: `You are an expert proofreader and editor specializing in educational materials. Your task is to:
-1. Fix all grammatical errors, spelling mistakes, and punctuation issues
-2. Improve clarity and readability while maintaining the original meaning and structure
-3. Ensure the language is appropriate for the target audience (${student.language}, ${student.grade || "appropriate level"})
-4. Maintain the original formatting (markdown, headings, lists, etc.)
-5. Keep all the original content - DO NOT remove sections or change the structure
-6. Make the text natural and engaging
-
-Return ONLY the corrected text with no additional comments or explanations.`,
-          },
-          {
-            role: "user",
-            content: `Please proofread and correct the following educational material for grammatical errors and clarity:\n\n${regeneratedContent}`,
-          },
-        ],
-        temperature: 0.3, // Low temperature for consistent, accurate corrections
-      });
-
-      const proofreadContent = proofreadCompletion.choices[0]?.message?.content;
-      if (proofreadContent && proofreadContent.trim()) {
-        regeneratedContent = proofreadContent;
-        console.log("Content proofread successfully");
-      }
-    } catch (proofreadError) {
-      console.error("Proofreading failed, using original content:", proofreadError);
-      // Continue with original content if proofreading fails
-    }
-
-    // Parse the regenerated content
-    const lines = regeneratedContent.split("\n");
-    const titleLine =
-      lines.find((line) => line.trim().length > 0) || "Learning Material";
-    const title = titleLine
-      .replace(/^#+\s*/, "")
-      .replace(/^\*\*/, "")
-      .replace(/\*\*$/, "")
-      .trim();
+    const title = extractTitle(regeneratedContent);
 
     // Log the conversation in the student thread
-    if (studentThread) {
-      await prisma.studentThread.update({
-        where: { id: studentThread.id },
-        data: {
-          conversationLogs: {
-            push: JSON.parse(
-              JSON.stringify({
-                instruction: additionalInstructions,
-                timestamp: new Date().toISOString(),
-                type: "regeneration",
-                generatedTitle: title,
-              })
-            ),
-          },
+    await prisma.studentThread.update({
+      where: { id: studentThread.id },
+      data: {
+        conversationLogs: {
+          push: JSON.parse(
+            JSON.stringify({
+              instruction: additionalInstructions,
+              timestamp: new Date().toISOString(),
+              type: "regeneration",
+              generatedTitle: title,
+            })
+          ),
         },
-      });
-    }
+      },
+    });
 
-    // Get the original analysis from student reports
+    // Re-analyze to get metadata for the response
     const reportContents = student.reports.map((report) => report.content);
-
-    // Re-analyze to get metadata (or retrieve from stored session data)
-    const { analyzeStudentNeeds } = await import("@/lib/openai");
     const studentNeeds = await analyzeStudentNeeds(reportContents, {
       name: student.name,
       language: student.language,
@@ -296,8 +183,8 @@ Return ONLY the corrected text with no additional comments or explanations.`,
       data: {
         studentId: student.id,
         studentName: student.name,
-        assistantId: currentAssistantId,
-        threadId: currentThreadId,
+        assistantId: studentThread.assistantId,
+        threadId: conversationId,
         generatedMaterial: {
           title,
           content: regeneratedContent,
@@ -328,15 +215,18 @@ Return ONLY the corrected text with no additional comments or explanations.`,
           skills: studentNeeds.skill,
         },
       },
-      message: `Material regenerated for ${student.name}`,
+      message: `Regenerated learning material for ${student.name}`,
     });
   } catch (error) {
     console.error("Error regenerating material for student:", error);
+
+    const errorMessage =
+      error instanceof Error && error.message
+        ? error.message
+        : "An unexpected error occurred while regenerating the material. Please try again.";
+
     return NextResponse.json(
-      {
-        success: false,
-        error: "Failed to regenerate material",
-      },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }

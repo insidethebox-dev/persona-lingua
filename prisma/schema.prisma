@@ -44,20 +44,23 @@ model Teacher {
 }
 
 model Student {
-  id               String                    @id @default(cuid())
-  name             String
-  age              Int?
-  grade            String?
-  notes            String?
-  teacherId        String
-  createdAt        DateTime                  @default(now())
-  updatedAt        DateTime                  @updatedAt
-  learningBarriers String[]                  @default([])
-  language         String
-  recommendations  Recommendation[]
-  materialProgress StudentMaterialProgress[]
-  reports          StudentReport[]
-  teacher          Teacher                   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  id                     String                    @id @default(cuid())
+  name                   String
+  age                    Int?
+  grade                  String?
+  notes                  String?
+  teacherId              String
+  createdAt              DateTime                  @default(now())
+  updatedAt              DateTime                  @updatedAt
+  learningBarriers       String[]                  @default([])
+  language               String
+  learningFootpath       Json? // AI-generated lesson footpath (see LearningFootpath in src/lib/openai.ts)
+  footpathGeneratedAt    DateTime?
+  recommendationCoverage Json? // Topic coverage of the school library at last recommendation run (see RecommendationCoverage)
+  recommendations        Recommendation[]
+  materialProgress       StudentMaterialProgress[]
+  reports                StudentReport[]
+  teacher                Teacher                   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 
   @@map("students")
 }

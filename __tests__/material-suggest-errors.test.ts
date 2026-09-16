@@ -19,7 +19,6 @@ jest.mock("@/lib/prisma", () => ({
   prisma: {
     teacher: { findUnique: jest.fn() },
     student: { findFirst: jest.fn() },
-    teacherAssistant: { findFirst: jest.fn(), create: jest.fn() },
     studentThread: {
       findFirst: jest.fn(),
       create: jest.fn(),
@@ -30,42 +29,24 @@ jest.mock("@/lib/prisma", () => ({
 
 jest.mock("@/lib/openai", () => ({
   analyzeStudentNeeds: jest.fn(),
+  OPENAI_MODEL_RECOMMENDATION: "test-model",
 }));
 
 /* eslint-disable no-var */
-var mockAssistantsCreate: jest.Mock;
-var mockThreadsCreate: jest.Mock;
-var mockMessagesCreate: jest.Mock;
-var mockMessagesList: jest.Mock;
-var mockRunsCreate: jest.Mock;
-var mockRunsRetrieve: jest.Mock;
-var mockChatCompletionsCreate: jest.Mock;
+var mockConversationsCreate: jest.Mock;
+var mockResponsesCreate: jest.Mock;
 /* eslint-enable no-var */
 
 jest.mock("openai", () => {
   // Create stable mock functions at factory time (runs once)
-  mockAssistantsCreate = jest.fn();
-  mockThreadsCreate = jest.fn();
-  mockMessagesCreate = jest.fn();
-  mockMessagesList = jest.fn();
-  mockRunsCreate = jest.fn();
-  mockRunsRetrieve = jest.fn();
-  mockChatCompletionsCreate = jest.fn();
+  mockConversationsCreate = jest.fn();
+  mockResponsesCreate = jest.fn();
 
   function MockOpenAI() {
     // @ts-ignore - mock constructor
     return {
-      beta: {
-        assistants: { create: mockAssistantsCreate },
-        threads: {
-          create: mockThreadsCreate,
-          messages: { create: mockMessagesCreate, list: mockMessagesList },
-          runs: { create: mockRunsCreate, retrieve: mockRunsRetrieve },
-        },
-      },
-      chat: {
-        completions: { create: mockChatCompletionsCreate },
-      },
+      conversations: { create: mockConversationsCreate },
+      responses: { create: mockResponsesCreate },
     };
   }
 
@@ -83,8 +64,6 @@ const mockTeacherFindUnique = prisma.teacher.findUnique as jest.MockedFunction<
 const mockStudentFindFirst = prisma.student.findFirst as jest.MockedFunction<
   typeof prisma.student.findFirst
 >;
-const mockTeacherAssistantFindFirst = prisma.teacherAssistant
-  .findFirst as jest.MockedFunction<typeof prisma.teacherAssistant.findFirst>;
 const mockStudentThreadFindFirst = prisma.studentThread
   .findFirst as jest.MockedFunction<typeof prisma.studentThread.findFirst>;
 const mockStudentThreadCreate = prisma.studentThread
@@ -118,7 +97,7 @@ describe("POST /api/materials/generate-for-student", () => {
       },
     );
 
-  /** Sets up a fully valid context: authenticated teacher, student with reports, existing assistant */
+  /** Sets up a fully valid context: authenticated teacher, student with reports, no conversation yet */
   const setupValidContext = () => {
     mockGetServerSession.mockResolvedValue({
       user: { email: "teacher@school.com" },
@@ -158,30 +137,17 @@ describe("POST /api/materials/generate-for-student", () => {
       reasoning: "Based on analysis, the student needs reading materials.",
     });
 
-    // Existing assistant — no need to create one
-    mockTeacherAssistantFindFirst.mockResolvedValue({
-      id: "ta-1",
-      assistantId: "asst_123",
-      teacherId: "teacher-1",
-      status: "active",
-    } as any);
-
-    // No existing thread — triggers thread creation
+    // No existing conversation — triggers conversation creation
     mockStudentThreadFindFirst.mockResolvedValue(null);
-
-    mockThreadsCreate.mockResolvedValue({ id: "thread_123" });
-
+    mockConversationsCreate.mockResolvedValue({ id: "conv_123" });
     mockStudentThreadCreate.mockResolvedValue({
       id: "st-1",
-      threadId: "thread_123",
+      threadId: "conv_123",
       studentId: "student-1",
       teacherId: "teacher-1",
-      assistantId: "asst_123",
+      assistantId: "test-model",
       status: "active",
     } as any);
-
-    mockMessagesCreate.mockResolvedValue({});
-    mockRunsCreate.mockResolvedValue({ id: "run_123" });
     mockStudentThreadUpdate.mockResolvedValue({} as any);
   };
 
@@ -239,15 +205,127 @@ describe("POST /api/materials/generate-for-student", () => {
   });
 
   // ====================================================================
+  // Happy path — Responses API + Conversations
+  // ====================================================================
+  describe("Successful generation", () => {
+    it("generates inside a new conversation and proofreads the result", async () => {
+      setupValidContext();
+
+      mockResponsesCreate
+        .mockResolvedValueOnce({
+          status: "completed",
+          output_text: "# Reading Adventures\n\nDraft body",
+        })
+        .mockResolvedValueOnce({
+          status: "completed",
+          output_text: "# Reading Adventures\n\nPolished body",
+        });
+
+      const response = await POST(
+        createMockRequest({ studentId: "student-1" }),
+      );
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.success).toBe(true);
+      expect(data.data.threadId).toBe("conv_123");
+      expect(data.data.generatedMaterial.title).toBe("Reading Adventures");
+      expect(data.data.generatedMaterial.content).toContain("Polished body");
+
+      // Generation turn ran inside the student's conversation
+      expect(mockResponsesCreate).toHaveBeenCalledTimes(2);
+      expect(mockResponsesCreate.mock.calls[0][0]).toMatchObject({
+        model: "test-model",
+        conversation: "conv_123",
+      });
+      expect(mockResponsesCreate.mock.calls[0][0].input[0].content).toContain(
+        "TEACHER-GUIDED USE",
+      );
+    });
+
+    it("keeps the original text when proofreading fails", async () => {
+      setupValidContext();
+
+      mockResponsesCreate
+        .mockResolvedValueOnce({
+          status: "completed",
+          output_text: "# Title\n\nOriginal body",
+        })
+        .mockRejectedValueOnce(new Error("proofread down"));
+
+      const response = await POST(
+        createMockRequest({ studentId: "student-1" }),
+      );
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(data.data.generatedMaterial.content).toContain("Original body");
+    });
+
+    it("archives a legacy Assistants thread and creates a conversation", async () => {
+      setupValidContext();
+
+      mockStudentThreadFindFirst.mockResolvedValue({
+        id: "st-old",
+        threadId: "thread_legacy",
+        status: "active",
+      } as any);
+      mockResponsesCreate.mockResolvedValue({
+        status: "completed",
+        output_text: "# Title\n\nBody",
+      });
+
+      const response = await POST(
+        createMockRequest({ studentId: "student-1" }),
+      );
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(mockStudentThreadUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: "st-old" },
+          data: { status: "archived" },
+        }),
+      );
+      expect(mockConversationsCreate).toHaveBeenCalledTimes(1);
+      expect(data.data.threadId).toBe("conv_123");
+    });
+
+    it("reuses an existing conversation without creating a new one", async () => {
+      setupValidContext();
+
+      mockStudentThreadFindFirst.mockResolvedValue({
+        id: "st-1",
+        threadId: "conv_existing",
+        assistantId: "test-model",
+        status: "active",
+      } as any);
+      mockResponsesCreate.mockResolvedValue({
+        status: "completed",
+        output_text: "# Title\n\nBody",
+      });
+
+      const response = await POST(
+        createMockRequest({ studentId: "student-1" }),
+      );
+      const data = await response.json();
+
+      expect(response.status).toBe(200);
+      expect(mockConversationsCreate).not.toHaveBeenCalled();
+      expect(data.data.threadId).toBe("conv_existing");
+    });
+  });
+
+  // ====================================================================
   // AI Error Handling — the main focus of this test suite
   // ====================================================================
   describe("AI Error Handling", () => {
-    it("should return a descriptive error when the AI run fails", async () => {
+    it("should return a descriptive error when the AI response fails", async () => {
       setupValidContext();
 
-      mockRunsRetrieve.mockResolvedValue({
+      mockResponsesCreate.mockResolvedValue({
         status: "failed",
-        last_error: { message: "Rate limit exceeded" },
+        error: { message: "Rate limit exceeded" },
       });
 
       const response = await POST(
@@ -262,12 +340,12 @@ describe("POST /api/materials/generate-for-student", () => {
       expect(data.error).toContain("try again");
     });
 
-    it("should return a descriptive error when the AI run fails with no specific reason", async () => {
+    it("should return a descriptive error when the AI response fails with no specific reason", async () => {
       setupValidContext();
 
-      mockRunsRetrieve.mockResolvedValue({
+      mockResponsesCreate.mockResolvedValue({
         status: "failed",
-        last_error: null,
+        error: null,
       });
 
       const response = await POST(
@@ -281,10 +359,10 @@ describe("POST /api/materials/generate-for-student", () => {
       expect(data.error).toContain("Unknown error");
     });
 
-    it("should return a descriptive error when the AI run is cancelled", async () => {
+    it("should return a descriptive error when the AI response is cancelled", async () => {
       setupValidContext();
 
-      mockRunsRetrieve.mockResolvedValue({ status: "cancelled" });
+      mockResponsesCreate.mockResolvedValue({ status: "cancelled" });
 
       const response = await POST(
         createMockRequest({ studentId: "student-1" }),
@@ -297,11 +375,33 @@ describe("POST /api/materials/generate-for-student", () => {
       expect(data.error).toContain("try again");
     });
 
-    it("should return a descriptive error when the AI run times out", async () => {
+    it("should return a descriptive error when the AI response is incomplete", async () => {
       setupValidContext();
 
-      // Always return "in_progress" to simulate the polling loop exhausting maxAttempts
-      mockRunsRetrieve.mockResolvedValue({ status: "in_progress" });
+      mockResponsesCreate.mockResolvedValue({
+        status: "incomplete",
+        incomplete_details: { reason: "max_output_tokens" },
+      });
+
+      const response = await POST(
+        createMockRequest({ studentId: "student-1" }),
+      );
+      const data = await response.json();
+
+      expect(response.status).toBe(500);
+      expect(data.success).toBe(false);
+      expect(data.error).toContain("max_output_tokens");
+      expect(data.error).toContain("try again");
+    });
+
+    it("should return a descriptive error when the AI request times out", async () => {
+      setupValidContext();
+
+      mockResponsesCreate.mockRejectedValue(
+        Object.assign(new Error("Request timed out."), {
+          name: "APIConnectionTimeoutError",
+        }),
+      );
 
       const response = await POST(
         createMockRequest({ studentId: "student-1" }),
@@ -312,22 +412,14 @@ describe("POST /api/materials/generate-for-student", () => {
       expect(data.success).toBe(false);
       expect(data.error).toContain("timed out");
       expect(data.error).toContain("taking longer than expected");
-    }, 60000); // Route polls 30x with 1s delays, needs ~31s
+    });
 
     it("should return a descriptive error when the AI returns no response", async () => {
       setupValidContext();
 
-      // Run completes successfully...
-      mockRunsRetrieve.mockResolvedValue({ status: "completed" });
-
-      // ...but no assistant message in the thread
-      mockMessagesList.mockResolvedValue({
-        data: [
-          {
-            role: "user",
-            content: [{ type: "text", text: { value: "User message" } }],
-          },
-        ],
+      mockResponsesCreate.mockResolvedValue({
+        status: "completed",
+        output_text: "",
       });
 
       const response = await POST(
@@ -344,8 +436,10 @@ describe("POST /api/materials/generate-for-student", () => {
     it("should return a descriptive error when the OpenAI API is unreachable", async () => {
       setupValidContext();
 
-      // Network error when trying to create the thread run
-      mockRunsCreate.mockRejectedValue(new Error("connect ETIMEDOUT"));
+      // Network error when trying to create the conversation
+      mockConversationsCreate.mockRejectedValue(
+        new Error("connect ETIMEDOUT"),
+      );
 
       const response = await POST(
         createMockRequest({ studentId: "student-1" }),

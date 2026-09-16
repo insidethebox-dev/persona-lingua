@@ -1,11 +1,136 @@
 import OpenAI from "openai";
+import type {
+  FunctionTool,
+  Response as OpenAIResponse,
+} from "openai/resources/responses/responses";
 
-const openai = new OpenAI({
+/**
+ * Shared OpenAI client.
+ *
+ * All calls go through the Responses API (`openai.responses.create`), which is
+ * the API OpenAI now recommends for new integrations and the only one that
+ * supports tool calling on GPT-6 Astra. The legacy Chat Completions
+ * `functions` / `function_call` parameters and the Assistants API (sunset
+ * 2026-08-26) are no longer used anywhere in the app.
+ */
+export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+  timeout: 180_000, // reasoning models can take a while on long generations
 });
 
-export const OPENAI_MODEL_RECOMMENDATION = "gpt-4o";
-export const OPENAI_MODEL_ANALYSIS = "gpt-4o-mini";
+/**
+ * Models.
+ *
+ * - PRIMARY: GPT-6 Astra, OpenAI's most capable model (used for student
+ *   analysis, recommendations, footpaths and material generation).
+ * - FAST: GPT-5.6 Luna, the cost-efficient tier (used for file analysis).
+ *
+ * Both can be overridden without a code change via environment variables,
+ * e.g. OPENAI_MODEL_PRIMARY=gpt-5.6-terra to trade capability for cost.
+ */
+export const OPENAI_MODEL_RECOMMENDATION =
+  process.env.OPENAI_MODEL_PRIMARY || "gpt-6-astra";
+export const OPENAI_MODEL_ANALYSIS =
+  process.env.OPENAI_MODEL_FAST || "gpt-5.6-luna";
+
+/** Reasoning effort accepted by every model we use (GPT-6 rejects "none"). */
+export type ReasoningEffort = "low" | "medium" | "high";
+
+interface StructuredCallOptions {
+  model: string;
+  instructions: string;
+  input: string;
+  tool: {
+    name: string;
+    description: string;
+    parameters: Record<string, unknown>;
+  };
+  effort?: ReasoningEffort;
+  maxOutputTokens?: number;
+}
+
+/**
+ * Ask the model for structured data by forcing a single function tool call and
+ * parsing its JSON arguments. Returns null if the model did not call the tool.
+ */
+export async function callStructured<T>(
+  options: StructuredCallOptions
+): Promise<T | null> {
+  const { model, instructions, input, tool, effort = "low", maxOutputTokens } =
+    options;
+
+  const functionTool: FunctionTool = {
+    type: "function",
+    name: tool.name,
+    description: tool.description,
+    parameters: tool.parameters,
+    strict: false,
+  };
+
+  const response = await openai.responses.create({
+    model,
+    instructions,
+    input,
+    tools: [functionTool],
+    tool_choice: { type: "function", name: tool.name },
+    reasoning: { effort },
+    max_output_tokens: maxOutputTokens,
+  });
+
+  assertCompleted(response);
+
+  const call = response.output.find(
+    (item) => item.type === "function_call" && item.name === tool.name
+  );
+
+  if (!call || call.type !== "function_call" || !call.arguments) {
+    return null;
+  }
+
+  return JSON.parse(call.arguments) as T;
+}
+
+interface TextCallOptions {
+  model: string;
+  instructions: string;
+  input: string;
+  effort?: ReasoningEffort;
+  maxOutputTokens?: number;
+}
+
+/** Ask the model for free-form text and return `output_text`. */
+export async function generateText(options: TextCallOptions): Promise<string> {
+  const { model, instructions, input, effort = "low", maxOutputTokens } =
+    options;
+
+  const response = await openai.responses.create({
+    model,
+    instructions,
+    input,
+    reasoning: { effort },
+    max_output_tokens: maxOutputTokens,
+  });
+
+  assertCompleted(response);
+
+  return response.output_text ?? "";
+}
+
+/** Throw a descriptive error when a response did not finish normally. */
+export function assertCompleted(response: OpenAIResponse): void {
+  if (response.status === "failed") {
+    throw new Error(
+      `OpenAI response failed: ${response.error?.message || "Unknown error"}`
+    );
+  }
+  if (response.status === "incomplete") {
+    throw new Error(
+      `OpenAI response incomplete: ${
+        response.incomplete_details?.reason || "unknown reason"
+      }`
+    );
+  }
+}
 
 export interface GeneratedMaterial {
   title: string;
@@ -56,151 +181,137 @@ Please analyze the content and provide the following information:
 7. Relevant tags for categorization
 `;
 
-    const completion = await openai.chat.completions.create({
+    const result = await callStructured<AIAnalysisResult>({
       model: OPENAI_MODEL_ANALYSIS,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an educational content analyst. Analyze learning materials and provide structured information to help teachers categorize and use them effectively.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      functions: [
-        {
-          name: "analyze_educational_material",
-          description:
-            "Analyze educational material and return structured data",
-          parameters: {
-            type: "object",
-            properties: {
-              title: {
-                type: "string",
-                description:
-                  "A clear, concise title for the material (max 10 words)",
-              },
-              description: {
-                type: "string",
-                description:
-                  "A clear, concise description of the material content and its educational purpose (2-3 sentences)",
-              },
-              topic: {
-                type: "string",
-                description: "The main subject area",
-                enum: [
-                  "Mathematics",
-                  "Science",
-                  "English Language Arts",
-                  "Social Studies",
-                  "History",
-                  "Geography",
-                  "Art",
-                  "Music",
-                  "Physical Education",
-                  "Computer Science",
-                  "Foreign Language",
-                  "Life Skills",
-                  "Other",
-                ],
-              },
-              level: {
-                type: "array",
-                items: {
-                  type: "string",
-                  enum: [
-                    "Preschool",
-                    "Kindergarten",
-                    "Elementary (1-3)",
-                    "Elementary (4-5)",
-                    "Middle School (6-8)",
-                    "High School (9-12)",
-                    "Adult Education",
-                    "Mixed Levels",
-                    "A1.1 (Beginner Low)",
-                    "A1.2 (Beginner High)",
-                    "A2.1 (Elementary Low)",
-                    "A2.2 (Elementary High)",
-                    "B1.1 (Intermediate Low)",
-                    "B1.2 (Intermediate High)",
-                    "B2.1 (Upper-Intermediate Low)",
-                    "B2.2 (Upper-Intermediate High)",
-                    "C1.1 (Advanced Low)",
-                    "C1.2 (Advanced High)",
-                    "C2 (Proficient/Mastery)",
-                  ],
-                },
-                description: "Appropriate difficulty levels for this student",
-              },
-              type: {
-                type: "string",
-                description: "The type of educational material",
-                enum: [
-                  "Worksheet",
-                  "Quiz/Test",
-                  "Reading Material",
-                  "Activity Guide",
-                  "Presentation",
-                  "Video/Audio",
-                  "Interactive Content",
-                  "Reference Material",
-                  "Assessment Tool",
-                  "Other",
-                ],
-              },
-              skill: {
-                type: "string",
-                description: "The primary learning skill being targeted",
-                enum: [
-                  "Reading Comprehension",
-                  "Writing",
-                  "Math Problem Solving",
-                  "Critical Thinking",
-                  "Vocabulary",
-                  "Grammar",
-                  "Listening",
-                  "Speaking",
-                  "Research Skills",
-                  "Creative Expression",
-                  "Scientific Method",
-                  "Analysis",
-                  "Memory",
-                  "Other",
-                ],
-              },
-              tags: {
-                type: "array",
-                items: {
-                  type: "string",
-                },
-                description: "3-5 relevant tags for categorization and search",
-              },
+      instructions:
+        "You are an educational content analyst. Analyze learning materials and provide structured information to help teachers categorize and use them effectively.",
+      input: prompt,
+      effort: "low",
+      tool: {
+        name: "analyze_educational_material",
+        description: "Analyze educational material and return structured data",
+        parameters: {
+          type: "object",
+          properties: {
+            title: {
+              type: "string",
+              description:
+                "A clear, concise title for the material (max 10 words)",
             },
-            required: [
-              "title",
-              "description",
-              "topic",
-              "level",
-              "type",
-              "skill",
-              "tags",
-            ],
+            description: {
+              type: "string",
+              description:
+                "A clear, concise description of the material content and its educational purpose (2-3 sentences)",
+            },
+            topic: {
+              type: "string",
+              description: "The main subject area",
+              enum: [
+                "Mathematics",
+                "Science",
+                "English Language Arts",
+                "Social Studies",
+                "History",
+                "Geography",
+                "Art",
+                "Music",
+                "Physical Education",
+                "Computer Science",
+                "Foreign Language",
+                "Life Skills",
+                "Other",
+              ],
+            },
+            level: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "Preschool",
+                  "Kindergarten",
+                  "Elementary (1-3)",
+                  "Elementary (4-5)",
+                  "Middle School (6-8)",
+                  "High School (9-12)",
+                  "Adult Education",
+                  "Mixed Levels",
+                  "A1.1 (Beginner Low)",
+                  "A1.2 (Beginner High)",
+                  "A2.1 (Elementary Low)",
+                  "A2.2 (Elementary High)",
+                  "B1.1 (Intermediate Low)",
+                  "B1.2 (Intermediate High)",
+                  "B2.1 (Upper-Intermediate Low)",
+                  "B2.2 (Upper-Intermediate High)",
+                  "C1.1 (Advanced Low)",
+                  "C1.2 (Advanced High)",
+                  "C2 (Proficient/Mastery)",
+                ],
+              },
+              description: "Appropriate difficulty levels for this student",
+            },
+            type: {
+              type: "string",
+              description: "The type of educational material",
+              enum: [
+                "Worksheet",
+                "Quiz/Test",
+                "Reading Material",
+                "Activity Guide",
+                "Presentation",
+                "Video/Audio",
+                "Interactive Content",
+                "Reference Material",
+                "Assessment Tool",
+                "Other",
+              ],
+            },
+            skill: {
+              type: "string",
+              description: "The primary learning skill being targeted",
+              enum: [
+                "Reading Comprehension",
+                "Writing",
+                "Math Problem Solving",
+                "Critical Thinking",
+                "Vocabulary",
+                "Grammar",
+                "Listening",
+                "Speaking",
+                "Research Skills",
+                "Creative Expression",
+                "Scientific Method",
+                "Analysis",
+                "Memory",
+                "Other",
+              ],
+            },
+            tags: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+              description: "3-5 relevant tags for categorization and search",
+            },
           },
+          required: [
+            "title",
+            "description",
+            "topic",
+            "level",
+            "type",
+            "skill",
+            "tags",
+          ],
         },
-      ],
-      function_call: { name: "analyze_educational_material" },
-      temperature: 0.3,
+      },
     });
 
-    const functionCall = completion.choices[0]?.message?.function_call;
-    if (functionCall && functionCall.arguments) {
-      const result = JSON.parse(functionCall.arguments) as AIAnalysisResult;
+    if (result) {
       return result;
     }
 
-    // Fallback if function calling fails
+    // Fallback if the tool call is missing
     return {
       title: undefined,
       description:
@@ -290,6 +401,39 @@ export interface AIRecommendationResult {
   confidence: number;
 }
 
+const RECOMMENDATION_LIST_SCHEMA = {
+  type: "object",
+  properties: {
+    recommendations: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          materialId: {
+            type: "string",
+            description: "The ID of the recommended material",
+          },
+          reason: {
+            type: "string",
+            description:
+              "Detailed explanation of why this material is recommended for the student's specific needs (2-3 sentences)",
+          },
+          confidence: {
+            type: "number",
+            minimum: 0,
+            maximum: 1,
+            description: "Confidence level of this recommendation (0-1)",
+          },
+        },
+        required: ["materialId", "reason", "confidence"],
+      },
+      description:
+        "List of recommended materials with detailed explanations, ordered by relevance",
+    },
+  },
+  required: ["recommendations"],
+};
+
 export async function generateRecommendations(
   studentReport: string,
   studentName: string,
@@ -330,69 +474,23 @@ Tags: ${m.tags.join(", ")}
 Please recommend the most suitable materials for this student based on their progress report, learning needs, and areas for improvement.
 `;
 
-    const completion = await openai.chat.completions.create({
+    const result = await callStructured<{
+      recommendations: AIRecommendationResult[];
+    }>({
       model: OPENAI_MODEL_ANALYSIS,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an educational specialist who recommends learning materials based on student progress reports. Focus on addressing learning gaps and reinforcing strengths.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      functions: [
-        {
-          name: "recommend_materials",
-          description:
-            "Recommend learning materials for a student based on their progress report",
-          parameters: {
-            type: "object",
-            properties: {
-              recommendations: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    materialId: {
-                      type: "string",
-                      description: "The ID of the recommended material",
-                    },
-                    reason: {
-                      type: "string",
-                      description:
-                        "Why this material is recommended for the student (2-3 sentences)",
-                    },
-                    confidence: {
-                      type: "number",
-                      minimum: 0,
-                      maximum: 1,
-                      description:
-                        "Confidence level of this recommendation (0-1)",
-                    },
-                  },
-                  required: ["materialId", "reason", "confidence"],
-                },
-                description: "List of recommended materials with explanations",
-              },
-            },
-            required: ["recommendations"],
-          },
-        },
-      ],
-      function_call: { name: "recommend_materials" },
-      temperature: 0.4,
+      instructions:
+        "You are an educational specialist who recommends learning materials based on student progress reports. Focus on addressing learning gaps and reinforcing strengths.",
+      input: prompt,
+      effort: "low",
+      tool: {
+        name: "recommend_materials",
+        description:
+          "Recommend learning materials for a student based on their progress report",
+        parameters: RECOMMENDATION_LIST_SCHEMA,
+      },
     });
 
-    const functionCall = completion.choices[0]?.message?.function_call;
-    if (functionCall && functionCall.arguments) {
-      const result = JSON.parse(functionCall.arguments);
-      return result.recommendations as AIRecommendationResult[];
-    }
-
-    return [];
+    return result?.recommendations ?? [];
   } catch (error) {
     console.error("Error generating recommendations:", error);
     throw new Error("Failed to generate recommendations");
@@ -456,149 +554,132 @@ Based on these reports and student context, identify the student's learning need
 3. Are appropriate for their grade/age level
 `;
 
-    const completion = await openai.chat.completions.create({
+    const result = await callStructured<StudentNeedsAnalysis>({
       model: OPENAI_MODEL_RECOMMENDATION,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an educational specialist analyzing student progress reports to identify learning needs and recommend appropriate material types. You have expertise in multilingual education and learning accessibility. Always consider language compatibility, cultural relevance, and learning barrier accommodations when making recommendations.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      functions: [
-        {
-          name: "analyze_student_needs",
-          description:
-            "Analyze student reports and recommend material criteria",
-          parameters: {
-            type: "object",
-            properties: {
-              topic: {
-                type: "array",
-                items: {
-                  type: "string",
-                  enum: [
-                    "Daily Life",
-                    "Travel",
-                    "Food & Drink",
-                    "Work & Professions",
-                    "Education",
-                    "Health & Wellness",
-                    "Environment",
-                    "Technology",
-                    "Culture & Traditions",
-                    "Sports & Hobbies",
-                    "Shopping",
-                    "Relationships",
-                    "Holidays & Celebrations",
-                    "News & Current Events",
-                  ],
-                },
-                description:
-                  "Topics that would benefit this student (1-3 most relevant)",
-              },
-              level: {
-                type: "array",
-                items: {
-                  type: "string",
-                  enum: [
-                    "A1.1 (Beginner Low)",
-                    "A1.2 (Beginner High)",
-                    "A2.1 (Elementary Low)",
-                    "A2.2 (Elementary High)",
-                    "B1.1 (Intermediate Low)",
-                    "B1.2 (Intermediate High)",
-                    "B2.1 (Upper-Intermediate Low)",
-                    "B2.2 (Upper-Intermediate High)",
-                    "C1.1 (Advanced Low)",
-                    "C1.2 (Advanced High)",
-                    "C2 (Proficient/Mastery)",
-                  ],
-                },
-                description: "Appropriate difficulty levels for this student",
-              },
-              type: {
-                type: "array",
-                items: {
-                  type: "string",
-                  enum: [
-                    "Worksheet",
-                    "Quiz",
-                    "Test",
-                    "Multiple Choice",
-                    "True/False",
-                    "Fill in the Blank",
-                    "Essay Questions",
-                    "Summary",
-                    "Reading Passage",
-                    "Exercise",
-                    "Activity",
-                    "Project",
-                    "Assessment",
-                    "Homework",
-                    "Study Guide",
-                    "Reference Material",
-                    "Presentation",
-                    "Interactive Content",
-                  ],
-                },
-                description: "Types of materials that would be most effective",
-              },
-              skill: {
-                type: "array",
-                items: {
-                  type: "string",
-                  enum: [
-                    "Speaking",
-                    "Listening",
-                    "Reading",
-                    "Writing",
-                    "Grammar",
-                    "Vocabulary",
-                    "Pronunciation",
-                    "Intercultural Communication",
-                  ],
-                },
-                description: "Skills this student needs to develop or practice",
-              },
-              tags: {
-                type: "array",
-                items: {
-                  type: "string",
-                },
-                description:
-                  "Additional relevant tags or keywords for material search",
-              },
-              reasoning: {
+      instructions:
+        "You are an educational specialist analyzing student progress reports to identify learning needs and recommend appropriate material types. You have expertise in multilingual education and learning accessibility. Always consider language compatibility, cultural relevance, and learning barrier accommodations when making recommendations.",
+      input: prompt,
+      effort: "low",
+      tool: {
+        name: "analyze_student_needs",
+        description: "Analyze student reports and recommend material criteria",
+        parameters: {
+          type: "object",
+          properties: {
+            topic: {
+              type: "array",
+              items: {
                 type: "string",
-                description:
-                  "Brief explanation of why these recommendations are appropriate for this student",
+                enum: [
+                  "Daily Life",
+                  "Travel",
+                  "Food & Drink",
+                  "Work & Professions",
+                  "Education",
+                  "Health & Wellness",
+                  "Environment",
+                  "Technology",
+                  "Culture & Traditions",
+                  "Sports & Hobbies",
+                  "Shopping",
+                  "Relationships",
+                  "Holidays & Celebrations",
+                  "News & Current Events",
+                ],
               },
+              description:
+                "Topics that would benefit this student (1-3 most relevant)",
             },
-            required: ["topic", "level", "type", "skill", "tags", "reasoning"],
+            level: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "A1.1 (Beginner Low)",
+                  "A1.2 (Beginner High)",
+                  "A2.1 (Elementary Low)",
+                  "A2.2 (Elementary High)",
+                  "B1.1 (Intermediate Low)",
+                  "B1.2 (Intermediate High)",
+                  "B2.1 (Upper-Intermediate Low)",
+                  "B2.2 (Upper-Intermediate High)",
+                  "C1.1 (Advanced Low)",
+                  "C1.2 (Advanced High)",
+                  "C2 (Proficient/Mastery)",
+                ],
+              },
+              description: "Appropriate difficulty levels for this student",
+            },
+            type: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "Worksheet",
+                  "Quiz",
+                  "Test",
+                  "Multiple Choice",
+                  "True/False",
+                  "Fill in the Blank",
+                  "Essay Questions",
+                  "Summary",
+                  "Reading Passage",
+                  "Exercise",
+                  "Activity",
+                  "Project",
+                  "Assessment",
+                  "Homework",
+                  "Study Guide",
+                  "Reference Material",
+                  "Presentation",
+                  "Interactive Content",
+                ],
+              },
+              description: "Types of materials that would be most effective",
+            },
+            skill: {
+              type: "array",
+              items: {
+                type: "string",
+                enum: [
+                  "Speaking",
+                  "Listening",
+                  "Reading",
+                  "Writing",
+                  "Grammar",
+                  "Vocabulary",
+                  "Pronunciation",
+                  "Intercultural Communication",
+                ],
+              },
+              description: "Skills this student needs to develop or practice",
+            },
+            tags: {
+              type: "array",
+              items: {
+                type: "string",
+              },
+              description:
+                "Additional relevant tags or keywords for material search",
+            },
+            reasoning: {
+              type: "string",
+              description:
+                "Brief explanation of why these recommendations are appropriate for this student",
+            },
           },
+          required: ["topic", "level", "type", "skill", "tags", "reasoning"],
         },
-      ],
-      function_call: { name: "analyze_student_needs" },
-      temperature: 0.3,
+      },
     });
 
-    console.log(
-      "AI analyzeStudentNeeds completion:",
-      completion.choices[0]?.message
-    );
+    console.log("AI analyzeStudentNeeds result:", result);
 
-    const functionCall = completion.choices[0]?.message?.function_call;
-    if (functionCall && functionCall.arguments) {
-      const result = JSON.parse(functionCall.arguments) as StudentNeedsAnalysis;
+    if (result) {
       return result;
     }
 
-    // Fallback if function calling fails
+    // Fallback if the tool call is missing
     return {
       topic: ["Other"],
       level: ["Mixed Levels"],
@@ -714,76 +795,29 @@ IMPORTANT: Recommend between 3-20 materials to give the teacher a good variety o
 When recommending cross-language materials, provide specific adaptation strategies in your reasoning.
 `;
 
-    const completion = await openai.chat.completions.create({
+    const result = await callStructured<{
+      recommendations: AIRecommendationResult[];
+    }>({
       model: OPENAI_MODEL_RECOMMENDATION,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an educational specialist who recommends learning materials based on detailed student needs analysis. You have expertise in multilingual education, learning accessibility, and cultural competency. Consider language compatibility, learning barrier accommodations, and cultural relevance when making recommendations. Always explain how materials can be adapted for cross-language use when necessary.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.4, // Lower temperature for more consistent recommendations
-      functions: [
-        {
-          name: "recommend_filtered_materials",
-          description:
-            "Recommend the best materials from the filtered set for the student",
-          parameters: {
-            type: "object",
-            properties: {
-              recommendations: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    materialId: {
-                      type: "string",
-                      description: "The ID of the recommended material",
-                    },
-                    reason: {
-                      type: "string",
-                      description:
-                        "Detailed explanation of why this material is recommended for the student's specific needs (2-3 sentences)",
-                    },
-                    confidence: {
-                      type: "number",
-                      minimum: 0,
-                      maximum: 1,
-                      description:
-                        "Confidence level of this recommendation (0-1)",
-                    },
-                  },
-                  required: ["materialId", "reason", "confidence"],
-                },
-                description:
-                  "List of recommended materials with detailed explanations, ordered by relevance",
-              },
-            },
-            required: ["recommendations"],
-          },
-        },
-      ],
-      function_call: { name: "recommend_filtered_materials" },
+      instructions:
+        "You are an educational specialist who recommends learning materials based on detailed student needs analysis. You have expertise in multilingual education, learning accessibility, and cultural competency. Consider language compatibility, learning barrier accommodations, and cultural relevance when making recommendations. Always explain how materials can be adapted for cross-language use when necessary.",
+      input: prompt,
+      effort: "low",
+      tool: {
+        name: "recommend_filtered_materials",
+        description:
+          "Recommend the best materials from the filtered set for the student",
+        parameters: RECOMMENDATION_LIST_SCHEMA,
+      },
     });
 
-    const functionCall = completion.choices[0]?.message?.function_call;
-    if (functionCall && functionCall.arguments) {
-      const result = JSON.parse(functionCall.arguments);
-      return result.recommendations as AIRecommendationResult[];
-    }
-
-    return [];
+    return result?.recommendations ?? [];
   } catch (error) {
     console.error(
       "Error generating recommendations from filtered materials:",
       error
     );
-    
+
     // Enhanced error logging
     if (error instanceof Error) {
       console.error("Error details:", {
@@ -792,16 +826,18 @@ When recommending cross-language materials, provide specific adaptation strategi
         name: error.name,
       });
     }
-    
+
     // Log OpenAI-specific errors
-    if (typeof error === 'object' && error !== null && 'error' in error) {
-      const openaiError = error as { error: { message?: string; type?: string; code?: string } };
+    if (typeof error === "object" && error !== null && "error" in error) {
+      const openaiError = error as {
+        error: { message?: string; type?: string; code?: string };
+      };
       console.error("OpenAI API error:", openaiError.error);
     }
-    
+
     throw new Error(
       `Failed to generate recommendations from filtered materials: ${
-        error instanceof Error ? error.message : 'Unknown error'
+        error instanceof Error ? error.message : "Unknown error"
       }`
     );
   }
@@ -821,17 +857,7 @@ export async function generateMaterialForStudent(
     learningBarriers: string[];
   },
   recentReports: Array<{ title: string; excerpt: string }>
-): Promise<{
-  title: string;
-  content: string;
-  metadata: {
-    topic: string;
-    level: string;
-    skill: string;
-    language: string;
-    estimatedDuration: string;
-  };
-}> {
+): Promise<GeneratedMaterial> {
   try {
     const prompt = `
 You are an expert educational content creator. Generate a complete, ready-to-use learning material for a specific student.
@@ -841,7 +867,11 @@ Student Profile:
 - Language: ${studentProfile.language}
 - Grade: ${studentProfile.grade || "Not specified"}
 - Age: ${studentProfile.age || "Not specified"}
-- Learning Barriers: ${studentProfile.learningBarriers.length > 0 ? studentProfile.learningBarriers.join(", ") : "None"}
+- Learning Barriers: ${
+      studentProfile.learningBarriers.length > 0
+        ? studentProfile.learningBarriers.join(", ")
+        : "None"
+    }
 
 Recent Progress Reports Summary:
 ${recentReports.map((r, i) => `${i + 1}. ${r.title}: ${r.excerpt}`).join("\n")}
@@ -872,24 +902,14 @@ Format the material as a structured document with:
 Generate the complete material now:
 `;
 
-    const completion = await openai.chat.completions.create({
+    const generatedContent = await generateText({
       model: OPENAI_MODEL_RECOMMENDATION,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are an expert educational content creator specializing in personalized learning materials. Generate complete, ready-to-use materials that teachers can immediately use with their students. Be thorough, engaging, and pedagogically sound.",
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      temperature: 0.8, // More creative for content generation
-      max_tokens: 3000, // Allow for longer content
+      instructions:
+        "You are an expert educational content creator specializing in personalized learning materials. Generate complete, ready-to-use materials that teachers can immediately use with their students. Be thorough, engaging, and pedagogically sound.",
+      input: prompt,
+      effort: "medium",
+      maxOutputTokens: 6000,
     });
-
-    const generatedContent = completion.choices[0]?.message?.content;
 
     if (!generatedContent) {
       throw new Error("No content generated from AI");
@@ -897,8 +917,13 @@ Generate the complete material now:
 
     // Extract title from the generated content (first line typically)
     const lines = generatedContent.split("\n");
-    const titleLine = lines.find((line) => line.trim().length > 0) || "Learning Material";
-    const title = titleLine.replace(/^#+\s*/, "").replace(/^\*\*/, "").replace(/\*\*$/, "").trim();
+    const titleLine =
+      lines.find((line) => line.trim().length > 0) || "Learning Material";
+    const title = titleLine
+      .replace(/^#+\s*/, "")
+      .replace(/^\*\*/, "")
+      .replace(/\*\*$/, "")
+      .trim();
 
     return {
       title,
@@ -915,4 +940,196 @@ Generate the complete material now:
     console.error("Error generating material for student:", error);
     throw new Error("Failed to generate learning material");
   }
+}
+
+// ---------------------------------------------------------------------------
+// Lesson footpath
+// ---------------------------------------------------------------------------
+
+export interface FootpathStage {
+  title: string;
+  goal: string;
+  focusAreas: string[];
+  activities: string[];
+  successIndicators: string[];
+  estimatedDuration: string;
+}
+
+export interface LearningFootpath {
+  summary: string;
+  teachingApproach: string;
+  stages: FootpathStage[];
+  accommodations: string[];
+  motivationTips: string[];
+  watchOuts: string[];
+}
+
+export interface FootpathStudentInput {
+  name: string;
+  language: string;
+  grade: string | null;
+  age: number | null;
+  learningBarriers: string[];
+  notes: string | null;
+  reports: Array<{ title: string; content: string; createdAt: Date }>;
+}
+
+/**
+ * Read the whole student persona (profile, teacher notes and progress reports)
+ * and produce a personalized, staged teaching plan for the teacher.
+ */
+export async function generateLearningFootpath(
+  student: FootpathStudentInput
+): Promise<LearningFootpath> {
+  const barriers =
+    student.learningBarriers.length > 0
+      ? student.learningBarriers.join(", ")
+      : "None specified";
+
+  const reportsText =
+    student.reports.length > 0
+      ? student.reports
+          .map(
+            (r, i) =>
+              `${i + 1}. ${r.title} (${r.createdAt.toLocaleDateString(
+                "en-GB"
+              )})\n${r.content}`
+          )
+          .join("\n\n")
+      : "No progress reports yet.";
+
+  const prompt = `
+Build a personalized lesson footpath for the teacher of this student. A footpath is a staged, practical plan describing HOW to approach teaching this specific learner over the coming weeks, not a list of materials.
+
+Student Profile:
+- Name: ${student.name}
+- Language being learned: ${student.language}
+- Grade: ${student.grade || "Not specified"}
+- Age: ${student.age || "Not specified"}
+- Learning Barriers: ${barriers}
+
+Teacher Notes:
+${student.notes?.trim() || "No notes yet."}
+
+Progress Reports (newest first):
+${reportsText}
+
+Requirements:
+1. Synthesize the persona: strengths, gaps, interests, motivation patterns, and how the learning barriers show up in practice.
+2. Recommend an overall teaching approach (pace, interaction style, feedback style, scaffolding) tailored to this student.
+3. Lay out 3-5 sequential stages. Each stage must have a concrete goal, the skills/topics it targets, 3-5 practical classroom activities in ${
+    student.language
+  } teaching context, observable success indicators that tell the teacher when to move on, and a rough duration.
+4. List specific accommodations for the learning barriers (or general accessibility tips if none are listed).
+5. Give motivation tips that build on the student's interests, and "watch-outs": early warning signs and what to do about them.
+6. Keep every item actionable and specific to this student. Avoid generic advice. Write in English for the teacher.
+`;
+
+  const result = await callStructured<LearningFootpath>({
+    model: OPENAI_MODEL_RECOMMENDATION,
+    instructions:
+      "You are an experienced language-teaching coach and special-education specialist. You design individualized teaching plans for teachers based on a student's persona: their profile, teacher notes and progress reports. You are concrete, pedagogically sound, and sensitive to learning barriers and motivation.",
+    input: prompt,
+    effort: "medium",
+    maxOutputTokens: 6000,
+    tool: {
+      name: "create_lesson_footpath",
+      description:
+        "Return a staged, personalized teaching plan for this student",
+      parameters: {
+        type: "object",
+        properties: {
+          summary: {
+            type: "string",
+            description:
+              "2-4 sentence synthesis of the student's persona: strengths, gaps, interests and how barriers show up",
+          },
+          teachingApproach: {
+            type: "string",
+            description:
+              "How the teacher should approach this student overall: pace, interaction style, feedback, scaffolding (1 short paragraph)",
+          },
+          stages: {
+            type: "array",
+            minItems: 3,
+            maxItems: 5,
+            description: "Sequential stages of the footpath",
+            items: {
+              type: "object",
+              properties: {
+                title: {
+                  type: "string",
+                  description: "Short stage name",
+                },
+                goal: {
+                  type: "string",
+                  description: "What the student should achieve in this stage",
+                },
+                focusAreas: {
+                  type: "array",
+                  items: { type: "string" },
+                  description: "Skills or topics targeted in this stage",
+                },
+                activities: {
+                  type: "array",
+                  items: { type: "string" },
+                  description:
+                    "3-5 concrete classroom activities the teacher can run",
+                },
+                successIndicators: {
+                  type: "array",
+                  items: { type: "string" },
+                  description:
+                    "Observable signs the stage is complete and the teacher can move on",
+                },
+                estimatedDuration: {
+                  type: "string",
+                  description: "Rough duration, e.g. '2-3 weeks'",
+                },
+              },
+              required: [
+                "title",
+                "goal",
+                "focusAreas",
+                "activities",
+                "successIndicators",
+                "estimatedDuration",
+              ],
+            },
+          },
+          accommodations: {
+            type: "array",
+            items: { type: "string" },
+            description:
+              "Specific accommodations for the student's learning barriers",
+          },
+          motivationTips: {
+            type: "array",
+            items: { type: "string" },
+            description: "Ways to keep this student engaged",
+          },
+          watchOuts: {
+            type: "array",
+            items: { type: "string" },
+            description:
+              "Early warning signs to monitor and how to respond to them",
+          },
+        },
+        required: [
+          "summary",
+          "teachingApproach",
+          "stages",
+          "accommodations",
+          "motivationTips",
+          "watchOuts",
+        ],
+      },
+    },
+  });
+
+  if (!result || !Array.isArray(result.stages) || result.stages.length === 0) {
+    throw new Error("The AI did not return a usable footpath");
+  }
+
+  return result;
 }

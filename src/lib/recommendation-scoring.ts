@@ -57,6 +57,27 @@ export const DEFAULT_WEIGHTS: ScoringWeights = {
 };
 
 /**
+ * Topics that are close enough to earn partial topic credit (30%) when a
+ * material's topic is not an exact match for a recommended topic.
+ */
+export const RELATED_TOPICS: { [key: string]: string[] } = {
+  "Daily Life": ["Shopping", "Relationships", "Food & Drink"],
+  Travel: ["Culture & Traditions", "Shopping", "Daily Life"],
+  "Food & Drink": ["Daily Life", "Shopping", "Health & Wellness"],
+  "Work & Professions": ["Education", "Technology"],
+  Education: ["Work & Professions"],
+  "Health & Wellness": ["Food & Drink", "Daily Life"],
+  "Culture & Traditions": ["Travel", "Holidays & Celebrations"],
+  "Sports & Hobbies": ["Health & Wellness", "Daily Life"],
+  Shopping: ["Daily Life", "Travel", "Food & Drink"],
+  Relationships: ["Daily Life"],
+  "Holidays & Celebrations": ["Culture & Traditions", "Travel"],
+  Technology: ["Work & Professions", "Education"],
+  "News & Current Events": ["Education"],
+  Environment: ["News & Current Events"],
+    };
+
+/**
  * Calculate semantic similarity between two texts using keyword overlap
  * Enhanced for language learning context
  */
@@ -256,23 +277,7 @@ export function scoreEnhancedMaterialMatch(params: {
     rationale.push(`Topic match: ${material.topic}`);
   } else if (material.topic && studentNeeds.topic.length > 0) {
     // Partial credit for related topics (language learning context)
-    const relatedTopics: { [key: string]: string[] } = {
-      "Daily Life": ["Shopping", "Relationships", "Food & Drink"],
-      Travel: ["Culture & Traditions", "Shopping", "Daily Life"],
-      "Food & Drink": ["Daily Life", "Shopping", "Health & Wellness"],
-      "Work & Professions": ["Education", "Technology"],
-      Education: ["Work & Professions"],
-      "Health & Wellness": ["Food & Drink", "Daily Life"],
-      "Culture & Traditions": ["Travel", "Holidays & Celebrations"],
-      "Sports & Hobbies": ["Health & Wellness", "Daily Life"],
-      Shopping: ["Daily Life", "Travel", "Food & Drink"],
-      Relationships: ["Daily Life"],
-      "Holidays & Celebrations": ["Culture & Traditions", "Travel"],
-      Technology: ["Work & Professions", "Education"],
-      "News & Current Events": ["Education"],
-      Environment: ["News & Current Events"],
-    };
-    const related = relatedTopics[material.topic] || [];
+    const related = RELATED_TOPICS[material.topic] || [];
     if (studentNeeds.topic.some((t) => related.includes(t))) {
       breakdown.topicMatch = finalWeights.topicMatch * 0.3;
       rationale.push(`Related topic: ${material.topic}`);
@@ -520,4 +525,74 @@ export function isMaterialTooAdvanced(
   // Filter out materials more than 1 level above student's highest level
   const levelsAbove = materialLevelIndex - maxStudentLevelIndex;
   return levelsAbove > 1;
+}
+
+// ---------------------------------------------------------------------------
+// Library topic coverage
+// ---------------------------------------------------------------------------
+
+/** Minimum same-language materials per recommended topic before it counts as covered. */
+export const MIN_MATERIALS_PER_TOPIC = 1;
+
+export interface TopicCoverageEntry {
+  topic: string;
+  /** Same-language materials whose topic matches exactly */
+  exactMatches: number;
+  /** Same-language materials with a related topic (partial credit only) */
+  relatedMatches: number;
+}
+
+export interface RecommendationCoverage {
+  /** Topics the needs analysis recommended for the student */
+  recommendedTopics: string[];
+  /** Recommended topics with fewer than MIN_MATERIALS_PER_TOPIC exact matches */
+  uncoveredTopics: string[];
+  coverage: TopicCoverageEntry[];
+  language: string;
+  /** Same-language, not-yet-completed materials considered */
+  candidateCount: number;
+  checkedAt: string;
+}
+
+/**
+ * Evaluate whether the school library actually has materials on the topics the
+ * needs analysis recommended. Only same-language materials count, because the
+ * scorer filters every other language out before topics are even considered.
+ * The result drives the "add more materials" warning on the student page.
+ */
+export function evaluateTopicCoverage(params: {
+  recommendedTopics: string[];
+  materials: Array<{ topic: string | null; language: string | null }>;
+  studentLanguage: string;
+}): RecommendationCoverage {
+  const { recommendedTopics, materials, studentLanguage } = params;
+
+  const candidates = materials.filter(
+    (m) => !m.language || m.language === studentLanguage
+  );
+
+  const coverage: TopicCoverageEntry[] = recommendedTopics.map((topic) => {
+    let exactMatches = 0;
+    let relatedMatches = 0;
+    for (const material of candidates) {
+      if (!material.topic) continue;
+      if (material.topic === topic) {
+        exactMatches++;
+      } else if ((RELATED_TOPICS[material.topic] || []).includes(topic)) {
+        relatedMatches++;
+      }
+    }
+    return { topic, exactMatches, relatedMatches };
+  });
+
+  return {
+    recommendedTopics,
+    uncoveredTopics: coverage
+      .filter((entry) => entry.exactMatches < MIN_MATERIALS_PER_TOPIC)
+      .map((entry) => entry.topic),
+    coverage,
+    language: studentLanguage,
+    candidateCount: candidates.length,
+    checkedAt: new Date().toISOString(),
+  };
 }

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
@@ -77,10 +79,37 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// Returns the caller's own school (with its teachers). Previously this
+// endpoint was unauthenticated and listed every school and teacher email
+// on the platform.
 export async function GET() {
   try {
-    const schools = await prisma.school.findMany({
-      include: {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
+    if (!session.user.schoolId) {
+      return NextResponse.json(
+        { success: false, error: "No school associated with this account" },
+        { status: 404 }
+      );
+    }
+
+    const school = await prisma.school.findUnique({
+      where: { id: session.user.schoolId },
+      select: {
+        id: true,
+        name: true,
+        address: true,
+        phone: true,
+        email: true,
+        profilePicture: true,
+        createdAt: true,
         teachers: {
           select: {
             id: true,
@@ -88,19 +117,24 @@ export async function GET() {
             email: true,
             createdAt: true,
           },
+          orderBy: { createdAt: "desc" },
         },
-      },
-      orderBy: {
-        createdAt: "desc",
       },
     });
 
+    if (!school) {
+      return NextResponse.json(
+        { success: false, error: "School not found" },
+        { status: 404 }
+      );
+    }
+
     return NextResponse.json({
       success: true,
-      data: schools,
+      data: school,
     });
   } catch (error) {
-    console.error("Error fetching schools:", error);
+    console.error("Error fetching school:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }

@@ -5,8 +5,12 @@ import OpenAI from "openai";
 import { Document, Packer, Paragraph, HeadingLevel, TextRun } from "docx";
 import { extractTextFromFile, OPENAI_MODEL_RECOMMENDATION } from "@/lib/openai";
 
+// Reasoning models can take a while on long materials (serverless limit).
+export const maxDuration = 300;
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+  timeout: 240_000,
 });
 
 export async function POST(request: NextRequest) {
@@ -125,23 +129,19 @@ IMPORTANT: Generate the entire content in ${outputLanguage}. All text, headings,
 
     console.log("AI Generation Prompt:", prompt);
 
-    const completion = await openai.chat.completions.create({
+    const response = await openai.responses.create({
       model: OPENAI_MODEL_RECOMMENDATION,
-      messages: [
-        {
-          role: "system",
-          content: `You are an expert educational content creator. Create high-quality, pedagogically sound learning materials that are engaging and appropriate for the specified level. You must write all content in the requested language (${outputLanguage}). If the requested language is not English, ensure all text, headings, instructions, and examples are properly translated and culturally appropriate.`,
-        },
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
-      max_tokens: 3000,
-      temperature: 0.7,
+      instructions: `You are an expert educational content creator. Create high-quality, pedagogically sound learning materials that are engaging and appropriate for the specified level. You must write all content in the requested language (${outputLanguage}). If the requested language is not English, ensure all text, headings, instructions, and examples are properly translated and culturally appropriate.`,
+      input: prompt,
+      reasoning: { effort: "medium" },
+      max_output_tokens: 6000,
     });
 
-    const generatedContent = completion.choices[0]?.message?.content;
+    if (response.status === "failed") {
+      throw new Error(response.error?.message || "OpenAI response failed");
+    }
+
+    const generatedContent = response.output_text?.trim();
 
     if (!generatedContent) {
       return NextResponse.json(

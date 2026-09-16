@@ -2,15 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { analyzeStudentNeeds, OPENAI_MODEL_RECOMMENDATION } from "@/lib/openai";
+import { analyzeStudentNeeds } from "@/lib/openai";
+import {
+  extractTitle,
+  generateMaterialInConversation,
+  getOrCreateStudentConversation,
+} from "@/lib/material-generation";
 import OpenAI from "openai";
+
+// Reasoning models can take a while on long materials (serverless limit).
+export const maxDuration = 300;
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+  timeout: 240_000,
 });
 
 /**
- * Generate material using OpenAI Assistants API for persistent conversations
+ * Generate material using the OpenAI Responses API with a persistent
+ * Conversation per student, so regenerations keep the previous context.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -104,134 +114,24 @@ export async function POST(request: NextRequest) {
       studentContext,
     );
 
-    // Get or create the teacher's assistant (one per teacher)
-    let teacherAssistant = await prisma.teacherAssistant.findFirst({
-      where: {
-        teacherId: teacher.id,
-        threadId: null, // New-style records have no threadId
-      },
-      orderBy: { createdAt: "desc" },
+    // Get or create the student's conversation (keeps context across regenerations)
+    const { studentThread } = await getOrCreateStudentConversation(openai, {
+      studentId: student.id,
+      teacherId: teacher.id,
+      sessionData: JSON.parse(
+        JSON.stringify({
+          studentName: student.name,
+          language: student.language,
+          grade: student.grade,
+          age: student.age,
+          studentNeeds,
+        }),
+      ),
     });
+    const conversationId = studentThread.threadId;
+    console.log("Using conversation:", conversationId);
 
-    let assistantId: string;
-
-    if (!teacherAssistant) {
-      // Create a new assistant for this teacher
-      const baseInstructions = `You are an expert educational content creator specializing in personalized learning materials.`;
-
-      const teacherGuidedInstructions = `Your materials are designed for teachers to use in guided instruction with their students. Include:
-1. Clear teacher notes and facilitation guidance
-2. Discussion prompts and questions for the teacher to ask
-3. Scaffolding suggestions for different learning levels
-4. Ideas for differentiation and extension activities
-5. Tips for checking understanding during the lesson
-6. Suggested pacing and timing for each section
-7. Guidance on how to support students with learning barriers`;
-
-      const independentUseInstructions = `Your materials are designed for students to use independently with minimal teacher supervision. Include:
-1. Clear, self-explanatory instructions that students can follow on their own
-2. Step-by-step guidance with examples
-3. Self-check questions and answer keys where appropriate
-4. Engaging activities that maintain student interest
-5. Built-in support for students who might struggle (hints, tips)
-6. Clear success criteria so students know when they've completed tasks correctly
-7. Reflection questions for self-assessment`;
-
-      const assistant = await openai.beta.assistants.create({
-        name: `Educational Material Creator for ${teacher.name}`,
-        instructions: `${baseInstructions}
-
-For each request, you will receive:
-- Student profile (name, language, grade, age, learning barriers)
-- AI-identified learning needs
-- Recent progress reports
-- Material usage mode (teacher-guided or independent)
-
-Generate complete learning materials that:
-1. Are appropriate for the student's level and needs
-2. Address the identified learning gaps
-3. Are engaging and suitable for their age/grade
-4. Take into account any learning barriers
-5. Are in the specified language
-6. Match the intended usage mode (teacher-guided or independent)
-
-WHEN MATERIAL IS FOR TEACHER-GUIDED USE:
-${teacherGuidedInstructions}
-
-WHEN MATERIAL IS FOR INDEPENDENT STUDENT USE:
-${independentUseInstructions}
-
-Format materials as structured documents with:
-- A clear title
-- Learning objectives
-- Instructions (tailored to the usage mode)
-- Main content/activities
-- Assessment or reflection questions (if applicable)
-
-Be thorough, engaging, and pedagogically sound.`,
-        model: OPENAI_MODEL_RECOMMENDATION,
-      });
-
-      console.log("Created new assistant for teacher:", assistant.id);
-
-      // Store in database
-      teacherAssistant = await prisma.teacherAssistant.create({
-        data: {
-          assistantId: assistant.id,
-          teacherId: teacher.id,
-          status: "active",
-        },
-      });
-
-      assistantId = assistant.id;
-    } else {
-      assistantId = teacherAssistant.assistantId;
-      console.log("Using existing assistant:", assistantId);
-    }
-
-    // Check if a thread already exists for this student
-    let studentThread = await prisma.studentThread.findFirst({
-      where: {
-        studentId: student.id,
-        teacherId: teacher.id,
-        status: "active",
-      },
-    });
-
-    let threadId: string;
-
-    if (!studentThread) {
-      // Create a new thread for this student
-      const thread = await openai.beta.threads.create();
-      console.log("Created new thread:", thread.id);
-
-      threadId = thread.id;
-
-      // Store in database
-      studentThread = await prisma.studentThread.create({
-        data: {
-          threadId: thread.id,
-          studentId: student.id,
-          teacherId: teacher.id,
-          assistantId: assistantId,
-          sessionData: JSON.parse(
-            JSON.stringify({
-              studentName: student.name,
-              language: student.language,
-              grade: student.grade,
-              age: student.age,
-              studentNeeds,
-            }),
-          ),
-          status: "active",
-        },
-      });
-    } else {
-      threadId = studentThread.threadId;
-      console.log("Using existing thread:", threadId);
-    }
-
-    // Add initial message with student context
+    // Initial message with student context
     const recentReportsText = student.reports
       .map((r, i) => `${i + 1}. ${r.title}: ${r.content.substring(0, 300)}...`)
       .join("\n\n");
@@ -268,127 +168,17 @@ ${recentReportsText}
 
 Generate the complete material now.`;
 
-    await openai.beta.threads.messages.create(threadId, {
-      role: "user",
-      content: studentContextMessage,
+    const generatedContent = await generateMaterialInConversation(openai, {
+      conversationId,
+      message: studentContextMessage,
+      language: student.language,
+      grade: student.grade,
     });
 
-    console.log("Message added to thread");
-
-    // Run the assistant
-    const run = await openai.beta.threads.runs.create(threadId, {
-      assistant_id: assistantId,
-      model: OPENAI_MODEL_RECOMMENDATION,
-    });
-
-    console.log("Run created:", run.id);
-
-    // Store run ID in a variable
-    const runId = run.id;
-
-    console.log("Using threadId:", threadId, "runId:", runId);
-
-    // Poll for completion
-    let runStatus = await openai.beta.threads.runs.retrieve(runId, {
-      thread_id: threadId,
-    });
-    let attempts = 0;
-    const maxAttempts = 30;
-
-    while (runStatus.status !== "completed" && attempts < maxAttempts) {
-      if (runStatus.status === "failed") {
-        const failReason = runStatus.last_error?.message || "Unknown error";
-        throw new Error(
-          `The AI engine failed to generate material: ${failReason}. Please try again or contact support if the issue persists.`,
-        );
-      }
-      if (runStatus.status === "cancelled") {
-        throw new Error("Material generation was cancelled. Please try again.");
-      }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      runStatus = await openai.beta.threads.runs.retrieve(runId, {
-        thread_id: threadId,
-      });
-      attempts++;
-    }
-
-    if (runStatus.status !== "completed") {
-      throw new Error(
-        "Material generation timed out. The AI is taking longer than expected — this can happen with complex student profiles. Please try again in a few minutes.",
-      );
-    }
-
-    console.log("Run completed successfully");
-
-    // Retrieve the assistant's response
-    const messages = await openai.beta.threads.messages.list(threadId);
-    const lastMessage = messages.data[0];
-
-    if (lastMessage.role !== "assistant") {
-      throw new Error(
-        "The AI did not return a response. This is an unexpected error — please try again. If the problem continues, try adding more detail to the student's progress reports.",
-      );
-    }
-
-    const messageContent = lastMessage.content[0];
-    let generatedContent = "";
-
-    if (messageContent.type === "text") {
-      generatedContent = messageContent.text.value;
-    }
-
-    // QUALITY CONTROL: Proofread the generated content for grammar and clarity
-    console.log("Proofreading generated content...");
-    try {
-      const proofreadCompletion = await openai.chat.completions.create({
-        model: OPENAI_MODEL_RECOMMENDATION,
-        messages: [
-          {
-            role: "system",
-            content: `You are an expert proofreader and editor specializing in educational materials. Your task is to:
-1. Fix all grammatical errors, spelling mistakes, and punctuation issues
-2. Improve clarity and readability while maintaining the original meaning and structure
-3. Ensure the language is appropriate for the target audience (${student.language}, ${student.grade || "appropriate level"})
-4. Maintain the original formatting (markdown, headings, lists, etc.)
-5. Keep all the original content - DO NOT remove sections or change the structure
-6. Make the text natural and engaging
-
-Return ONLY the corrected text with no additional comments or explanations.`,
-          },
-          {
-            role: "user",
-            content: `Please proofread and correct the following educational material for grammatical errors and clarity:\n\n${generatedContent}`,
-          },
-        ],
-        temperature: 0.3, // Low temperature for consistent, accurate corrections
-      });
-
-      const proofreadContent = proofreadCompletion.choices[0]?.message?.content;
-      if (proofreadContent && proofreadContent.trim()) {
-        generatedContent = proofreadContent;
-        console.log("Content proofread successfully");
-      }
-    } catch (proofreadError) {
-      console.error(
-        "Proofreading failed, using original content:",
-        proofreadError,
-      );
-      // Continue with original content if proofreading fails
-    }
-
-    // Parse title from content
-    const lines = generatedContent.split("\n");
-    const titleLine =
-      lines.find((line) => line.trim().length > 0) || "Learning Material";
-    const title = titleLine
-      .replace(/^#+\s*/, "")
-      .replace(/^\*\*/, "")
-      .replace(/\*\*$/, "")
-      .trim();
+    const title = extractTitle(generatedContent);
 
     console.log("Material generated successfully");
-    console.log("Assistant ID:", assistantId);
-    console.log("Thread ID:", threadId);
+    console.log("Conversation ID:", conversationId);
 
     // Update conversation logs in the student thread
     try {
@@ -450,8 +240,9 @@ Return ONLY the corrected text with no additional comments or explanations.`,
       data: {
         studentId: student.id,
         studentName: student.name,
-        assistantId: assistantId,
-        threadId: threadId,
+        // Kept for API compatibility with the client; assistants no longer exist.
+        assistantId: studentThread.assistantId,
+        threadId: conversationId,
         generatedMaterial: {
           title,
           content: generatedContent,

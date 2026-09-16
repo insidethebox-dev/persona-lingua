@@ -31,9 +31,14 @@ import {
   Copy,
   CheckCircle,
   Save,
+  Route,
+  RefreshCw,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { ApiResponse, StudentWithReports } from "@/types";
+import type { LearningFootpath } from "@/lib/openai";
+import type { RecommendationCoverage } from "@/lib/recommendation-scoring";
 import {
   StudentReport,
   Recommendation,
@@ -119,6 +124,7 @@ export default function StudentDetailPage() {
   });
   const [generatingRecommendations, setGeneratingRecommendations] =
     useState(false);
+  const [generatingFootpath, setGeneratingFootpath] = useState(false);
   const [showMaterialSuggestions, setShowMaterialSuggestions] = useState(false);
   const [materialSuggestions, setMaterialSuggestions] =
     useState<MaterialSuggestionsData | null>(null);
@@ -360,6 +366,41 @@ export default function StudentDetailPage() {
     }
   };
 
+  const generateFootpath = async () => {
+    setGeneratingFootpath(true);
+    try {
+      const response = await fetch(`/api/students/${studentId}/footpath`, {
+        method: "POST",
+      });
+      const data: ApiResponse<{
+        learningFootpath: LearningFootpath;
+        footpathGeneratedAt: string;
+      }> = await response.json();
+
+      if (data.success && data.data) {
+        const { learningFootpath, footpathGeneratedAt } = data.data;
+        setStudent((prev) =>
+          prev
+            ? {
+                ...prev,
+                learningFootpath:
+                  learningFootpath as unknown as StudentWithReports["learningFootpath"],
+                footpathGeneratedAt: new Date(footpathGeneratedAt),
+              }
+            : prev,
+        );
+        toast.success(data.message || "Lesson footpath generated");
+      } else {
+        toast.error(data.error || "Failed to generate lesson footpath");
+      }
+    } catch (error) {
+      console.error("Error generating lesson footpath:", error);
+      toast.error("Failed to generate lesson footpath");
+    } finally {
+      setGeneratingFootpath(false);
+    }
+  };
+
   const generateRecommendations = async () => {
     setGeneratingRecommendations(true);
     try {
@@ -372,6 +413,10 @@ export default function StudentDetailPage() {
       });
 
       const data: ApiResponse = await response.json();
+
+      // The route stores a library topic-coverage check on the student even
+      // when it fails early, so refresh the student to show/hide the warning.
+      fetchStudent();
 
       if (data.success) {
         fetchRecommendations(); // Refresh recommendations
@@ -437,6 +482,7 @@ export default function StudentDetailPage() {
           threadId: materialSuggestions.threadId,
           additionalInstructions: additionalInstructions.trim(),
           isIndependentUse,
+          currentMaterial: materialSuggestions.generatedMaterial.content,
         }),
       });
 
@@ -462,6 +508,122 @@ export default function StudentDetailPage() {
     setCopiedField(fieldName);
     toast.success(`${fieldName} copied!`);
     setTimeout(() => setCopiedField(null), 2000);
+  };
+
+  const downloadFootpath = async () => {
+    if (!student || !footpath) return;
+
+    try {
+      const paragraphs: Paragraph[] = [];
+      const heading = (text: string, level: (typeof HeadingLevel)[keyof typeof HeadingLevel]) =>
+        new Paragraph({
+          text,
+          heading: level,
+          spacing: { before: 200, after: 120 },
+        });
+      const bullets = (items: string[]) =>
+        items.map(
+          (item) =>
+            new Paragraph({
+              text: item,
+              bullet: { level: 0 },
+              spacing: { after: 80 },
+            }),
+        );
+      const labelled = (label: string, value: string) =>
+        new Paragraph({
+          children: [new TextRun({ text: `${label}: `, bold: true }), new TextRun(value)],
+          spacing: { after: 80 },
+        });
+
+      paragraphs.push(
+        new Paragraph({
+          text: `Lesson Footpath for ${student.name}`,
+          heading: HeadingLevel.HEADING_1,
+          spacing: { after: 200 },
+        }),
+        labelled("Language", student.language),
+        labelled("Grade", student.grade || "Not specified"),
+        labelled("Age", student.age ? String(student.age) : "Not specified"),
+        labelled(
+          "Learning barriers",
+          student.learningBarriers.length > 0
+            ? student.learningBarriers.join(", ")
+            : "None",
+        ),
+        labelled(
+          "Generated",
+          student.footpathGeneratedAt
+            ? new Date(student.footpathGeneratedAt).toLocaleString()
+            : new Date().toLocaleString(),
+        ),
+        new Paragraph({ text: "═".repeat(50), spacing: { before: 200, after: 300 } }),
+        heading("Student persona", HeadingLevel.HEADING_2),
+        new Paragraph({ text: footpath.summary, spacing: { after: 150 } }),
+        heading("How to approach this student", HeadingLevel.HEADING_2),
+        new Paragraph({ text: footpath.teachingApproach, spacing: { after: 150 } }),
+        heading("Footpath stages", HeadingLevel.HEADING_2),
+      );
+
+      footpath.stages.forEach((stage, index) => {
+        paragraphs.push(
+          heading(`Stage ${index + 1}: ${stage.title}`, HeadingLevel.HEADING_3),
+          labelled("Goal", stage.goal),
+          labelled("Estimated duration", stage.estimatedDuration),
+          labelled("Focus areas", stage.focusAreas.join(", ") || "—"),
+          new Paragraph({
+            children: [new TextRun({ text: "Activities", bold: true })],
+            spacing: { before: 100, after: 60 },
+          }),
+          ...bullets(stage.activities),
+          new Paragraph({
+            children: [new TextRun({ text: "Move on when", bold: true })],
+            spacing: { before: 100, after: 60 },
+          }),
+          ...bullets(stage.successIndicators),
+        );
+      });
+
+      paragraphs.push(
+        heading("Accommodations", HeadingLevel.HEADING_2),
+        ...bullets(footpath.accommodations),
+        heading("Motivation tips", HeadingLevel.HEADING_2),
+        ...bullets(footpath.motivationTips),
+        heading("Watch-outs", HeadingLevel.HEADING_2),
+        ...bullets(footpath.watchOuts),
+        new Paragraph({ text: "═".repeat(50), spacing: { before: 300, after: 200 } }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `This lesson footpath was generated by PersonaLingua AI for ${student.name}.`,
+              italics: true,
+              size: 20,
+            }),
+          ],
+          alignment: AlignmentType.CENTER,
+        }),
+      );
+
+      const doc = new Document({
+        sections: [{ properties: {}, children: paragraphs }],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `lesson-footpath-${student.name.replace(/\s+/g, "-").toLowerCase()}-${
+        new Date().toISOString().split("T")[0]
+      }.docx`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      toast.success("Lesson footpath downloaded!");
+    } catch (error) {
+      console.error("Error generating footpath docx:", error);
+      toast.error("Failed to download lesson footpath");
+    }
   };
 
   const downloadMaterial = async () => {
@@ -699,6 +861,19 @@ export default function StudentDetailPage() {
       </DashboardLayout>
     );
   }
+
+  const footpath =
+    (student.learningFootpath as unknown as LearningFootpath | null) ?? null;
+  const canGenerateFootpath =
+    Boolean(student.notes && student.notes.trim()) ||
+    (student.reports?.length ?? 0) > 0;
+  const topicCoverage =
+    (student.recommendationCoverage as unknown as RecommendationCoverage | null) ??
+    null;
+  const uncoveredTopics = topicCoverage?.uncoveredTopics ?? [];
+  const noTopicCovered =
+    uncoveredTopics.length > 0 &&
+    uncoveredTopics.length === (topicCoverage?.recommendedTopics.length ?? 0);
 
   return (
     <DashboardLayout>
@@ -940,8 +1115,93 @@ export default function StudentDetailPage() {
             )}
           </div>
 
-          {/* Recommendations Section */}
-          <div className='space-y-6'>
+          <div className='space-y-10'>
+            {/* Lesson Footpath Section */}
+            <div className='space-y-6'>
+              <div className='flex items-center justify-between'>
+                <h2 className='text-lg font-medium text-gray-900 flex items-center gap-2'>
+                  <Route className='h-5 w-5' />
+                  Lesson Footpath
+                </h2>
+                {isTeacher && (
+                  <button
+                    onClick={generateFootpath}
+                    disabled={generatingFootpath || !canGenerateFootpath}
+                    title={
+                      canGenerateFootpath
+                        ? undefined
+                        : "Add notes or a progress report first"
+                    }
+                    className='bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400 flex items-center gap-2 text-sm'
+                  >
+                    {generatingFootpath ? (
+                      <>
+                        Generating...
+                        <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
+                      </>
+                    ) : footpath ? (
+                      <>
+                        <RefreshCw className='h-4 w-4' />
+                        Regenerate Footpath
+                      </>
+                    ) : (
+                      <>
+                        <Route className='h-4 w-4' />
+                        Generate Footpath
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+
+              {footpath ? (
+                <div className='bg-white border rounded-lg p-6 space-y-4'>
+                  <div className='bg-indigo-50 border border-indigo-200 rounded-lg p-4'>
+                    <p className='text-sm text-indigo-900'>
+                      <strong>Student persona:</strong> {footpath.summary}
+                    </p>
+                  </div>
+
+                  <div className='flex flex-wrap items-center justify-between gap-3'>
+                    <p className='text-sm text-gray-600'>
+                      The full footpath has {footpath.stages.length} stages
+                      with activities, success indicators, accommodations,
+                      motivation tips and watch-outs.
+                    </p>
+                    <button
+                      onClick={downloadFootpath}
+                      className='bg-white border border-indigo-600 text-indigo-700 px-4 py-2 rounded-lg hover:bg-indigo-50 flex items-center gap-2 text-sm'
+                    >
+                      <Download className='h-4 w-4' />
+                      Download full footpath (DOCX)
+                    </button>
+                  </div>
+
+                  {student.footpathGeneratedAt && (
+                    <p className='text-xs text-gray-500 flex items-center gap-1'>
+                      <Calendar className='h-3 w-3' />
+                      Generated{" "}
+                      {new Date(student.footpathGeneratedAt).toLocaleString()}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className='text-center py-8 bg-gray-50 rounded-lg'>
+                  <Route className='mx-auto h-8 w-8 text-gray-400' />
+                  <h3 className='mt-2 text-sm font-medium text-gray-900'>
+                    No lesson footpath yet
+                  </h3>
+                  <p className='mt-1 text-sm text-gray-500'>
+                    {canGenerateFootpath
+                      ? "Click 'Generate Footpath' to get a personalized, staged teaching plan built from this student's notes and progress reports."
+                      : "Add notes or a progress report to build a personalized teaching plan for this student."}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Recommendations Section */}
+            <div className='space-y-6'>
             <div className='flex items-center justify-between'>
               <h2 className='text-lg font-medium text-gray-900 flex items-center gap-2'>
                 <Lightbulb className='h-5 w-5' />
@@ -982,6 +1242,55 @@ export default function StudentDetailPage() {
                 </div>
               )}
             </div>
+
+            {uncoveredTopics.length > 0 && (
+              <div className='bg-amber-50 border border-amber-300 rounded-lg p-4 flex gap-3'>
+                <AlertTriangle className='h-5 w-5 text-amber-600 shrink-0 mt-0.5' />
+                <div className='text-sm text-amber-900 space-y-2'>
+                  <p>
+                    <strong>
+                      {noTopicCovered
+                        ? "No matching materials in your library."
+                        : "Limited library coverage."}
+                    </strong>{" "}
+                    {noTopicCovered
+                      ? `None of the topics recommended for ${student.name} have ${
+                          topicCoverage?.language ?? student.language
+                        } materials in your school's library, so the recommendations above are a best effort from unrelated topics.`
+                      : `Some of the topics recommended for ${student.name} have no ${
+                          topicCoverage?.language ?? student.language
+                        } materials in your school's library, which limits the quality of the recommendations.`}
+                  </p>
+                  <p>
+                    To get better results, add materials in{" "}
+                    {topicCoverage?.language ?? student.language} with the topic
+                    {uncoveredTopics.length > 1 ? "s" : ""}:{" "}
+                    {uncoveredTopics.map((topic) => (
+                      <span
+                        key={topic}
+                        className='inline-block bg-amber-100 text-amber-900 px-2 py-0.5 rounded mr-1 font-medium'
+                      >
+                        {topic}
+                      </span>
+                    ))}
+                  </p>
+                  {isTeacher && (
+                    <Link
+                      href='/upload'
+                      className='inline-flex items-center gap-1 text-amber-800 underline hover:text-amber-900'
+                    >
+                      <Plus className='h-4 w-4' />
+                      Upload a material
+                    </Link>
+                  )}
+                  {topicCoverage?.checkedAt && (
+                    <p className='text-xs text-amber-700'>
+                      Checked {new Date(topicCoverage.checkedAt).toLocaleString()}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
 
             {recommendations.length > 0 ? (
               <>
@@ -1098,6 +1407,7 @@ export default function StudentDetailPage() {
                 </p>
               </div>
             )}
+            </div>
           </div>
         </div>
 
